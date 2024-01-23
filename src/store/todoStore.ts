@@ -1,17 +1,25 @@
 import {action, computed, makeObservable, observable} from "mobx";
 
-interface Todo {
-    task: string,
-    completed: false,
-    assignee: null,
+declare global {
+    interface Todo {
+        task: string,
+        completed: false,
+        assignee: null,
+    }
 }
 
-class TodoStore {
-    todos: Todo[] = [];
+export class TodoStore {
+    todos: Todo[] = [{
+        task: 'start',
+        completed: false,
+        assignee: null,
+    }];
+    heading = 'Head';
 
     constructor() {
         makeObservable(this, {
             todos: observable,
+            heading: observable,
             addTodo: action,
             completedTodosCount: computed,
         });
