@@ -1,13 +1,10 @@
-import StartScreen from "./screens/start/Start.screen.tsx";
-import GameScreen from "./screens/game/Game.screen.tsx";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./router/router.tsx";
 
 function App() {
-
-
   return (
     <div className="app">
-        <StartScreen />
-        <GameScreen />
+        <RouterProvider router={router}/>
     </div>
   )
 }
