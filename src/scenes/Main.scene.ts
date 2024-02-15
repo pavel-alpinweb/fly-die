@@ -8,9 +8,9 @@ export const useMainScene = () => {
         height: 600,
         parent: gameContainer,
         scene: {
-            preload: preload,
-            create: create,
-            update: update
+            preload,
+            create,
+            update,
         }
     };
 
