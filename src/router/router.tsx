@@ -9,6 +9,6 @@ export const router = createBrowserRouter([
     },
     {
         path: '/game',
-        component: <GameScreen />,
+        element: <GameScreen />,
     }
 ]);
