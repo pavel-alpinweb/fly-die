@@ -1,0 +1,49 @@
+.startScreen {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000 url('/assets/backgrounds/03.png');
+    background-size: cover;
+}
+
+.startForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 500px;
+}
+
+.startInput {
+    width: 100%;
+    height: 50px;
+    border: 5px solid #9fcc3b;
+    background-color: #ddedae;
+    color: #111516;
+    font-size: 50px;
+    font-weight: bold;
+    outline: none;
+    padding: 10px;
+    font-family: inherit;
+}
+
+.startBtn {
+    width: 60%;
+    height: 153px;
+    cursor: pointer;
+    border: none;
+    background: url('./assets/ui/btn01.png') no-repeat center;
+    background-size: 100%;
+    color: #603d11;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 50px;
+    font-family: inherit;
+    &:hover {
+        background: url('./assets/ui/btn02.png') no-repeat center;
+        background-size: 100%;
+    }
+}
