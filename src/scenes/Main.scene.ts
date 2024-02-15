@@ -2,11 +2,19 @@ import * as Phaser from "phaser";
 
 export const useMainScene = () => {
     const gameContainer = document.getElementById('game');
+    let platforms;
     const config = {
         type: Phaser.AUTO,
         width: 800,
         height: 600,
         parent: gameContainer,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 300 },
+                debug: false
+            }
+        },
         scene: {
             preload,
             create,
@@ -26,7 +34,14 @@ export const useMainScene = () => {
     function create ()
     {
         this.add.image(400, 300, 'sky');
-        this.add.image(400, 300, 'star');
+
+        platforms = this.physics.add.staticGroup();
+
+        platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+        platforms.create(600, 400, 'ground');
+        platforms.create(50, 250, 'ground');
+        platforms.create(750, 220, 'ground');
     }
 
     function update ()
