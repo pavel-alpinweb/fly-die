@@ -4,6 +4,7 @@ export const useMainScene = () => {
     const gameContainer = document.getElementById('game');
     let platforms;
     let player;
+    let cursors;
     const config = {
         type: Phaser.AUTO,
         width: 800,
@@ -73,6 +74,26 @@ export const useMainScene = () => {
 
     function update ()
     {
+        cursors = this.input.keyboard.createCursorKeys()
+        if (cursors.left.isDown)
+        {
+            player.setVelocityX(-250);
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(250);
+            player.anims.play('right', true);
+        }
+        else
+        {
+            player.setVelocityX(0);
+            player.anims.play('turn');
+        }
+        if (cursors.up.isDown && player.body.touching.down)
+        {
+            player.setVelocityY(-500);
+        }
     }
 
 
