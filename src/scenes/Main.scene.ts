@@ -5,6 +5,11 @@ export const useMainScene = () => {
     let platforms;
     let player;
     let cursors;
+    let stars;
+    let score = 0;
+    let scoreText;
+    let bombs;
+    let gameOver = false;
     const config = {
         type: Phaser.AUTO,
         width: 800,
@@ -38,9 +43,7 @@ export const useMainScene = () => {
         this.add.image(400, 300, 'sky');
 
         platforms = this.physics.add.staticGroup();
-
         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
         platforms.create(600, 400, 'ground');
         platforms.create(50, 250, 'ground');
         platforms.create(750, 220, 'ground');
@@ -49,7 +52,22 @@ export const useMainScene = () => {
         player.setBounce(0.2);
         player.setCollideWorldBounds(true);
         player.body.setGravityY(300);
+
+        stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 }
+        });
+        stars.children.iterate(function (child) {
+            child.setBounceY(Phaser.Math.FloatBetween(0.1, 0.4));
+        });
+
+        bombs = this.physics.add.group();
+
         this.physics.add.collider(player, platforms);
+        this.physics.add.collider(stars, platforms);
+        this.physics.add.collider(bombs, platforms);
+        this.physics.add.collider(player, bombs, hitBomb, null, this);
 
         this.anims.create({
             key: 'left',
@@ -70,6 +88,10 @@ export const useMainScene = () => {
             frameRate: 10,
             repeat: -1
         });
+
+        this.physics.add.overlap(player, stars, collectStar, null, this);
+
+        scoreText = this.add.text(16, 32, 'score: 0', { fontSize: '32px', fill: '#000' });
     }
 
     function update ()
@@ -98,6 +120,23 @@ export const useMainScene = () => {
 
 
 
+    function collectStar (player, star)
+    {
+        star.disableBody(true, true)
+        score += 10;
+        scoreText.setText('Score: ' + score);
+    }
+
+    function hitBomb (player, bomb)
+    {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        gameOver = true;
+    }
+
     const game = new Phaser.Game(config);
-    console.log('Game ready!', game);
 };
