@@ -19,7 +19,7 @@ class GameScene extends Phaser.Scene {
     }
 
      create() {
-        this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky');
+        this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky').setScrollFactor(0, 0);
         this.platforms = this.physics.add.staticGroup({
             key: 'ground01',
             repeat: 20,
@@ -27,6 +27,7 @@ class GameScene extends Phaser.Scene {
         });
 
          this.player = this.physics.add.sprite(450, 450, 'player')
+         this.cameras.main.startFollow(this.player, );
 
          this.physics.add.collider(this.player, this.platforms);
 
