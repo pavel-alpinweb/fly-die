@@ -1,0 +1,44 @@
+{"frames": {
+
+"1.png":
+{
+	"frame": {"x":1,"y":1,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"2.png":
+{
+	"frame": {"x":153,"y":1,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"3.png":
+{
+	"frame": {"x":1,"y":1,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+"4.png":
+{
+	"frame": {"x":305,"y":1,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "player-fly.png",
+	"format": "RGBA8888",
+	"size": {"w":456,"h":152},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:28541ef031ce8ff69f7c6bc84b233365:86c7995bca7f939582fccb954da9199f:67dde0bcb858e9b9f4e3bb51f559a2b7$"
+}
+}

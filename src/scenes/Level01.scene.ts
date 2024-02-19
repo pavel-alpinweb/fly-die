@@ -12,6 +12,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('ground01', '/assets/tiles/ground01.png');
         this.load.spritesheet('player', '/assets/player/player.png', { frameWidth: 116, frameHeight: 108 });
+        this.load.spritesheet('player-fly', '/assets/player/player-fly.png', { frameWidth: 152, frameHeight: 152 });
     }
 
      create() {
@@ -33,11 +34,16 @@ class GameScene extends Phaser.Scene {
              repeat: -1
          });
 
-
+         this.anims.create({
+             key: 'fly',
+             frames: this.anims.generateFrameNumbers('player-fly', { start: 0, end: 2 }),
+             frameRate: 10,
+             repeat: -1
+         });
     }
 
      update() {
-         this.player.anims.play('idle', true);
+         this.player.anims.play('fly', true);
      }
 }
 
@@ -53,7 +59,7 @@ export const useLevelOneScene = () => {
             default: 'arcade',
             arcade: {
                 gravity: { y: 300 },
-                debug: false
+                debug: true
             }
         },
         scene: GameScene
