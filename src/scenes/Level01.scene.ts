@@ -19,7 +19,7 @@ class GameScene extends Phaser.Scene {
     }
 
      create() {
-        this.add.image(window.innerWidth / 2, window.innerHeight / 2, 'sky').setScrollFactor(0, 0);
+        this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 2, 1119, 'sky').setScrollFactor(0.5, 0);
         this.platforms = this.physics.add.staticGroup({
             key: 'ground01',
             repeat: 20,
@@ -93,7 +93,7 @@ export const useLevelOneScene = () => {
     const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: 1119,
         parent: gameContainer,
         physics: {
             default: 'arcade',
