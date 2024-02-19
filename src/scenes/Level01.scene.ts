@@ -15,6 +15,7 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet('player', '/assets/player/player.png', { frameWidth: 116, frameHeight: 108 });
         this.load.spritesheet('player-fly', '/assets/player/player-fly.png', { frameWidth: 152, frameHeight: 152 });
         this.load.spritesheet('player-walk', '/assets/player/player-walk.png', { frameWidth: 115, frameHeight: 108 });
+        this.load.spritesheet('player-jump', '/assets/player/player-jump.png', { frameWidth: 152, frameHeight: 152 });
     }
 
      create() {
@@ -49,14 +50,23 @@ class GameScene extends Phaser.Scene {
              frameRate: 8,
              repeat: -1
          });
+         this.anims.create({
+             key: 'jump',
+             frames: this.anims.generateFrameNumbers('player-jump', { start: 0, end: 2 }),
+             frameRate: 8,
+             repeat: -1
+         });
     }
 
      update() {
          this.cursors = this.input.keyboard.createCursorKeys()
-
          if (this.cursors.up.isDown) {
              this.player.setVelocityY(-500);
              this.player.anims.play('fly', true);
+         } else if (this.cursors.right.isDown && !this.player.body.touching.down) {
+             this.player.setVelocityX(300);
+             this.player.flipX = false;
+             this.player.anims.play('jump', true);
          } else if (this.cursors.right.isDown && this.player.body.touching.down) {
              this.player.setVelocityX(250);
              this.player.flipX = false;
@@ -65,6 +75,10 @@ class GameScene extends Phaser.Scene {
              this.player.setVelocityX(-250);
              this.player.flipX = true;
              this.player.anims.play('walk', true);
+         } else if (this.cursors.left.isDown && !this.player.body.touching.down) {
+             this.player.setVelocityX(-300);
+             this.player.flipX = true;
+             this.player.anims.play('jump', true);
          } else {
              this.player.setVelocityX(0);
              this.player.anims.play('idle', true);
@@ -84,7 +98,7 @@ export const useLevelOneScene = () => {
             default: 'arcade',
             arcade: {
                 gravity: { y: 300 },
-                debug: false
+                debug: true
             }
         },
         scene: GameScene
