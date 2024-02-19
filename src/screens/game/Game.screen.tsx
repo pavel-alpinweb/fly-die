@@ -1,11 +1,11 @@
 import React from 'react';
 import classes from "./Game.module.css";
 import {useEffect} from "react";
-import {useMainScene} from "../../scenes/Main.scene.ts";
+import {useLevelOneScene} from "../../scenes/Level01.scene.ts";
 
 const GameScreen = () => {
     useEffect(() => {
-        useMainScene();
+        useLevelOneScene();
     }, []);
 
     return (
