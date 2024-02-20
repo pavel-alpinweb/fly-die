@@ -22,11 +22,11 @@ class GameScene extends Phaser.Scene {
         this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 2, 1119, 'sky').setScrollFactor(0.5, 0);
         this.platforms = this.physics.add.staticGroup({
             key: 'ground01',
-            repeat: 20,
+            repeat: 40,
             setXY: {x: 138/2, y: window.innerHeight - 138/2, stepX: 138},
         });
 
-         this.player = this.physics.add.sprite(450, 450, 'player-idle')
+         this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
          this.cameras.main.startFollow(this.player, );
 
          this.physics.add.collider(this.player, this.platforms);
@@ -78,7 +78,7 @@ class GameScene extends Phaser.Scene {
                  zeroPad: 0,
                  suffix: '.png'
              }),
-             frameRate: 8,
+             frameRate: 10,
              repeat: -1
          });
     }
@@ -104,6 +104,9 @@ class GameScene extends Phaser.Scene {
              this.player.setVelocityX(-300);
              this.player.flipX = true;
              this.player.anims.play('jump', true);
+         } else if (!this.player.body.touching.down) {
+             this.player.setVelocityX(0);
+             this.player.anims.play('jump', true);
          } else {
              this.player.setVelocityX(0);
              this.player.anims.play('idle', true);
@@ -123,7 +126,7 @@ export const useLevelOneScene = () => {
             default: 'arcade',
             arcade: {
                 gravity: { y: 500 },
-                debug: true
+                debug: false
             }
         },
         scene: GameScene
