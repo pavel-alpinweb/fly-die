@@ -27,7 +27,7 @@ class GameScene extends Phaser.Scene {
         });
 
          this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
-         this.cameras.main.startFollow(this.player, );
+         this.cameras.main.startFollow(this.player);
 
          this.physics.add.collider(this.player, this.platforms);
 
