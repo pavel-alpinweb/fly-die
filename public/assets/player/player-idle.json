@@ -1,10 +1,10 @@
 {
 	"textures": [
 		{
-			"image": "player-fly.png",
+			"image": "player-idle.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 110,
+				"w": 456,
 				"h": 108
 			},
 			"scale": 1,
@@ -18,15 +18,15 @@
 						"h": 150
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 22,
-						"w": 110,
+						"x": 18,
+						"y": 21,
+						"w": 114,
 						"h": 108
 					},
 					"frame": {
 						"x": 0,
 						"y": 0,
-						"w": 110,
+						"w": 114,
 						"h": 108
 					}
 				},
@@ -39,15 +39,15 @@
 						"h": 150
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 20,
-						"w": 110,
+						"x": 18,
+						"y": 21,
+						"w": 114,
 						"h": 108
 					},
 					"frame": {
-						"x": 0,
+						"x": 114,
 						"y": 0,
-						"w": 110,
+						"w": 114,
 						"h": 108
 					}
 				},
@@ -60,15 +60,15 @@
 						"h": 150
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 22,
-						"w": 110,
+						"x": 18,
+						"y": 21,
+						"w": 114,
 						"h": 108
 					},
 					"frame": {
-						"x": 0,
+						"x": 228,
 						"y": 0,
-						"w": 110,
+						"w": 114,
 						"h": 108
 					}
 				},
@@ -81,15 +81,15 @@
 						"h": 150
 					},
 					"spriteSourceSize": {
-						"x": 20,
-						"y": 24,
-						"w": 110,
+						"x": 18,
+						"y": 21,
+						"w": 114,
 						"h": 108
 					},
 					"frame": {
-						"x": 0,
+						"x": 342,
 						"y": 0,
-						"w": 110,
+						"w": 114,
 						"h": 108
 					}
 				}
@@ -99,6 +99,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:a3ac7c6f71d6b584814642f1d8011e88:86c7995bca7f939582fccb954da9199f:67dde0bcb858e9b9f4e3bb51f559a2b7$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f4f3a4c45434480db953d861358fd9e8:9c52ac7450c33208d1e4064d50afda65:f78b10c09fabd7ab0c950c8f3ce9344c$"
 	}
 }

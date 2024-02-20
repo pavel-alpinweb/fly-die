@@ -12,10 +12,10 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('ground01', '/assets/tiles/ground01.png');
-        this.load.spritesheet('player', '/assets/player/player.png', { frameWidth: 116, frameHeight: 108 });
-        this.load.spritesheet('player-fly', '/assets/player/player-fly.png', { frameWidth: 152, frameHeight: 152 });
-        this.load.spritesheet('player-walk', '/assets/player/player-walk.png', { frameWidth: 115, frameHeight: 108 });
-        this.load.spritesheet('player-jump', '/assets/player/player-jump.png', { frameWidth: 152, frameHeight: 152 });
+        this.load.atlas('player-idle', '/assets/player/player-idle.png', '/assets/player/player-idle.json');
+        this.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
+        this.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
+        this.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
     }
 
      create() {
@@ -26,34 +26,58 @@ class GameScene extends Phaser.Scene {
             setXY: {x: 138/2, y: window.innerHeight - 138/2, stepX: 138},
         });
 
-         this.player = this.physics.add.sprite(450, 450, 'player')
+         this.player = this.physics.add.sprite(450, 450, 'player-idle')
          this.cameras.main.startFollow(this.player, );
 
          this.physics.add.collider(this.player, this.platforms);
 
          this.anims.create({
              key: 'idle',
-             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+             frames: this.anims.generateFrameNames('player-idle',
+                 {
+                     start: 1,
+                     end: 4,
+                     zeroPad: 0,
+                     suffix: '.png'
+                 }
+             ),
              frameRate: 10,
              repeat: -1
          });
 
          this.anims.create({
              key: 'fly',
-             frames: this.anims.generateFrameNumbers('player-fly', { start: 0, end: 2 }),
+             frames: this.anims.generateFrameNames('player-fly', {
+                 start: 1,
+                 end: 4,
+                 zeroPad: 0,
+                 suffix: '.png'
+             }),
              frameRate: 10,
              repeat: -1
          });
 
          this.anims.create({
              key: 'walk',
-             frames: this.anims.generateFrameNumbers('player-walk', { start: 0, end: 3 }),
-             frameRate: 8,
+             frames: this.anims.generateFrameNames('player-walk',
+                 {
+                     start: 1,
+                     end: 8,
+                     zeroPad: 0,
+                     suffix: '.png'
+                 }
+             ),
+             frameRate: 10,
              repeat: -1
          });
          this.anims.create({
              key: 'jump',
-             frames: this.anims.generateFrameNumbers('player-jump', { start: 0, end: 2 }),
+             frames: this.anims.generateFrameNames('player-jump', {
+                 start: 1,
+                 end: 3,
+                 zeroPad: 0,
+                 suffix: '.png'
+             }),
              frameRate: 8,
              repeat: -1
          });
@@ -99,7 +123,7 @@ export const useLevelOneScene = () => {
             default: 'arcade',
             arcade: {
                 gravity: { y: 500 },
-                debug: false
+                debug: true
             }
         },
         scene: GameScene
