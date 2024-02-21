@@ -1,9 +1,12 @@
 import * as Phaser from "phaser";
+import Tileset = Phaser.Tilemaps.Tileset;
+import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
-    private platforms!: Phaser.Physics.Arcade.StaticGroup
     private cursors!: Phaser.Input.Keyboard.KeyboardManager
+    private map!: Phaser.Tilemaps.Tilemap
+    private layer!: Phaser.Tilemaps.TilemapLayer
 
     constructor() {
         super();
@@ -16,20 +19,17 @@ class GameScene extends Phaser.Scene {
         this.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
         this.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
         this.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
+        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
     }
 
      create() {
-        this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 2, 1119, 'sky').setScrollFactor(0.5, 0);
-        this.platforms = this.physics.add.staticGroup({
-            key: 'ground01',
-            repeat: 40,
-            setXY: {x: 138/2, y: window.innerHeight - 138/2, stepX: 138},
-        });
-
+        this.map = this.make.tilemap({key: 'tilemap'})
+        const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
+        this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 3, 1119, 'sky').setScrollFactor(0.5, 0);
          this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
+         this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
+         this.map.setCollision([1]);
          this.cameras.main.startFollow(this.player);
-
-         this.physics.add.collider(this.player, this.platforms);
 
          this.anims.create({
              key: 'idle',
@@ -85,26 +85,28 @@ class GameScene extends Phaser.Scene {
 
      update() {
          this.cursors = this.input.keyboard.createCursorKeys()
+
+         this.physics.collide(this.player, this.layer);
          if (this.cursors.up.isDown) {
              this.player.setVelocityY(-500);
              this.player.anims.play('fly', true);
-         } else if (this.cursors.right.isDown && !this.player.body.touching.down) {
+         } else if (this.cursors.right.isDown && !this.player.body.blocked.down) {
              this.player.setVelocityX(300);
              this.player.flipX = false;
              this.player.anims.play('jump', true);
-         } else if (this.cursors.right.isDown && this.player.body.touching.down) {
+         } else if (this.cursors.right.isDown && this.player.body.blocked.down) {
              this.player.setVelocityX(250);
              this.player.flipX = false;
              this.player.anims.play('walk', true);
-         } else if (this.cursors.left.isDown && this.player.body.touching.down) {
+         } else if (this.cursors.left.isDown && this.player.body.blocked.down) {
              this.player.setVelocityX(-250);
              this.player.flipX = true;
              this.player.anims.play('walk', true);
-         } else if (this.cursors.left.isDown && !this.player.body.touching.down) {
+         } else if (this.cursors.left.isDown && !this.player.body.blocked.down) {
              this.player.setVelocityX(-300);
              this.player.flipX = true;
              this.player.anims.play('jump', true);
-         } else if (!this.player.body.touching.down) {
+         } else if (!this.player.body.blocked.down) {
              this.player.setVelocityX(0);
              this.player.anims.play('jump', true);
          } else {
