@@ -1,10 +1,15 @@
 import * as Phaser from "phaser";
 import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
+import Tilemap = Phaser.Tilemaps.Tilemap;
 
 function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
     bullet.body.enable = false;
+}
+
+function collidePlatforms(player) {
+    player.setVelocityY(-500);
 }
 
 class GameScene extends Phaser.Scene {
@@ -14,7 +19,6 @@ class GameScene extends Phaser.Scene {
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private bullets: Phaser.Physics.Arcade.Group;
-    private lastFired = 0;
 
     constructor() {
         super();
@@ -40,10 +44,13 @@ class GameScene extends Phaser.Scene {
          this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
          this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
          this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
-         this.map.setCollision([1]);
+         const platforms = this.map.setCollision([1]) as Tilemap;
          this.bullets = this.physics.add.group();
 
          this.physics.add.collider(this.bullets, this.layer, null, explosionOnPlatform);
+
+
+         this.physics.add.collider(this.player, this.layer, null, collidePlatforms);
 
          this.cameras.main.startFollow(this.player);
 
@@ -121,9 +128,6 @@ class GameScene extends Phaser.Scene {
              frameRate: 10,
              repeat: -1
          });
-
-
-
          const spaceBar = this.input.keyboard?.addKey('space');
          spaceBar.on('up', () => {
              const bullet = this.bullets.get();
@@ -152,9 +156,6 @@ class GameScene extends Phaser.Scene {
              this.smoke.x = this.player.x + 35;
          } else {
              this.smoke.x = this.player.x - 45
-         }
-
-         if (this.cursors.space.isDown && time > this.lastFired) {
          }
 
          if (this.cursors.up.isDown) {
@@ -198,7 +199,6 @@ class GameScene extends Phaser.Scene {
              this.smoke.visible = false;
          } else {
              this.player.setVelocityX(0);
-             this.player.setVelocityY(0);
              this.smoke.setVelocityX(0);
              this.player.anims.play('idle', true);
              this.smoke.visible = false;
