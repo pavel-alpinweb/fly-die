@@ -6,7 +6,11 @@ function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
     bullet.setVelocityX(0);
     bullet.setVelocityY(-200);
-    if (bullet.anims.currentFrame.index === 4) {
+    if (
+        bullet.anims.currentFrame.index === 4 ||
+        bullet.anims.currentFrame.isLast ||
+        bullet.anims.currentFrame.index === 7
+    ) {
         bullet.disableBody(true, true);
     }
 }
@@ -156,18 +160,6 @@ class GameScene extends Phaser.Scene {
          }
 
          if (this.cursors.space.isDown && time > this.lastFired) {
-             // const bullet = this.bullets.get();
-             //
-             // if (bullet) {
-             //     const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
-             //     this.lastFired = time + 120;
-             //     if (this.player.flipX) {
-             //         bullet.setVelocity(-2000, -200);
-             //         bullet.flipX = true;
-             //     } else {
-             //         bullet.setVelocity(2000, -200);
-             //     }
-             // }
          }
 
          if (this.cursors.up.isDown) {
