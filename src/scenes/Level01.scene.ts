@@ -3,8 +3,12 @@ import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 function explosionOnPlatform(bullet) {
-    bullet.disableBody(true, true);
-    console.log('hit!');
+    bullet.anims.play('explosion', true);
+    bullet.setVelocityX(0);
+    bullet.setVelocityY(-200);
+    if (bullet.anims.currentFrame.index === 4) {
+        bullet.disableBody(true, true);
+    }
 }
 
 class GameScene extends Phaser.Scene {
@@ -29,6 +33,7 @@ class GameScene extends Phaser.Scene {
         this.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
         this.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
         this.load.atlas('jetpack-smoke', '/assets/player/jetpack-smoke.png', '/assets/player/jetpack-smoke.json');
+        this.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
     }
 
@@ -73,6 +78,19 @@ class GameScene extends Phaser.Scene {
              repeat: -1
          });
          this.anims.create({
+             key: 'explosion',
+             frames: this.anims.generateFrameNames('explosion',
+                 {
+                     start: 1,
+                     end: 4,
+                     zeroPad: 0,
+                     suffix: '.png'
+                 }
+             ),
+             frameRate: 10,
+             repeat: -1
+         });
+         this.anims.create({
              key: 'fly',
              frames: this.anims.generateFrameNames('player-fly', {
                  start: 1,
@@ -107,6 +125,23 @@ class GameScene extends Phaser.Scene {
              frameRate: 10,
              repeat: -1
          });
+
+
+
+         const spaceBar = this.input.keyboard?.addKey('space');
+         spaceBar.on('up', () => {
+             const bullet = this.bullets.get();
+
+             if (bullet) {
+                 const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
+                 if (this.player.flipX) {
+                     bullet.setVelocity(-1800, -200);
+                     bullet.flipX = true;
+                 } else {
+                     bullet.setVelocity(1800, -200);
+                 }
+             }
+         });
     }
 
      update(time) {
@@ -121,18 +156,18 @@ class GameScene extends Phaser.Scene {
          }
 
          if (this.cursors.space.isDown && time > this.lastFired) {
-             const bullet = this.bullets.get();
-
-             if (bullet) {
-                 const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
-                 this.lastFired = time + 120;
-                 if (this.player.flipX) {
-                     bullet.setVelocity(-2000, -200);
-                     bullet.flipX = true;
-                 } else {
-                     bullet.setVelocity(2000, -200);
-                 }
-             }
+             // const bullet = this.bullets.get();
+             //
+             // if (bullet) {
+             //     const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
+             //     this.lastFired = time + 120;
+             //     if (this.player.flipX) {
+             //         bullet.setVelocity(-2000, -200);
+             //         bullet.flipX = true;
+             //     } else {
+             //         bullet.setVelocity(2000, -200);
+             //     }
+             // }
          }
 
          if (this.cursors.up.isDown) {
