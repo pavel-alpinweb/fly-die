@@ -148,7 +148,12 @@ class GameScene extends Phaser.Scene {
     }
 
      update(time) {
-         this.cursors = this.input.keyboard.createCursorKeys()
+         this.cursors = this.input.keyboard.createCursorKeys();
+         const keys = this.input.keyboard?.addKeys({
+             a:  Phaser.Input.Keyboard.KeyCodes.A,
+             d:  Phaser.Input.Keyboard.KeyCodes.D,
+             w:  Phaser.Input.Keyboard.KeyCodes.W
+         });
          this.physics.collide(this.player, this.layer);
          this.smoke.y = this.player.y + 120;
 
@@ -158,34 +163,34 @@ class GameScene extends Phaser.Scene {
              this.smoke.x = this.player.x - 45
          }
 
-         if (this.cursors.up.isDown) {
+         if (this.cursors.up.isDown || keys.w.isDown) {
              this.player.setVelocityY(-500);
              this.smoke.setVelocityY(-500);
              this.player.anims.play('fly', true);
              this.smoke.visible = true;
              this.smoke.anims.play('jetpack-smoke', true);
-         } else if (this.cursors.right.isDown && !this.player.body.blocked.down) {
+         } else if ((this.cursors.right.isDown || keys.d.isDown) && !this.player.body.blocked.down) {
              this.player.setVelocityX(300);
              this.smoke.setVelocityX(300);
              this.player.flipX = false;
              this.player.anims.play('jump', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
-         } else if (this.cursors.right.isDown && this.player.body.blocked.down) {
+         } else if ((this.cursors.right.isDown || keys.d.isDown) && this.player.body.blocked.down) {
              this.player.setVelocityX(500);
              this.smoke.setVelocityX(500);
              this.player.flipX = false;
              this.player.anims.play('walk', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
-         } else if (this.cursors.left.isDown && this.player.body.blocked.down) {
+         } else if ((this.cursors.left.isDown || keys.a.isDown) && this.player.body.blocked.down) {
              this.player.setVelocityX(-500);
              this.smoke.setVelocityX(-500);
              this.player.flipX = true;
              this.player.anims.play('walk', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
-         } else if (this.cursors.left.isDown && !this.player.body.blocked.down) {
+         } else if ((this.cursors.left.isDown || keys.a.isDown) && !this.player.body.blocked.down) {
              this.player.setVelocityX(-300);
              this.smoke.setVelocityX(-300);
              this.player.flipX = true;
