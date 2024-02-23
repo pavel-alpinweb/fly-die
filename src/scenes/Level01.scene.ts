@@ -4,15 +4,7 @@ import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
-    bullet.setVelocityX(0);
-    bullet.setVelocityY(-200);
-    if (
-        bullet.anims.currentFrame.index === 4 ||
-        bullet.anims.currentFrame.isLast ||
-        bullet.anims.currentFrame.index === 7
-    ) {
-        bullet.disableBody(true, true);
-    }
+    bullet.body.enable = false;
 }
 
 class GameScene extends Phaser.Scene {
@@ -92,7 +84,7 @@ class GameScene extends Phaser.Scene {
                  }
              ),
              frameRate: 10,
-             repeat: -1
+             repeat: 1
          });
          this.anims.create({
              key: 'fly',
@@ -144,6 +136,9 @@ class GameScene extends Phaser.Scene {
                  } else {
                      bullet.setVelocity(1800, -200);
                  }
+                 bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+                     bullet.disableBody(true, true);
+                 }, this);
              }
          });
     }
@@ -203,6 +198,7 @@ class GameScene extends Phaser.Scene {
              this.smoke.visible = false;
          } else {
              this.player.setVelocityX(0);
+             this.player.setVelocityY(0);
              this.smoke.setVelocityX(0);
              this.player.anims.play('idle', true);
              this.smoke.visible = false;
