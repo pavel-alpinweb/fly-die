@@ -2,12 +2,19 @@ import * as Phaser from "phaser";
 import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
+function explosionOnPlatform(bullet) {
+    bullet.disableBody(true, true);
+    console.log('hit!');
+}
+
 class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private cursors!: Phaser.Input.Keyboard.KeyboardManager
     private map!: Phaser.Tilemaps.Tilemap
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
+    private bullets: Phaser.Physics.Arcade.Group;
+    private lastFired = 0;
 
     constructor() {
         super();
@@ -16,6 +23,7 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('ground01', '/assets/tiles/ground01.png');
+        this.load.image('red-bullet', '/assets/projectiles/red-bullet.png');
         this.load.atlas('player-idle', '/assets/player/player-idle.png', '/assets/player/player-idle.json');
         this.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
         this.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
@@ -30,10 +38,12 @@ class GameScene extends Phaser.Scene {
         this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 3, 1119, 'sky').setScrollFactor(0.5, 0);
          this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
          this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
-         this.smoke.allowGravity = false;
-         this.smoke.immovable = true;
          this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
          this.map.setCollision([1]);
+         this.bullets = this.physics.add.group();
+
+         this.physics.add.collider(this.bullets, this.layer, null, explosionOnPlatform);
+
          this.cameras.main.startFollow(this.player);
 
          this.anims.create({
@@ -49,7 +59,6 @@ class GameScene extends Phaser.Scene {
              frameRate: 10,
              repeat: -1
          });
-
          this.anims.create({
              key: 'jetpack-smoke',
              frames: this.anims.generateFrameNames('jetpack-smoke',
@@ -63,7 +72,6 @@ class GameScene extends Phaser.Scene {
              frameRate: 10,
              repeat: -1
          });
-
          this.anims.create({
              key: 'fly',
              frames: this.anims.generateFrameNames('player-fly', {
@@ -75,7 +83,6 @@ class GameScene extends Phaser.Scene {
              frameRate: 10,
              repeat: -1
          });
-
          this.anims.create({
              key: 'walk',
              frames: this.anims.generateFrameNames('player-walk',
@@ -102,7 +109,7 @@ class GameScene extends Phaser.Scene {
          });
     }
 
-     update() {
+     update(time) {
          this.cursors = this.input.keyboard.createCursorKeys()
          this.physics.collide(this.player, this.layer);
          this.smoke.y = this.player.y + 120;
@@ -111,6 +118,21 @@ class GameScene extends Phaser.Scene {
              this.smoke.x = this.player.x + 35;
          } else {
              this.smoke.x = this.player.x - 45
+         }
+
+         if (this.cursors.space.isDown && time > this.lastFired) {
+             const bullet = this.bullets.get();
+
+             if (bullet) {
+                 const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
+                 this.lastFired = time + 120;
+                 if (this.player.flipX) {
+                     bullet.setVelocity(-2000, -200);
+                     bullet.flipX = true;
+                 } else {
+                     bullet.setVelocity(2000, -200);
+                 }
+             }
          }
 
          if (this.cursors.up.isDown) {
