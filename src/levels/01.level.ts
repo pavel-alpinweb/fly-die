@@ -2,6 +2,20 @@ import * as Phaser from "phaser";
 import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import Tilemap = Phaser.Tilemaps.Tilemap;
+import {
+    BACKGROUND_LAYER_HEIGHT,
+    BACKGROUND_LAYER_WIDTH,
+    BULLETS_VELOCITY,
+    LEVEL_GRAVITY,
+    LEVEL_HEIGHT,
+    PLATFORM_REBOUND_VELOCITY,
+    PLAYER_FLY_VELOCITY,
+    PLAYER_JUMP_VELOCITY,
+    PLAYER_SIZE,
+    PLAYER_START_POSITION,
+    PLAYER_WALK_VELOCITY,
+    SMOKE_POSITION_MARGIN
+} from "../configs/gameplay.config.ts";
 
 function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
@@ -9,7 +23,7 @@ function explosionOnPlatform(bullet) {
 }
 
 function collidePlatforms(player) {
-    player.setVelocityY(-500);
+    player.setVelocityY(PLATFORM_REBOUND_VELOCITY);
 }
 
 class GameScene extends Phaser.Scene {
@@ -40,8 +54,8 @@ class GameScene extends Phaser.Scene {
      create() {
         this.map = this.make.tilemap({key: 'tilemap'})
         const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
-        this.add.tileSprite(2346 / 2, 1119 / 2, 2346 * 3, 1119, 'sky').setScrollFactor(0.5, 0);
-         this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
+        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(0.5, 0);
+         this.player = this.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
          this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
          this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
          this.map.setCollision([1]) as Tilemap;
@@ -135,10 +149,10 @@ class GameScene extends Phaser.Scene {
              if (bullet) {
                  const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
                  if (this.player.flipX) {
-                     bullet.setVelocity(-1800, -200);
+                     bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
                      bullet.flipX = true;
                  } else {
-                     bullet.setVelocity(1800, -200);
+                     bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
                  }
                  bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
                      bullet.disableBody(true, true);
@@ -155,44 +169,42 @@ class GameScene extends Phaser.Scene {
              w:  Phaser.Input.Keyboard.KeyCodes.W
          });
          this.physics.collide(this.player, this.layer);
-         this.smoke.y = this.player.y + 120;
+         this.smoke.y = this.player.y + SMOKE_POSITION_MARGIN.VERTICAL;
 
          if (this.player.flipX) {
-             this.smoke.x = this.player.x + 35;
+             this.smoke.x = this.player.x + SMOKE_POSITION_MARGIN.RIGHT;
          } else {
-             this.smoke.x = this.player.x - 45
+             this.smoke.x = this.player.x - SMOKE_POSITION_MARGIN.LEFT
          }
 
          if (this.cursors.up.isDown || keys.w.isDown) {
-             this.player.setVelocityY(-500);
-             this.smoke.setVelocityY(-500);
+             this.player.setVelocityY(PLAYER_FLY_VELOCITY);
+             this.smoke.setVelocityY(PLAYER_FLY_VELOCITY);
              this.player.anims.play('fly', true);
              this.smoke.visible = true;
              this.smoke.anims.play('jetpack-smoke', true);
          } else if ((this.cursors.right.isDown || keys.d.isDown) && !this.player.body.blocked.down) {
-             this.player.setVelocityX(300);
-             this.smoke.setVelocityX(300);
+             this.player.setVelocityX(PLAYER_JUMP_VELOCITY);
+             this.smoke.setVelocityX(PLAYER_JUMP_VELOCITY);
              this.player.flipX = false;
              this.player.anims.play('jump', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
          } else if ((this.cursors.right.isDown || keys.d.isDown) && this.player.body.blocked.down) {
-             this.player.setVelocityX(500);
-             this.smoke.setVelocityX(500);
+             this.player.setVelocityX(PLAYER_WALK_VELOCITY);
              this.player.flipX = false;
              this.player.anims.play('walk', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
          } else if ((this.cursors.left.isDown || keys.a.isDown) && this.player.body.blocked.down) {
-             this.player.setVelocityX(-500);
-             this.smoke.setVelocityX(-500);
+             this.player.setVelocityX(-PLAYER_WALK_VELOCITY);
              this.player.flipX = true;
              this.player.anims.play('walk', true);
              this.smoke.visible = false;
              this.smoke.setVelocityY(0);
          } else if ((this.cursors.left.isDown || keys.a.isDown) && !this.player.body.blocked.down) {
-             this.player.setVelocityX(-300);
-             this.smoke.setVelocityX(-300);
+             this.player.setVelocityX(-PLAYER_JUMP_VELOCITY);
+             this.smoke.setVelocityX(-PLAYER_JUMP_VELOCITY);
              this.player.flipX = true;
              this.player.anims.play('jump', true);
              this.smoke.visible = false;
@@ -217,12 +229,12 @@ export const useLevelOneLevel = () => {
     const config = {
         type: Phaser.AUTO,
         width: window.innerWidth,
-        height: 1119,
+        height: LEVEL_HEIGHT,
         parent: gameContainer,
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 1000 },
+                gravity: { y: LEVEL_GRAVITY },
                 debug: false
             }
         },
