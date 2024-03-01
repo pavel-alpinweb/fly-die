@@ -6,8 +6,6 @@ import {
     BACKGROUND_LAYER_HEIGHT,
     BACKGROUND_LAYER_WIDTH,
     BULLETS_VELOCITY,
-    LEVEL_GRAVITY,
-    LEVEL_HEIGHT,
     PLATFORM_REBOUND_VELOCITY,
     PLAYER_FLY_VELOCITY,
     PLAYER_JUMP_VELOCITY,
@@ -16,6 +14,7 @@ import {
     PLAYER_WALK_VELOCITY,
     SMOKE_POSITION_MARGIN
 } from "../configs/gameplay.config.ts";
+import {engineConfig} from "../configs/engine.config.ts";
 
 function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
@@ -225,21 +224,10 @@ class GameScene extends Phaser.Scene {
 
 export const useLevelOneLevel = () => {
     const gameContainer = document.getElementById('game');
-
     const config = {
-        type: Phaser.AUTO,
-        width: window.innerWidth,
-        height: LEVEL_HEIGHT,
+        ...engineConfig,
+        scene: GameScene,
         parent: gameContainer,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: LEVEL_GRAVITY },
-                debug: false
-            }
-        },
-        scene: GameScene
-    };
-
+    }
     return new Phaser.Game(config);
 }
