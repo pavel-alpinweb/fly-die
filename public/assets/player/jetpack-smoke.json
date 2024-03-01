@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "jetpack-smoke.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 199,
+				"h": 282
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 3,
+						"w": 96,
+						"h": 146
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 96,
+						"h": 146
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 3,
+						"w": 98,
+						"h": 141
+					},
+					"frame": {
+						"x": 99,
+						"y": 1,
+						"w": 98,
+						"h": 141
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 3,
+						"w": 99,
+						"h": 137
+					},
+					"frame": {
+						"x": 99,
+						"y": 144,
+						"w": 99,
+						"h": 137
+					}
+				},
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 3,
+						"w": 96,
+						"h": 127
+					},
+					"frame": {
+						"x": 1,
+						"y": 149,
+						"w": 96,
+						"h": 127
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:53d51f5cf1c482431d148463f1530c20:cd90e4ddce45956850dc9a5f3d5a3c8e:2d3f80107fef0878ec8bf9504a6b4a0b$"
+	}
+}
