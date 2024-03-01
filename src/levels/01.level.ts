@@ -15,6 +15,7 @@ import {
     SMOKE_POSITION_MARGIN
 } from "../configs/gameplay.config.ts";
 import {engineConfig} from "../configs/engine.config.ts";
+import {platformComposition} from "../compositions/platform.composition.ts";
 
 function explosionOnPlatform(bullet) {
     bullet.anims.play('explosion', true);
@@ -60,10 +61,10 @@ class GameScene extends Phaser.Scene {
          this.map.setCollision([1]) as Tilemap;
          this.bullets = this.physics.add.group();
 
-         this.physics.add.collider(this.bullets, this.layer, null, explosionOnPlatform);
+         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
 
 
-         this.physics.add.collider(this.player, this.layer, null, collidePlatforms);
+         this.physics.add.collider(this.player, this.layer, null, platformComposition.collidePlatforms);
 
          this.cameras.main.startFollow(this.player);
 
