@@ -211,7 +211,7 @@ class GameScene extends Phaser.Scene {
      }
 }
 
-export const useLevelOneScene = () => {
+export const useLevelOneLevel = () => {
     const gameContainer = document.getElementById('game');
 
     const config = {
