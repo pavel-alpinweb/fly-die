@@ -44,7 +44,7 @@ class GameScene extends Phaser.Scene {
          this.player = this.physics.add.sprite(450, 450, 'player-idle').setSize(115, 108);
          this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
          this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
-         const platforms = this.map.setCollision([1]) as Tilemap;
+         this.map.setCollision([1]) as Tilemap;
          this.bullets = this.physics.add.group();
 
          this.physics.add.collider(this.bullets, this.layer, null, explosionOnPlatform);
