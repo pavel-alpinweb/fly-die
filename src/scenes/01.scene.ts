@@ -3,7 +3,7 @@ import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import Tilemap = Phaser.Tilemaps.Tilemap;
 import {
-    BACKGROUND_LAYER_HEIGHT,
+    BACKGROUND_LAYER_HEIGHT, BACKGROUND_LAYER_ONE_SCROLL,
     BACKGROUND_LAYER_WIDTH, BULLETS_VELOCITY, PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY, SMOKE_POSITION_MARGIN
@@ -38,7 +38,7 @@ export class Level01Scene extends Phaser.Scene {
     create() {
         this.map = this.make.tilemap({key: 'tilemap'})
         const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
-        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(0.5, 0);
+        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.player = this.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
         this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
