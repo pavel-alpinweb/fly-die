@@ -29,21 +29,18 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     create() {
-        this.map = this.make.tilemap({key: 'tilemap'})
+        this.map = this.make.tilemap({key: 'tilemap'});
         const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
         this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
-        this.player = this.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
-        this.smoke = this.physics.add.sprite(this.player.x, this.player.y, 'jetpack-smoke');
         this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
         this.map.setCollision([1]) as Tilemap;
+
+        const [player, smoke] = playerComposition.initPlayer(this, this.layer);
+        this.player = player;
+        this.smoke = smoke;
+
         this.bullets = this.physics.add.group();
-
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
-
-
-        this.physics.add.collider(this.player, this.layer, null, platformComposition.collidePlatforms);
-
-        this.cameras.main.startFollow(this.player);
 
         this.anims.create({
             key: 'idle',
@@ -119,6 +116,7 @@ export class Level01Scene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
         const spaceBar = this.input.keyboard?.addKey('space');
         spaceBar.on('up', () => {
             const bullet = this.bullets.get();
