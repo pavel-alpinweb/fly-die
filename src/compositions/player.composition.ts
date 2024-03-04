@@ -127,6 +127,7 @@ export const playerComposition = {
                 }
                 bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
                     bullet.disableBody(true, true);
+                    bullets.remove(bullets.getLast(true), true);
                 }, this);
             }
         });
@@ -147,7 +148,6 @@ export const playerComposition = {
             d:  Phaser.Input.Keyboard.KeyCodes.D,
             w:  Phaser.Input.Keyboard.KeyCodes.W
         });
-        // this.physics.collide(this.player, this.layer);
         smoke.y = player.y + SMOKE_POSITION_MARGIN.VERTICAL;
 
         if (player.flipX) {
