@@ -41,25 +41,7 @@ export class Level01Scene extends Phaser.Scene {
         this.smoke = smoke;
         playerComposition.initPlayerAnimations(this);
 
-        this.bullets = this.physics.add.group();
-        this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
-        const spaceBar = this.input.keyboard?.addKey('space');
-        spaceBar.on('up', () => {
-            const bullet = this.bullets.get();
-
-            if (bullet) {
-                const bullet = this.bullets.create(this.player.x + 45, this.player.y, 'red-bullet');
-                if (this.player.flipX) {
-                    bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                    bullet.flipX = true;
-                } else {
-                    bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                }
-                bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
-                    bullet.disableBody(true, true);
-                }, this);
-            }
-        });
+        this.bullets = playerComposition.fire(this, this.layer, this.player);
     }
 
     update(time) {

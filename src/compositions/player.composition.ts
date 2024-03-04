@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import {
+    BULLETS_VELOCITY,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -105,6 +106,32 @@ export const playerComposition = {
             frameRate: 10,
             repeat: -1
         });
+    },
+
+    fire(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
+        body: Phaser.Physics.Arcade.Body
+    }): Phaser.Physics.Arcade.Group {
+        const bullets = scene.physics.add.group();
+        scene.physics.add.collider(bullets, layer, null, platformComposition.explosionOnPlatform);
+        const spaceBar = scene.input.keyboard?.addKey('space');
+        spaceBar.on('up', () => {
+            const bullet = bullets.get();
+
+            if (bullet) {
+                const bullet = bullets.create(player.x + 45, player.y, 'red-bullet');
+                if (player.flipX) {
+                    bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
+                    bullet.flipX = true;
+                } else {
+                    bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
+                }
+                bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+                    bullet.disableBody(true, true);
+                }, this);
+            }
+        });
+
+        return bullets;
     },
 
     movePlayer(player: Phaser.Physics.Arcade.Image & {
