@@ -24,4 +24,81 @@ export const playerComposition = {
 
         return [player, smoke];
     },
+
+    initPlayerAnimations(scene: Phaser.Scene) {
+        scene.anims.create({
+            key: 'idle',
+            frames: scene.anims.generateFrameNames('player-idle',
+                {
+                    start: 1,
+                    end: 4,
+                    zeroPad: 0,
+                    suffix: '.png'
+                }
+            ),
+            frameRate: 10,
+            repeat: -1
+        });
+        scene.anims.create({
+            key: 'jetpack-smoke',
+            frames: scene.anims.generateFrameNames('jetpack-smoke',
+                {
+                    start: 4,
+                    end: 1,
+                    zeroPad: 0,
+                    suffix: '.png'
+                }
+            ),
+            frameRate: 10,
+            repeat: -1
+        });
+        scene.anims.create({
+            key: 'explosion',
+            frames: scene.anims.generateFrameNames('explosion',
+                {
+                    start: 1,
+                    end: 4,
+                    zeroPad: 0,
+                    suffix: '.png'
+                }
+            ),
+            frameRate: 10,
+            repeat: 1
+        });
+        scene.anims.create({
+            key: 'fly',
+            frames: scene.anims.generateFrameNames('player-fly', {
+                start: 1,
+                end: 4,
+                zeroPad: 0,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        scene.anims.create({
+            key: 'walk',
+            frames: scene.anims.generateFrameNames('player-walk',
+                {
+                    start: 1,
+                    end: 8,
+                    zeroPad: 0,
+                    suffix: '.png'
+                }
+            ),
+            frameRate: 10,
+            repeat: -1
+        });
+        scene.anims.create({
+            key: 'jump',
+            frames: scene.anims.generateFrameNames('player-jump', {
+                start: 1,
+                end: 3,
+                zeroPad: 0,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+    },
 }
