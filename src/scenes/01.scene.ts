@@ -13,7 +13,6 @@ import {playerComposition} from "../compositions/player.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
-    private cursors!: Phaser.Input.Keyboard.KeyboardManager
     private map!: Phaser.Tilemaps.Tilemap
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -64,63 +63,6 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     update(time) {
-        this.cursors = this.input.keyboard.createCursorKeys();
-        const keys = this.input.keyboard?.addKeys({
-            a:  Phaser.Input.Keyboard.KeyCodes.A,
-            d:  Phaser.Input.Keyboard.KeyCodes.D,
-            w:  Phaser.Input.Keyboard.KeyCodes.W
-        });
-        this.physics.collide(this.player, this.layer);
-        this.smoke.y = this.player.y + SMOKE_POSITION_MARGIN.VERTICAL;
-
-        if (this.player.flipX) {
-            this.smoke.x = this.player.x + SMOKE_POSITION_MARGIN.RIGHT;
-        } else {
-            this.smoke.x = this.player.x - SMOKE_POSITION_MARGIN.LEFT
-        }
-
-        if (this.cursors.up.isDown || keys.w.isDown) {
-            this.player.setVelocityY(PLAYER_FLY_VELOCITY);
-            this.smoke.setVelocityY(PLAYER_FLY_VELOCITY);
-            this.player.anims.play('fly', true);
-            this.smoke.visible = true;
-            this.smoke.anims.play('jetpack-smoke', true);
-        } else if ((this.cursors.right.isDown || keys.d.isDown) && !this.player.body.blocked.down) {
-            this.player.setVelocityX(PLAYER_JUMP_VELOCITY);
-            this.smoke.setVelocityX(PLAYER_JUMP_VELOCITY);
-            this.player.flipX = false;
-            this.player.anims.play('jump', true);
-            this.smoke.visible = false;
-            this.smoke.setVelocityY(0);
-        } else if ((this.cursors.right.isDown || keys.d.isDown) && this.player.body.blocked.down) {
-            this.player.setVelocityX(PLAYER_WALK_VELOCITY);
-            this.player.flipX = false;
-            this.player.anims.play('walk', true);
-            this.smoke.visible = false;
-            this.smoke.setVelocityY(0);
-        } else if ((this.cursors.left.isDown || keys.a.isDown) && this.player.body.blocked.down) {
-            this.player.setVelocityX(-PLAYER_WALK_VELOCITY);
-            this.player.flipX = true;
-            this.player.anims.play('walk', true);
-            this.smoke.visible = false;
-            this.smoke.setVelocityY(0);
-        } else if ((this.cursors.left.isDown || keys.a.isDown) && !this.player.body.blocked.down) {
-            this.player.setVelocityX(-PLAYER_JUMP_VELOCITY);
-            this.smoke.setVelocityX(-PLAYER_JUMP_VELOCITY);
-            this.player.flipX = true;
-            this.player.anims.play('jump', true);
-            this.smoke.visible = false;
-            this.smoke.setVelocityY(0);
-        } else if (!this.player.body.blocked.down) {
-            this.player.setVelocityX(0);
-            this.smoke.setVelocityX(0);
-            this.player.anims.play('jump', true);
-            this.smoke.visible = false;
-        } else {
-            this.player.setVelocityX(0);
-            this.smoke.setVelocityX(0);
-            this.player.anims.play('idle', true);
-            this.smoke.visible = false;
-        }
+        playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
     }
 }
