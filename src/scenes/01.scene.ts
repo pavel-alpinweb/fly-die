@@ -25,9 +25,7 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         playerComposition.uploadPlayerAssets(this);
-        this.load.image('sky', '/assets/backgrounds/01.png');
-        this.load.image('ground01', '/assets/tiles/ground01.png');
-        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
+        platformComposition.uploadPlatformAssets(this);
     }
 
     create() {
