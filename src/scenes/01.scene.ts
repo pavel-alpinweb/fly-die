@@ -9,6 +9,7 @@ import {
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY, SMOKE_POSITION_MARGIN
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
+import {playerComposition} from "../compositions/player.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -23,15 +24,9 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     preload() {
+        playerComposition.uploadPlayerAssets(this);
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('ground01', '/assets/tiles/ground01.png');
-        this.load.image('red-bullet', '/assets/projectiles/red-bullet.png');
-        this.load.atlas('player-idle', '/assets/player/player-idle.png', '/assets/player/player-idle.json');
-        this.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
-        this.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
-        this.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
-        this.load.atlas('jetpack-smoke', '/assets/player/jetpack-smoke.png', '/assets/player/jetpack-smoke.json');
-        this.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
     }
 
