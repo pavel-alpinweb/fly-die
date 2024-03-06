@@ -23,7 +23,6 @@ export const enemiesComposition = {
     initEnemy(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer): Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body } {
         const enemy = scene.physics.add.sprite(906, 3948, 'soldier').setSize(PLAYER_SIZE.width, 89);
         scene.physics.add.collider(enemy, layer);
-
         return enemy;
     },
 

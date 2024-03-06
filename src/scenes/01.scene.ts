@@ -53,6 +53,10 @@ export class Level01Scene extends Phaser.Scene {
         this.bullets = playerComposition.fire(this, this.layer, this.player);
 
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
+
+        this.physics.add.overlap(this.player, this.enemy, null, () => {
+            console.log('overlap');
+        });
     }
 
     update(time) {
