@@ -25,7 +25,8 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', '/assets/backgrounds/01.png');
-        this.load.image('ground01', '/assets/tiles/ground01.png');
+        this.load.image('block', '/assets/tiles/6.png');
+        this.load.image('grass', '/assets/tiles/5.png');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
         playerComposition.uploadPlayerAssets(this);
     }
@@ -33,9 +34,10 @@ export class Level01Scene extends Phaser.Scene {
     create() {
         this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
-        this.map.setCollision([1]) as Tilemap;
-        const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
-        this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
+        this.map.setCollision([2, 1]) as Tilemap;
+        const tileset = this.map.addTilesetImage('2', 'block') as Tileset;
+        const tilesetGrass = this.map.addTilesetImage('1', 'grass') as Tileset;
+        this.layer = this.map.createLayer('Ground', [tileset, tilesetGrass]) as TilemapLayer;
 
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;
