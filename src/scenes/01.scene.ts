@@ -10,6 +10,7 @@ import {
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
+import {enemiesComposition} from "../compositions/enemies.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -29,6 +30,7 @@ export class Level01Scene extends Phaser.Scene {
         this.load.image('grass', '/assets/tiles/5.png');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
         playerComposition.uploadPlayerAssets(this);
+        enemiesComposition.uploadEnemiesAssets(this);
     }
 
     create() {
@@ -43,6 +45,7 @@ export class Level01Scene extends Phaser.Scene {
         this.player = player;
         this.smoke = smoke;
         playerComposition.initPlayerAnimations(this);
+        enemiesComposition.initEnemiesAnimations(this);
 
         this.bullets = playerComposition.fire(this, this.layer, this.player);
 
