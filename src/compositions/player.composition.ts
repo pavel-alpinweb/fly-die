@@ -31,6 +31,21 @@ export const playerComposition = {
         return [player, smoke];
     },
 
+    showPlayerCoords(scene: Phaser.Scene, player: Phaser.Physics.Arcade.Image & {
+        body: Phaser.Physics.Arcade.Body
+    }): Phaser.GameObjects.Text {
+        const text = scene.add.text(16, 16, `coords: x ${player.x} / y ${player.y}`, { fontSize: '32px', fill: '#000' });
+        text.scrollFactorX = 0;
+        text.scrollFactorY = 0;
+        return text;
+    },
+
+    updatePlayerCoords(text: Phaser.GameObjects.Text, player: Phaser.Physics.Arcade.Image & {
+        body: Phaser.Physics.Arcade.Body
+    }): void {
+        text.setText(`coords: x ${Math.floor(player.x)} / y ${Math.floor(player.y)}`);
+    },
+
     initPlayerAnimations(scene: Phaser.Scene) {
         scene.anims.create({
             key: 'idle',

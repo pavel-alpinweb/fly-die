@@ -16,7 +16,8 @@ export class Level01Scene extends Phaser.Scene {
     private map!: Phaser.Tilemaps.Tilemap
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
-    private bullets: Phaser.Physics.Arcade.Group;
+    private bullets!: Phaser.Physics.Arcade.Group;
+    private playerCoords!: Phaser.GameObjects.Text;
 
     constructor() {
         super();
@@ -42,9 +43,12 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.initPlayerAnimations(this);
 
         this.bullets = playerComposition.fire(this, this.layer, this.player);
+
+        this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
     }
 
     update(time) {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
+        playerComposition.updatePlayerCoords(this.playerCoords, this.player);
     }
 }
