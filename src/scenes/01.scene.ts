@@ -19,6 +19,7 @@ export class Level01Scene extends Phaser.Scene {
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private bullets!: Phaser.Physics.Arcade.Group;
     private playerCoords!: Phaser.GameObjects.Text;
+    private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
 
     constructor() {
         super();
@@ -36,14 +37,16 @@ export class Level01Scene extends Phaser.Scene {
     create() {
         this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
-        this.map.setCollision([2, 1]) as Tilemap;
-        const tileset = this.map.addTilesetImage('2', 'block') as Tileset;
-        const tilesetGrass = this.map.addTilesetImage('1', 'grass') as Tileset;
-        this.layer = this.map.createLayer('Ground', [tileset, tilesetGrass]) as TilemapLayer;
+        this.map.setCollision([2, 1]);
+        const block = this.map.addTilesetImage('2', 'block') as Tileset;
+        const grass = this.map.addTilesetImage('1', 'grass') as Tileset;
+        this.layer = this.map.createLayer('Ground', [block, grass]) as TilemapLayer;
 
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;
         this.smoke = smoke;
+        this.enemy = enemiesComposition.initEnemy(this, this.layer);
+
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
@@ -55,5 +58,6 @@ export class Level01Scene extends Phaser.Scene {
     update(time) {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
+        enemiesComposition.moveEnemy(this.enemy, this.layer, this);
     }
 }
