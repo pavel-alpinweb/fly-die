@@ -30,5 +30,17 @@ export const enemiesComposition = {
     moveEnemy(enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, layer: Phaser.Tilemaps.TilemapLayer, scene: Phaser.Scene) {
         scene.physics.collide(enemy, layer);
         enemy.anims.play('soldier-run', true);
+
+        if (enemy.body.blocked.left) {
+            enemy.flipX = true;
+        } else if (enemy.body.blocked.right) {
+            enemy.flipX = false;
+        }
+
+        if (enemy.flipX) {
+            enemy.setVelocityX(200);
+        } else {
+            enemy.setVelocityX(-200);
+        }
     },
 };
