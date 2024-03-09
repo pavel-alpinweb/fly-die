@@ -125,9 +125,10 @@ export const playerComposition = {
 
     fire(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
-    }): Phaser.Physics.Arcade.Group {
+    }, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }): Phaser.Physics.Arcade.Group {
         const bullets = scene.physics.add.group();
         scene.physics.add.collider(bullets, layer, null, platformComposition.explosionOnPlatform);
+        scene.physics.add.collider(bullets, enemy, null, this.explosionOnEnemy);
         const spaceBar = scene.input.keyboard?.addKey('space');
         spaceBar.on('up', () => {
             const bullet = bullets.get();
@@ -148,6 +149,11 @@ export const playerComposition = {
         });
 
         return bullets;
+    },
+
+    explosionOnEnemy(enemy, bullet) {
+        bullet.anims.play('explosion', true);
+        bullet.body.enable = false;
     },
 
     movePlayer(player: Phaser.Physics.Arcade.Image & {

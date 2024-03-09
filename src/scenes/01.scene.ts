@@ -21,6 +21,7 @@ export class Level01Scene extends Phaser.Scene {
     private playerCoords!: Phaser.GameObjects.Text;
     private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
     private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
+    private event!: Phaser.Time.TimerEvent;
 
     constructor() {
         super();
@@ -56,7 +57,31 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
-        this.bullets = playerComposition.fire(this, this.layer, this.player);
+        this.bullets = playerComposition.fire(this, this.layer, this.player, this.enemy);
+
+        this.event = this.time.addEvent({
+            paused: true,
+            delay: 750,
+            callback: () => {
+                this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
+                const bullet = this.bullets.get();
+                if (bullet) {
+                    const bullet = this.bullets.create(this.enemy.x + 45, this.enemy.y, 'red-bullet');
+                    if (this.enemy.flipX) {
+                        bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
+                        bullet.flipX = false;
+                    } else {
+                        bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
+                        bullet.flipX = true;
+                    }
+                    bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+                        bullet.disableBody(true, true);
+                        this.bullets.remove(this.bullets.getLast(true), true);
+                    }, this);
+                }
+            },
+            loop: true,
+        });
 
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
 
@@ -67,6 +92,6 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         enemiesComposition.moveEnemy(this.enemy, this.layer, this);
-        enemiesComposition.enemyFire(this.visor, this.player, this.enemy);
+        enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
     }
 }

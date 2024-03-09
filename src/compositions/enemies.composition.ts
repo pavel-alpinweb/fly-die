@@ -51,6 +51,7 @@ export const enemiesComposition = {
         visor: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody },
         player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
         enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        event: Phaser.Time.TimerEvent,
     ) {
         if (this.checkOverlap(player, visor)) {
             enemy.setVelocityX(0);
@@ -61,8 +62,18 @@ export const enemiesComposition = {
             } else {
                 enemy.flipX = true;
             }
+
+            event.paused = false;
+        } else {
+            event.paused = true;
         }
     },
+
+    explosionOnPlayer(player, bullet) {
+        bullet.anims.play('explosion', true);
+        bullet.body.enable = false;
+    },
+
 
     checkOverlap(spriteA, spriteB) {
         const boundsA = spriteA.getBounds();
