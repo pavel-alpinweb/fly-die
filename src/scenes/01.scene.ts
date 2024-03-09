@@ -20,6 +20,7 @@ export class Level01Scene extends Phaser.Scene {
     private bullets!: Phaser.Physics.Arcade.Group;
     private playerCoords!: Phaser.GameObjects.Text;
     private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
+    private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
 
     constructor() {
         super();
@@ -29,6 +30,7 @@ export class Level01Scene extends Phaser.Scene {
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('block', '/assets/tiles/6.png');
         this.load.image('grass', '/assets/tiles/5.png');
+        this.load.image('visor', '/assets/tiles/visor.jpg');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
         playerComposition.uploadPlayerAssets(this);
         enemiesComposition.uploadEnemiesAssets(this);
@@ -46,6 +48,10 @@ export class Level01Scene extends Phaser.Scene {
         this.player = player;
         this.smoke = smoke;
         this.enemy = enemiesComposition.initEnemy(this, this.layer);
+        this.visor = enemiesComposition.initEnemyVisor(this, this.enemy);
+
+        this.physics.add.overlap(this.player, this.visor);
+        this.physics.add.collider(this.player, this.enemy);
 
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
@@ -54,14 +60,13 @@ export class Level01Scene extends Phaser.Scene {
 
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
 
-        this.physics.add.overlap(this.player, this.enemy, null, () => {
-            console.log('overlap');
-        });
+
     }
 
     update(time) {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         enemiesComposition.moveEnemy(this.enemy, this.layer, this);
+        enemiesComposition.enemyFire(this.visor, this.player, this.enemy);
     }
 }

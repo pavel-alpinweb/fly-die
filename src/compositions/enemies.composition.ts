@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import {PLAYER_SIZE, PLAYER_START_POSITION} from "../configs/gameplay.config.ts";
+import {PLAYER_SIZE} from "../configs/gameplay.config.ts";
 
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
@@ -21,9 +21,13 @@ export const enemiesComposition = {
     },
 
     initEnemy(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer): Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body } {
-        const enemy = scene.physics.add.sprite(906, 3948, 'soldier').setSize(PLAYER_SIZE.width, 89);
+        const enemy = scene.physics.add.sprite(1000, 3948, 'soldier').setSize(PLAYER_SIZE.width, 89);
         scene.physics.add.collider(enemy, layer);
         return enemy;
+    },
+
+    initEnemyVisor(scene: Phaser.Scene, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }) {
+        return scene.physics.add.staticImage(950, enemy.y, 'visor').setDisplaySize(550, 5).setAlpha(0);
     },
 
     moveEnemy(enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, layer: Phaser.Tilemaps.TilemapLayer, scene: Phaser.Scene) {
@@ -42,4 +46,27 @@ export const enemiesComposition = {
             enemy.setVelocityX(-200);
         }
     },
+
+    enemyFire(
+        visor: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody },
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+    ) {
+        if (this.checkOverlap(player, visor)) {
+            enemy.setVelocityX(0);
+            enemy.anims.pause();
+
+            if (player.x < enemy.x) {
+                enemy.flipX = false;
+            } else {
+                enemy.flipX = true;
+            }
+        }
+    },
+
+    checkOverlap(spriteA, spriteB) {
+        const boundsA = spriteA.getBounds();
+        const boundsB = spriteB.getBounds();
+        return Phaser.Geom.Intersects.RectangleToRectangle(boundsA, boundsB);
+    }
 };
