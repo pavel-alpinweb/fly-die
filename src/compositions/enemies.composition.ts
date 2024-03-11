@@ -4,6 +4,7 @@ import {PLAYER_SIZE} from "../configs/gameplay.config.ts";
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
         scene.load.atlas('soldier', '/assets/enemies/soldier.png', '/assets/enemies/soldier.json');
+        scene.load.image('black-bullet', '/assets/projectiles/black-bullet.png');
     },
 
     initEnemiesAnimations(scene: Phaser.Scene) {

@@ -68,7 +68,7 @@ export class Level01Scene extends Phaser.Scene {
             paused: true,
             delay: 750,
             callback: () => {
-                weaponComposition.fire(this, this.bullets, this.enemy, false, 'red-bullet');
+                weaponComposition.fire(this, this.bullets, this.enemy, false, 'black-bullet');
             },
             loop: true,
         });
