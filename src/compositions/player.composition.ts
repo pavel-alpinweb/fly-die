@@ -134,7 +134,8 @@ export const playerComposition = {
             const bullet = bullets.get();
 
             if (bullet) {
-                const bullet = bullets.create(player.x + 45, player.y, 'red-bullet');
+                const bulletX = player.flipX ? player.x - 100 : player.x + 100;
+                const bullet = bullets.create(bulletX, player.y, 'red-bullet').setSize(50, 50);
                 if (player.flipX) {
                     bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
                     bullet.flipX = true;
@@ -142,8 +143,10 @@ export const playerComposition = {
                     bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
                 }
                 bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+                    const { world } = scene.physics;
                     bullet.disableBody(true, true);
-                    bullets.remove(bullets.getLast(true), true);
+                    bullets.remove(bullets.getLast(true), true, true);
+                    world.remove(bullet.body);
                 }, this);
             }
         });
@@ -152,6 +155,7 @@ export const playerComposition = {
     },
 
     explosionOnEnemy(enemy, bullet) {
+        bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
     },

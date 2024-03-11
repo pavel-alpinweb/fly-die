@@ -70,6 +70,7 @@ export const enemiesComposition = {
     },
 
     explosionOnPlayer(player, bullet) {
+        bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
     },

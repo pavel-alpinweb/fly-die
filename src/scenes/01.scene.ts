@@ -66,7 +66,8 @@ export class Level01Scene extends Phaser.Scene {
                 this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
                 const bullet = this.bullets.get();
                 if (bullet) {
-                    const bullet = this.bullets.create(this.enemy.x + 45, this.enemy.y, 'red-bullet');
+                    const bulletX = this.enemy.flipX ? this.enemy.x + 100 : this.enemy.x - 100;
+                    const bullet = this.bullets.create(bulletX, this.enemy.y, 'red-bullet').setSize(50, 50);
                     if (this.enemy.flipX) {
                         bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
                         bullet.flipX = false;
@@ -75,8 +76,10 @@ export class Level01Scene extends Phaser.Scene {
                         bullet.flipX = true;
                     }
                     bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+                        const { world } = this.physics;
                         bullet.disableBody(true, true);
-                        this.bullets.remove(this.bullets.getLast(true), true);
+                        this.bullets.remove(this.bullets.getLast(true), true, true);
+                        world.remove(bullet.body);
                     }, this);
                 }
             },

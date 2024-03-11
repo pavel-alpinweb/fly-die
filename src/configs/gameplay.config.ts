@@ -21,7 +21,7 @@ export const SMOKE_POSITION_MARGIN = {
     RIGHT: 35,
     LEFT: 45,
 };
-export const PLAYER_FLY_VELOCITY = -500;
+export const PLAYER_FLY_VELOCITY = -750;
 export const PLAYER_WALK_VELOCITY = 500;
 export const PLAYER_JUMP_VELOCITY = 300;
 
