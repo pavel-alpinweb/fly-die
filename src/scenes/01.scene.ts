@@ -11,6 +11,7 @@ import {
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
 import {enemiesComposition} from "../compositions/enemies.composition.ts";
+import {weaponComposition} from "../compositions/weapon.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -57,31 +58,17 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
-        this.bullets = playerComposition.fire(this, this.layer, this.player, this.enemy);
+        this.bullets = this.physics.add.group();
+        this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
+        this.physics.add.collider(this.bullets, this.enemy, null, playerComposition.explosionOnEnemy);
+        this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
+        playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
 
         this.event = this.time.addEvent({
             paused: true,
             delay: 750,
             callback: () => {
-                this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
-                const bullet = this.bullets.get();
-                if (bullet) {
-                    const bulletX = this.enemy.flipX ? this.enemy.x + 100 : this.enemy.x - 100;
-                    const bullet = this.bullets.create(bulletX, this.enemy.y, 'red-bullet').setSize(50, 50);
-                    if (this.enemy.flipX) {
-                        bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                        bullet.flipX = false;
-                    } else {
-                        bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                        bullet.flipX = true;
-                    }
-                    bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
-                        const { world } = this.physics;
-                        bullet.disableBody(true, true);
-                        this.bullets.remove(this.bullets.getLast(true), true, true);
-                        world.remove(bullet.body);
-                    }, this);
-                }
+                weaponComposition.fire(this, this.bullets, this.enemy, false, 'red-bullet');
             },
             loop: true,
         });

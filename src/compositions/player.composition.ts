@@ -7,6 +7,7 @@ import {
     SMOKE_POSITION_MARGIN
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "./platform.composition.ts";
+import {weaponComposition} from "./weapon.composition.ts";
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -123,35 +124,13 @@ export const playerComposition = {
         });
     },
 
-    fire(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
+    fire(scene: Phaser.Scene, bullets: Phaser.Physics.Arcade.Group, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
     }, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }): Phaser.Physics.Arcade.Group {
-        const bullets = scene.physics.add.group();
-        scene.physics.add.collider(bullets, layer, null, platformComposition.explosionOnPlatform);
-        scene.physics.add.collider(bullets, enemy, null, this.explosionOnEnemy);
         const spaceBar = scene.input.keyboard?.addKey('space');
         spaceBar.on('up', () => {
-            const bullet = bullets.get();
-
-            if (bullet) {
-                const bulletX = player.flipX ? player.x - 100 : player.x + 100;
-                const bullet = bullets.create(bulletX, player.y, 'red-bullet').setSize(50, 50);
-                if (player.flipX) {
-                    bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                    bullet.flipX = true;
-                } else {
-                    bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                }
-                bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
-                    const { world } = scene.physics;
-                    bullet.disableBody(true, true);
-                    bullets.remove(bullets.getLast(true), true, true);
-                    world.remove(bullet.body);
-                }, this);
-            }
+            weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
         });
-
-        return bullets;
     },
 
     explosionOnEnemy(enemy, bullet) {
