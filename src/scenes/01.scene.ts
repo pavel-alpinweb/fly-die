@@ -60,7 +60,7 @@ export class Level01Scene extends Phaser.Scene {
 
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
-        this.physics.add.collider(this.bullets, this.enemy, null, playerComposition.explosionOnEnemy);
+        this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
         this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
         playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
 
@@ -81,7 +81,9 @@ export class Level01Scene extends Phaser.Scene {
     update(time) {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
-        enemiesComposition.moveEnemy(this.enemy, this.layer, this);
-        enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
+        if (this.enemy.texture.key !== 'death') {
+            enemiesComposition.moveEnemy(this.enemy, this.layer, this);
+            enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
+        }
     }
 }

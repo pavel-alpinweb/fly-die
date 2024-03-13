@@ -4,6 +4,7 @@ import {PLAYER_SIZE} from "../configs/gameplay.config.ts";
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
         scene.load.atlas('soldier', '/assets/enemies/soldier.png', '/assets/enemies/soldier.json');
+        scene.load.atlas('death', '/assets/fx/death.png', '/assets/fx/death.json');
         scene.load.image('black-bullet', '/assets/projectiles/black-bullet.png');
     },
 
@@ -18,6 +19,17 @@ export const enemiesComposition = {
             }),
             frameRate: 8,
             repeat: -1
+        });
+        scene.anims.create({
+            key: 'death',
+            frames: scene.anims.generateFrameNames('death', {
+                start: 7,
+                end: 1,
+                zeroPad: 0,
+                suffix: '.png',
+            }),
+            frameRate: 10,
+            repeat: 1
         });
     },
 

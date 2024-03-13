@@ -133,10 +133,16 @@ export const playerComposition = {
         });
     },
 
-    explosionOnEnemy(enemy, bullet) {
+    explosionOnEnemy(enemy, bullet, event) {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
+
+        event.paused = true;
+        enemy.anims.play('death', true);
+        enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+            enemy.destroy();
+        }, this);
     },
 
     movePlayer(player: Phaser.Physics.Arcade.Image & {
