@@ -43,8 +43,7 @@ export const enemiesComposition = {
         return scene.physics.add.staticImage(950, enemy.y, 'visor').setDisplaySize(550, 5).setAlpha(0);
     },
 
-    moveEnemy(enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, layer: Phaser.Tilemaps.TilemapLayer, scene: Phaser.Scene) {
-        scene.physics.collide(enemy, layer);
+    moveEnemy(enemy: Phaser.GameObjects.GameObject, scene: Phaser.Scene) {
         enemy.anims.play('soldier-run', true);
 
         if (enemy.body.blocked.left) {
@@ -54,9 +53,9 @@ export const enemiesComposition = {
         }
 
         if (enemy.flipX) {
-            enemy.setVelocityX(200);
+            enemy.body.setVelocityX(200);
         } else {
-            enemy.setVelocityX(-200);
+            enemy.body.setVelocityX(-200);
         }
     },
 

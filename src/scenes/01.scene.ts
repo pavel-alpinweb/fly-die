@@ -57,7 +57,16 @@ export class Level01Scene extends Phaser.Scene {
 
         // Столкновение с врагом и пересечение визора игроком
         // this.physics.add.overlap(this.player, this.visor);
-        // this.physics.add.collider(this.player, this.enemy);
+        const spawns = this.map.createFromObjects('Enemies', { gid: 3, key: 'soldier' });
+        this.enemies = this.physics.add.group();
+        for (const spawn of spawns) {
+            this.enemies.add(spawn)
+        }
+        this.enemies.children.entries.forEach((enemy) => {
+            enemy.body.setSize(PLAYER_SIZE.width, 89);
+        });
+        this.physics.add.collider(this.player, this.enemies);
+        this.physics.add.collider(this.enemies, this.layer);
 
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
@@ -68,7 +77,6 @@ export class Level01Scene extends Phaser.Scene {
         // this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
         // this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
         // playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
-        this.enemies = this.physics.add.group();
 
         // Событие стерльбы для врага
         // this.event = this.time.addEvent({
@@ -93,5 +101,10 @@ export class Level01Scene extends Phaser.Scene {
         //     enemiesComposition.moveEnemy(this.enemy, this.layer, this);
         //     enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
         // }
+        this.enemies.children.entries.forEach((enemy) => {
+            if (enemy.texture.key !== 'death') {
+                enemiesComposition.moveEnemy(enemy, this);
+            }
+        });
     }
 }
