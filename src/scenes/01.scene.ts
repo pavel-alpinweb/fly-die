@@ -24,6 +24,7 @@ export class Level01Scene extends Phaser.Scene {
     // private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
     // private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
     // private event!: Phaser.Time.TimerEvent;
+    private enemies!: Phaser.Physics.Arcade.Group;
 
     constructor() {
         super();
@@ -67,6 +68,7 @@ export class Level01Scene extends Phaser.Scene {
         // this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
         // this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
         // playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
+        this.enemies = this.physics.add.group();
 
         // Событие стерльбы для врага
         // this.event = this.time.addEvent({
