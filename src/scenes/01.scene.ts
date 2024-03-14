@@ -20,9 +20,10 @@ export class Level01Scene extends Phaser.Scene {
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private bullets!: Phaser.Physics.Arcade.Group;
     private playerCoords!: Phaser.GameObjects.Text;
-    private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
-    private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
-    private event!: Phaser.Time.TimerEvent;
+    // Поля, для врага, визора и события стрельбы
+    // private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
+    // private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
+    // private event!: Phaser.Time.TimerEvent;
 
     constructor() {
         super();
@@ -49,29 +50,33 @@ export class Level01Scene extends Phaser.Scene {
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;
         this.smoke = smoke;
-        this.enemy = enemiesComposition.initEnemy(this, this.layer);
-        this.visor = enemiesComposition.initEnemyVisor(this, this.enemy);
+        // Создание визора и врага
+        // this.enemy = enemiesComposition.initEnemy(this, this.layer);
+        // this.visor = enemiesComposition.initEnemyVisor(this, this.enemy);
 
-        this.physics.add.overlap(this.player, this.visor);
-        this.physics.add.collider(this.player, this.enemy);
+        // Столкновение с врагом и пересечение визора игроком
+        // this.physics.add.overlap(this.player, this.visor);
+        // this.physics.add.collider(this.player, this.enemy);
 
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
-        this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
-        this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
-        playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
+        // Стрельба по врагу и наоборот
+        // this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
+        // this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
+        // playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
 
-        this.event = this.time.addEvent({
-            paused: true,
-            delay: 750,
-            callback: () => {
-                weaponComposition.fire(this, this.bullets, this.enemy, false, 'black-bullet');
-            },
-            loop: true,
-        });
+        // Событие стерльбы для врага
+        // this.event = this.time.addEvent({
+        //     paused: true,
+        //     delay: 750,
+        //     callback: () => {
+        //         weaponComposition.fire(this, this.bullets, this.enemy, false, 'black-bullet');
+        //     },
+        //     loop: true,
+        // });
 
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
 
@@ -81,9 +86,10 @@ export class Level01Scene extends Phaser.Scene {
     update(time) {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
-        if (this.enemy.texture.key !== 'death') {
-            enemiesComposition.moveEnemy(this.enemy, this.layer, this);
-            enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
-        }
+        // Передвижение врага и реакция на игрока
+        // if (this.enemy.texture.key !== 'death') {
+        //     enemiesComposition.moveEnemy(this.enemy, this.layer, this);
+        //     enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
+        // }
     }
 }
