@@ -32,10 +32,10 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', '/assets/backgrounds/01.png');
-        this.load.image('block', '/assets/tiles/6.png');
-        this.load.image('grass', '/assets/tiles/5.png');
+        this.load.image('block', '/assets/tiles/block.png');
+        this.load.image('ground', '/assets/tiles/ground.png');
         this.load.image('visor', '/assets/tiles/visor.jpg');
-        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
+        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
         playerComposition.uploadPlayerAssets(this);
         enemiesComposition.uploadEnemiesAssets(this);
     }
@@ -44,9 +44,9 @@ export class Level01Scene extends Phaser.Scene {
         this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
         this.map.setCollision([2, 1]);
-        const block = this.map.addTilesetImage('2', 'block') as Tileset;
-        const grass = this.map.addTilesetImage('1', 'grass') as Tileset;
-        this.layer = this.map.createLayer('Ground', [block, grass]) as TilemapLayer;
+        const block = this.map.addTilesetImage('block', 'block') as Tileset;
+        const ground = this.map.addTilesetImage('ground', 'ground') as Tileset;
+        this.layer = this.map.createLayer('Platforms', [block, ground]) as TilemapLayer;
 
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;

@@ -9,8 +9,8 @@ export const BACKGROUND_LAYER_ONE_SCROLL = 0.5;
 
 /* PLAYER SETTINGS */
 export const PLAYER_START_POSITION = {
-    x: 200,
-    y: 3800,
+    x: 378,
+    y: 27200,
 }
 export const PLAYER_SIZE = {
     width: 115,
