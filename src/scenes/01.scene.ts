@@ -34,7 +34,6 @@ export class Level01Scene extends Phaser.Scene {
         this.load.image('sky', '/assets/backgrounds/01.png');
         this.load.image('block', '/assets/tiles/block.png');
         this.load.image('ground', '/assets/tiles/ground.png');
-        this.load.image('visor', '/assets/tiles/visor.jpg');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
         playerComposition.uploadPlayerAssets(this);
         enemiesComposition.uploadEnemiesAssets(this);
@@ -52,7 +51,6 @@ export class Level01Scene extends Phaser.Scene {
         this.player = player;
         this.smoke = smoke;
         // Создание визора и врага
-        // this.enemy = enemiesComposition.initEnemy(this, this.layer);
         // this.visor = enemiesComposition.initEnemyVisor(this, this.enemy);
 
         // Столкновение с врагом и пересечение визора игроком
@@ -71,7 +69,7 @@ export class Level01Scene extends Phaser.Scene {
         });
 
         // Стрельба по врагу и наоборот
-        // this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
+        this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
 
         // Событие стерльбы для врага
         // this.event = this.time.addEvent({
@@ -92,13 +90,10 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Передвижение врага и реакция на игрока
-        // if (this.enemy.texture.key !== 'death') {
-        //     enemiesComposition.moveEnemy(this.enemy, this.layer, this);
-        //     enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
-        // }
         this.enemies.children.entries.forEach((enemy) => {
             if (enemy.texture.key !== 'death') {
                 enemiesComposition.moveEnemy(enemy, this);
+                // enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
             }
         });
     }
