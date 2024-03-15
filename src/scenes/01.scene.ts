@@ -58,17 +58,20 @@ export class Level01Scene extends Phaser.Scene {
         // Столкновение с врагом и пересечение визора игроком
         // this.physics.add.overlap(this.player, this.visor);
 
-        this.enemies = enemiesComposition.initEnemies(this, this.map, this.layer, this.player);
-
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
+        this.enemies = enemiesComposition.initEnemies(this, this.map, this.layer, this.player);
+
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
+        this.enemies.children.entries.forEach((enemy) => {
+            playerComposition.fire(this, this.bullets, this.layer, this.player);
+            this.physics.add.collider(this.bullets, enemy, null, (...args) => playerComposition.explosionOnEnemy(...args));
+        });
+
         // Стрельба по врагу и наоборот
-        // this.physics.add.collider(this.bullets, this.enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, this.event));
         // this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
-        // playerComposition.fire(this, this.bullets, this.layer, this.player, this.enemy);
 
         // Событие стерльбы для врага
         // this.event = this.time.addEvent({
