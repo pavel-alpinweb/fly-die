@@ -57,16 +57,8 @@ export class Level01Scene extends Phaser.Scene {
 
         // Столкновение с врагом и пересечение визора игроком
         // this.physics.add.overlap(this.player, this.visor);
-        const spawns = this.map.createFromObjects('Enemies', { gid: 3, key: 'soldier' });
-        this.enemies = this.physics.add.group();
-        for (const spawn of spawns) {
-            this.enemies.add(spawn)
-        }
-        this.enemies.children.entries.forEach((enemy) => {
-            enemy.body.setSize(PLAYER_SIZE.width, 89);
-        });
-        this.physics.add.collider(this.player, this.enemies);
-        this.physics.add.collider(this.enemies, this.layer);
+
+        this.enemies = enemiesComposition.initEnemies(this, this.map, this.layer, this.player);
 
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);

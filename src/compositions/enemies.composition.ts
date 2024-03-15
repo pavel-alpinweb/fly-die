@@ -33,10 +33,25 @@ export const enemiesComposition = {
         });
     },
 
-    initEnemy(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer): Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body } {
-        const enemy = scene.physics.add.sprite(1000, 3948, 'soldier').setSize(PLAYER_SIZE.width, 89);
-        scene.physics.add.collider(enemy, layer);
-        return enemy;
+    initEnemies(
+        scene: Phaser.Scene,
+        map: Phaser.Tilemaps.Tilemap,
+        layer: Phaser.Tilemaps.TilemapLayer,
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+    ): Phaser.Physics.Arcade.Group{
+        const spawns = map.createFromObjects('Enemies', { gid: 3, key: 'soldier' });
+        const enemies = scene.physics.add.group();
+        for (const spawn of spawns) {
+            enemies.add(spawn)
+        }
+        enemies.children.entries.forEach((enemy) => {
+            enemy.body.setSize(PLAYER_SIZE.width, 89);
+        });
+
+        scene.physics.add.collider(player, enemies);
+        scene.physics.add.collider(enemies, layer);
+
+        return enemies;
     },
 
     initEnemyVisor(scene: Phaser.Scene, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }) {
