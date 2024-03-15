@@ -6,6 +6,7 @@ export const enemiesComposition = {
         scene.load.atlas('soldier', '/assets/enemies/soldier.png', '/assets/enemies/soldier.json');
         scene.load.atlas('death', '/assets/fx/death.png', '/assets/fx/death.json');
         scene.load.image('black-bullet', '/assets/projectiles/black-bullet.png');
+        scene.load.image('visor', '/assets/tiles/visor.png');
     },
 
     initEnemiesAnimations(scene: Phaser.Scene) {
