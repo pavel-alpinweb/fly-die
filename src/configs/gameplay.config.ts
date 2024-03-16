@@ -22,8 +22,8 @@ export const SMOKE_POSITION_MARGIN = {
     LEFT: 45,
 };
 export const PLAYER_FLY_VELOCITY = -750;
-export const PLAYER_WALK_VELOCITY = 500;
-export const PLAYER_JUMP_VELOCITY = 300;
+export const PLAYER_WALK_VELOCITY = 650;
+export const PLAYER_JUMP_VELOCITY = 400;
 
 /* GAMEPLAY SETTINGS */
 export const PLATFORM_REBOUND_VELOCITY = -500;
@@ -31,5 +31,6 @@ export const BULLETS_VELOCITY = {
     x: 2000,
     y: -150,
 };
-export const ENEMY_FIRE_DELAY = 500;
+export const ENEMY_FIRE_DELAY = 300;
+export const ENEMY_START_FIRE_DELAY = 300;
 
