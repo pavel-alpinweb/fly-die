@@ -62,7 +62,7 @@ export const enemiesComposition = {
                     weaponComposition.fire(
                         scene,
                         bullets,
-                        <Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }>enemy.body,
+                        <Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }>enemy,
                         false,
                         'black-bullet'
                     );
@@ -111,7 +111,7 @@ export const enemiesComposition = {
         event: Phaser.Time.TimerEvent,
     ) {
         if (this.checkOverlap(player, visor)) {
-            enemy.setVelocityX(0);
+            enemy.body.setVelocityX(0);
             enemy.anims.pause();
 
             if (player.x < enemy.x) {

@@ -57,6 +57,7 @@ export class Level01Scene extends Phaser.Scene {
         // Создание визоров и врагов
         this.enemies = this.physics.add.group();
         this.visors = this.physics.add.staticGroup();
+        this.bullets = this.physics.add.group();
         this.physics.add.overlap(this.player, this.visors);
 
         this.sets = enemiesComposition.initEnemies(
@@ -68,13 +69,12 @@ export class Level01Scene extends Phaser.Scene {
             this.visors,
             this.bullets
         );
-
-        this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
         playerComposition.fire(this, this.bullets, this.layer, this.player);
-        this.enemies.children.entries.forEach((enemy) => {
-            this.physics.add.collider(this.bullets, enemy, null, (...args) => playerComposition.explosionOnEnemy(...args));
-        });
+        for (const set of this.sets) {
+            const [enemy, visor, event] = set;
+            this.physics.add.collider(this.bullets, enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, event));
+        }
 
         // Стрельба по врагу и наоборот
         this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
@@ -92,7 +92,7 @@ export class Level01Scene extends Phaser.Scene {
             const [enemy, visor, event] = set;
             if (enemy.texture.key !== 'death') {
                 enemiesComposition.moveEnemy(enemy, this);
-                // enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
+                enemiesComposition.enemyFire(visor, this.player, enemy, event);
             }
         }
     }
