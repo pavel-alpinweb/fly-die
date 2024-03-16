@@ -76,6 +76,9 @@ export const enemiesComposition = {
             enemy.setDisplaySize(138, 138);
             enemy.body.setSize(PLAYER_SIZE.width, 89);
         });
+        visors.children.entries.forEach((visor) => {
+            visor.setAlpha(0);
+        });
 
         scene.physics.add.collider(player, enemies);
         scene.physics.add.collider(enemies, layer);

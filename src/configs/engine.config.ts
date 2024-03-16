@@ -9,7 +9,7 @@ export const engineConfig = {
         default: 'arcade',
         arcade: {
             gravity: { y: LEVEL_GRAVITY },
-            debug: true
+            debug: false
         }
     },
 };
