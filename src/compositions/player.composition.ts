@@ -41,10 +41,18 @@ export const playerComposition = {
         return text;
     },
 
+    showPlayerDeath(scene: Phaser.Scene, deaths: number): Phaser.GameObjects.Text  {
+        return scene.add.text(16, 60, `Players deaths: ${deaths}`, { fontSize: '32px', fill: '#000' }).setScrollFactor(0 , 0);
+    },
+
     updatePlayerCoords(text: Phaser.GameObjects.Text, player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
     }): void {
         text.setText(`coords: x ${Math.floor(player.x)} / y ${Math.floor(player.y)}`);
+    },
+
+    updatePlayerDeath(text: Phaser.GameObjects.Text, deaths: number) {
+        text.setText(`Players deaths: ${deaths}`);
     },
 
     initPlayerAnimations(scene: Phaser.Scene) {

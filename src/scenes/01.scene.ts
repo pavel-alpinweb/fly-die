@@ -23,6 +23,10 @@ export class Level01Scene extends Phaser.Scene {
     private enemies!: Phaser.Physics.Arcade.Group;
     private visors!: Phaser.Physics.Arcade.StaticGroup;
     private sets!: [];
+    private deaths = 0;
+    private deathTest!: Phaser.GameObjects.Text;
+    private killedEnemiesText!: Phaser.GameObjects.Text;
+    private killedEnemiesNumber = 0;
 
     constructor() {
         super();
@@ -77,12 +81,21 @@ export class Level01Scene extends Phaser.Scene {
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
-            this.physics.add.collider(this.bullets, enemy, null, (...args) => playerComposition.explosionOnEnemy(...args, event));
+            this.physics.add.collider(this.bullets, enemy, null, (...args) => {
+                this.killedEnemiesNumber += 1;
+                playerComposition.explosionOnEnemy(...args, event);
+            });
         }
-        this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
+        this.physics.add.collider(this.bullets, this.player, null, (...args) => {
+            this.deaths += 1;
+            enemiesComposition.explosionOnPlayer(...args);
+        });
 
-        //Вывод координат игрока
+        // Вывод координат игрока
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
+        // Выводим сколько раз попадали по игроку и по врагам
+        this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
+        this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
     }
 
     update(time) {
@@ -90,6 +103,9 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         // Обновление координат игрока
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
+        // Обновляем количество смертей игрока и врагов
+        playerComposition.updatePlayerDeath(this.deathTest, this.deaths);
+        enemiesComposition.updateEnemiesDeath(this.killedEnemiesText, this.killedEnemiesNumber, this.sets.length);
         // Передвижение врага и реакция на игрока
         for (const set of this.sets) {
             const [enemy, visor, event] = set;

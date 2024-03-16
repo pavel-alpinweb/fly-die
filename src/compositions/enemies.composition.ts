@@ -136,6 +136,13 @@ export const enemiesComposition = {
         bullet.body.enable = false;
     },
 
+    showEnemiesDeath(scene: Phaser.Scene, deaths: number, all :number): Phaser.GameObjects.Text  {
+        return scene.add.text(16, 100, `Enemies deaths: ${deaths} / ${all}`, { fontSize: '32px', fill: '#000' }).setScrollFactor(0 , 0);
+    },
+
+    updateEnemiesDeath(text: Phaser.GameObjects.Text, deaths: number, all: number) {
+        text.setText(`Enemies deaths: ${deaths} / ${all}`);
+    },
 
     checkOverlap(spriteA, spriteB) {
         const boundsA = spriteA.getBounds();
