@@ -140,6 +140,7 @@ export const playerComposition = {
 
         event.paused = true;
         enemy.anims.play('death', true);
+        enemy.body.enable = false;
         enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
             enemy.destroy();
         }, this);
