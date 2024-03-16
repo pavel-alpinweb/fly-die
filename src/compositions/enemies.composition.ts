@@ -39,19 +39,23 @@ export const enemiesComposition = {
         map: Phaser.Tilemaps.Tilemap,
         layer: Phaser.Tilemaps.TilemapLayer,
         player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
-    ): Phaser.Physics.Arcade.Group{
+        enemies: Phaser.Physics.Arcade.Group,
+        visors: Phaser.Physics.Arcade.StaticGroup,
+    ): []{
         const spawns = map.createFromObjects('Enemies', { gid: 4, key: 'soldier' });
         const visorsSpawns = map.createFromObjects('Enemies', { gid: 4, key: 'visor' });
-        const enemies = scene.physics.add.group();
-        const visors = scene.physics.add.staticGroup();
+        const enemySets = [];
         for (const spawn of spawns) {
             enemies.add(spawn);
-            console.log('enemy', spawn.getBounds());
         }
         for (const visor of visorsSpawns) {
             visors.add(visor);
-            console.log('visor', visor.getBounds());
         }
+        spawns.forEach((enemy) => {
+            const visor = visorsSpawns.find((visor) => enemy.getBounds().x === visor.getBounds().x);
+            const set = [enemy, visor];
+            enemySets.push(set);
+        });
         enemies.children.entries.forEach((enemy) => {
             enemy.setDisplaySize(138, 138);
             enemy.body.setSize(PLAYER_SIZE.width, 89);
@@ -61,7 +65,7 @@ export const enemiesComposition = {
         scene.physics.add.collider(enemies, layer);
         scene.physics.add.overlap(player, visors);
 
-        return enemies;
+        return enemySets;
     },
 
     initEnemyVisor(scene: Phaser.Scene, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }) {

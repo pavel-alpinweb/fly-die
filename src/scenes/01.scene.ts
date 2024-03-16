@@ -25,6 +25,7 @@ export class Level01Scene extends Phaser.Scene {
     // private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
     // private event!: Phaser.Time.TimerEvent;
     private enemies!: Phaser.Physics.Arcade.Group;
+    private visors!: Phaser.Physics.Arcade.StaticGroup;
 
     constructor() {
         super();
@@ -50,16 +51,19 @@ export class Level01Scene extends Phaser.Scene {
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;
         this.smoke = smoke;
-        // Создание визора и врага
-        // this.visor = enemiesComposition.initEnemyVisor(this, this.enemy);
 
         // Столкновение с врагом и пересечение визора игроком
-        // this.physics.add.overlap(this.player, this.visor);
 
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
 
-        this.enemies = enemiesComposition.initEnemies(this, this.map, this.layer, this.player);
+        // Создание визоров и врагов
+        this.enemies = this.physics.add.group();
+        this.visors = this.physics.add.staticGroup();
+        this.physics.add.overlap(this.player, this.visors);
+
+        const sets = enemiesComposition.initEnemies(this, this.map, this.layer, this.player, this.enemies, this.visors);
+        console.log('sets', sets);
 
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
