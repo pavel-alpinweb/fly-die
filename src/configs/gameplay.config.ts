@@ -6,6 +6,7 @@ export const LEVEL_HEIGHT = 1119;
 export const BACKGROUND_LAYER_WIDTH = 2346;
 export const BACKGROUND_LAYER_HEIGHT = 1119;
 export const BACKGROUND_LAYER_ONE_SCROLL = 0.5;
+export const TILE_SIZE = 138;
 
 /* PLAYER SETTINGS */
 export const PLAYER_START_POSITION = {
@@ -33,4 +34,6 @@ export const BULLETS_VELOCITY = {
 };
 export const ENEMY_FIRE_DELAY = 300;
 export const ENEMY_START_FIRE_DELAY = 300;
+export const ENEMY_WALK_VELOCITY = 200;
+export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 

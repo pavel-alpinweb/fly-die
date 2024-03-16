@@ -1,5 +1,11 @@
 import Phaser from "phaser";
-import {ENEMY_FIRE_DELAY, ENEMY_START_FIRE_DELAY, PLAYER_SIZE} from "../configs/gameplay.config.ts";
+import {
+    ENEMY_DISTANCE_START_FIRE,
+    ENEMY_FIRE_DELAY,
+    ENEMY_START_FIRE_DELAY,
+    ENEMY_WALK_VELOCITY,
+    PLAYER_SIZE
+} from "../configs/gameplay.config.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 
 export const enemiesComposition = {
@@ -102,9 +108,9 @@ export const enemiesComposition = {
         }
 
         if (enemy.flipX) {
-            enemy.body.setVelocityX(200);
+            enemy.body.setVelocityX(ENEMY_WALK_VELOCITY);
         } else {
-            enemy.body.setVelocityX(-200);
+            enemy.body.setVelocityX(-ENEMY_WALK_VELOCITY);
         }
     },
 
@@ -115,16 +121,19 @@ export const enemiesComposition = {
         event: Phaser.Time.TimerEvent,
     ) {
         if (this.checkOverlap(player, visor)) {
-            enemy.body.setVelocityX(0);
-            enemy.anims.pause();
+            const distance = Phaser.Math.Distance.Between(player.x, player.y, enemy.x, enemy.y);
+            if ((player.x < enemy.x && !enemy.flipX) || (player.x > enemy.x && enemy.flipX) || distance <= ENEMY_DISTANCE_START_FIRE) {
+                enemy.body.setVelocityX(0);
+                enemy.anims.pause();
 
-            if (player.x < enemy.x) {
-                enemy.flipX = false;
-            } else {
-                enemy.flipX = true;
+                if (player.x < enemy.x) {
+                    enemy.flipX = false;
+                } else {
+                    enemy.flipX = true;
+                }
+
+                event.paused = false;
             }
-
-            event.paused = false;
         } else {
             event.paused = true;
         }
