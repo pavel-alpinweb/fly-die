@@ -75,7 +75,7 @@ export const enemiesComposition = {
         });
         enemies.children.entries.forEach((enemy) => {
             enemy.setDisplaySize(138, 138);
-            enemy.body.setSize(PLAYER_SIZE.width, 89);
+            enemy.body.setSize(PLAYER_SIZE.width, 89).setImmovable();
         });
         visors.children.entries.forEach((visor) => {
             visor.setAlpha(0);
