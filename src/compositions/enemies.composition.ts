@@ -108,7 +108,7 @@ export const enemiesComposition = {
         }
     },
 
-    enemyFire(
+    enemyStartFire(
         visor: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody },
         player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
         enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
