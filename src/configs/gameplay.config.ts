@@ -34,6 +34,6 @@ export const BULLETS_VELOCITY = {
 };
 export const ENEMY_FIRE_DELAY = 300;
 export const ENEMY_START_FIRE_DELAY = 300;
-export const ENEMY_WALK_VELOCITY = 200;
-export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 3;
+export const ENEMY_WALK_VELOCITY = 300;
+export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 
