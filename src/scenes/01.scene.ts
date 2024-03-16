@@ -20,12 +20,9 @@ export class Level01Scene extends Phaser.Scene {
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private bullets!: Phaser.Physics.Arcade.Group;
     private playerCoords!: Phaser.GameObjects.Text;
-    // Поля, для врага, визора и события стрельбы
-    // private enemy!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body };
-    // private visor!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.StaticBody };
-    // private event!: Phaser.Time.TimerEvent;
     private enemies!: Phaser.Physics.Arcade.Group;
     private visors!: Phaser.Physics.Arcade.StaticGroup;
+    private sets!: [];
 
     constructor() {
         super();
@@ -62,28 +59,29 @@ export class Level01Scene extends Phaser.Scene {
         this.visors = this.physics.add.staticGroup();
         this.physics.add.overlap(this.player, this.visors);
 
-        const sets = enemiesComposition.initEnemies(this, this.map, this.layer, this.player, this.enemies, this.visors);
-        console.log('sets', sets);
+        this.sets = enemiesComposition.initEnemies(
+            this,
+            this.map,
+            this.layer,
+            this.player,
+            this.enemies,
+            this.visors,
+            this.bullets
+        );
+        for (const set of this.sets) {
+            const [enemy, visor, event] = set;
+            console.log('enemy', enemy);
+        }
 
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
+        playerComposition.fire(this, this.bullets, this.layer, this.player);
         this.enemies.children.entries.forEach((enemy) => {
-            playerComposition.fire(this, this.bullets, this.layer, this.player);
             this.physics.add.collider(this.bullets, enemy, null, (...args) => playerComposition.explosionOnEnemy(...args));
         });
 
         // Стрельба по врагу и наоборот
         this.physics.add.collider(this.bullets, this.player, null, enemiesComposition.explosionOnPlayer);
-
-        // Событие стерльбы для врага
-        // this.event = this.time.addEvent({
-        //     paused: true,
-        //     delay: 750,
-        //     callback: () => {
-        //         weaponComposition.fire(this, this.bullets, this.enemy, false, 'black-bullet');
-        //     },
-        //     loop: true,
-        // });
 
         this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
 

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import {PLAYER_SIZE} from "../configs/gameplay.config.ts";
+import {weaponComposition} from "./weapon.composition.ts";
 
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
@@ -41,6 +42,7 @@ export const enemiesComposition = {
         player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
         enemies: Phaser.Physics.Arcade.Group,
         visors: Phaser.Physics.Arcade.StaticGroup,
+        bullets: Phaser.Physics.Arcade.Group,
     ): []{
         const spawns = map.createFromObjects('Enemies', { gid: 4, key: 'soldier' });
         const visorsSpawns = map.createFromObjects('Enemies', { gid: 4, key: 'visor' });
@@ -53,7 +55,21 @@ export const enemiesComposition = {
         }
         spawns.forEach((enemy) => {
             const visor = visorsSpawns.find((visor) => enemy.getBounds().x === visor.getBounds().x);
-            const set = [enemy, visor];
+            const event = scene.time.addEvent({
+                paused: true,
+                delay: 750,
+                callback: () => {
+                    weaponComposition.fire(
+                        scene,
+                        bullets,
+                        <Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }>enemy.body,
+                        false,
+                        'black-bullet'
+                    );
+                },
+                loop: true,
+            });
+            const set = [enemy, visor, event];
             enemySets.push(set);
         });
         enemies.children.entries.forEach((enemy) => {
