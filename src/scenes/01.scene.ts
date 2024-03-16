@@ -68,10 +68,6 @@ export class Level01Scene extends Phaser.Scene {
             this.visors,
             this.bullets
         );
-        for (const set of this.sets) {
-            const [enemy, visor, event] = set;
-            console.log('enemy', enemy);
-        }
 
         this.bullets = this.physics.add.group();
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
@@ -92,11 +88,12 @@ export class Level01Scene extends Phaser.Scene {
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Передвижение врага и реакция на игрока
-        this.enemies.children.entries.forEach((enemy) => {
+        for (const set of this.sets) {
+            const [enemy, visor, event] = set;
             if (enemy.texture.key !== 'death') {
                 enemiesComposition.moveEnemy(enemy, this);
                 // enemiesComposition.enemyFire(this.visor, this.player, this.enemy, this.event);
             }
-        });
+        }
     }
 }
