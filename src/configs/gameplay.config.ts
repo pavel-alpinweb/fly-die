@@ -31,4 +31,5 @@ export const BULLETS_VELOCITY = {
     x: 2000,
     y: -150,
 };
+export const ENEMY_FIRE_DELAY = 500;
 

@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import {PLAYER_SIZE} from "../configs/gameplay.config.ts";
+import {ENEMY_FIRE_DELAY, PLAYER_SIZE} from "../configs/gameplay.config.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 
 export const enemiesComposition = {
@@ -57,7 +57,7 @@ export const enemiesComposition = {
             const visor = visorsSpawns.find((visor) => enemy.getBounds().x === visor.getBounds().x);
             const event = scene.time.addEvent({
                 paused: true,
-                delay: 750,
+                delay: ENEMY_FIRE_DELAY,
                 callback: () => {
                     weaponComposition.fire(
                         scene,
