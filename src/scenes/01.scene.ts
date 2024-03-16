@@ -10,41 +10,109 @@ import {
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
+import {enemiesComposition} from "../compositions/enemies.composition.ts";
+import {weaponComposition} from "../compositions/weapon.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private map!: Phaser.Tilemaps.Tilemap
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
-    private bullets: Phaser.Physics.Arcade.Group;
+    private bullets!: Phaser.Physics.Arcade.Group;
+    private playerCoords!: Phaser.GameObjects.Text;
+    private enemies!: Phaser.Physics.Arcade.Group;
+    private visors!: Phaser.Physics.Arcade.StaticGroup;
+    private sets!: [];
+    private deaths = 0;
+    private deathTest!: Phaser.GameObjects.Text;
+    private killedEnemiesText!: Phaser.GameObjects.Text;
+    private killedEnemiesNumber = 0;
 
     constructor() {
         super();
     }
 
     preload() {
+        // Загрузка ресурсов карты
         this.load.image('sky', '/assets/backgrounds/01.png');
-        this.load.image('ground01', '/assets/tiles/ground01.png');
-        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/LevelOneMap.json');
+        this.load.image('block', '/assets/tiles/block.png');
+        this.load.image('ground', '/assets/tiles/ground.png');
+        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
+        // Загрузка ресурсов игрока и врагов
         playerComposition.uploadPlayerAssets(this);
+        enemiesComposition.uploadEnemiesAssets(this);
     }
 
     create() {
+        // Создание уровня
         this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
-        this.map.setCollision([1]) as Tilemap;
-        const tileset = this.map.addTilesetImage('ground01', 'ground01') as Tileset;
-        this.layer = this.map.createLayer('Ground', tileset) as TilemapLayer;
+        this.map.setCollision([2, 1]);
+        const block = this.map.addTilesetImage('block', 'block') as Tileset;
+        const ground = this.map.addTilesetImage('ground', 'ground') as Tileset;
+        this.layer = this.map.createLayer('Platforms', [block, ground]) as TilemapLayer;
 
+        // Создание игрока и дыма от джетпака
         const [player, smoke] = playerComposition.initPlayer(this, this.layer);
         this.player = player;
         this.smoke = smoke;
-        playerComposition.initPlayerAnimations(this);
 
-        this.bullets = playerComposition.fire(this, this.layer, this.player);
+        // Создание анимаций
+        playerComposition.initPlayerAnimations(this);
+        enemiesComposition.initEnemiesAnimations(this);
+
+        // Создание визоров, врагов и пуль
+        this.enemies = this.physics.add.group();
+        this.visors = this.physics.add.staticGroup();
+        this.bullets = this.physics.add.group();
+        this.physics.add.overlap(this.player, this.visors);
+        this.sets = enemiesComposition.initEnemies(
+            this,
+            this.map,
+            this.layer,
+            this.player,
+            this.enemies,
+            this.visors,
+            this.bullets
+        );
+
+        // Стрельба по врагу и наоборот, стрельба по платформам
+        playerComposition.fire(this, this.bullets, this.layer, this.player);
+        this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
+        for (const set of this.sets) {
+            const [enemy, visor, event] = set;
+            this.physics.add.collider(this.bullets, enemy, null, (...args) => {
+                this.killedEnemiesNumber += 1;
+                playerComposition.explosionOnEnemy(...args, event);
+            });
+        }
+        this.physics.add.collider(this.bullets, this.player, null, (...args) => {
+            this.deaths += 1;
+            enemiesComposition.explosionOnPlayer(...args);
+        });
+
+        // Вывод координат игрока
+        this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
+        // Выводим сколько раз попадали по игроку и по врагам
+        this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
+        this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
     }
 
     update(time) {
+        // Передвижение игрока
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
+        // Обновление координат игрока
+        playerComposition.updatePlayerCoords(this.playerCoords, this.player);
+        // Обновляем количество смертей игрока и врагов
+        playerComposition.updatePlayerDeath(this.deathTest, this.deaths);
+        enemiesComposition.updateEnemiesDeath(this.killedEnemiesText, this.killedEnemiesNumber, this.sets.length);
+        // Передвижение врага и реакция на игрока
+        for (const set of this.sets) {
+            const [enemy, visor, event] = set;
+            if (enemy.texture.key !== 'death') {
+                enemiesComposition.moveEnemy(enemy, this);
+                enemiesComposition.enemyStartFire(visor, this.player, enemy, event);
+            }
+        }
     }
 }

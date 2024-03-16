@@ -7,6 +7,7 @@ import {
     SMOKE_POSITION_MARGIN
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "./platform.composition.ts";
+import {weaponComposition} from "./weapon.composition.ts";
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -29,6 +30,29 @@ export const playerComposition = {
         scene.physics.add.collider(player, layer, null, platformComposition.collidePlatforms);
 
         return [player, smoke];
+    },
+
+    showPlayerCoords(scene: Phaser.Scene, player: Phaser.Physics.Arcade.Image & {
+        body: Phaser.Physics.Arcade.Body
+    }): Phaser.GameObjects.Text {
+        const text = scene.add.text(16, 16, `coords: x ${player.x} / y ${player.y}`, { fontSize: '32px', fill: '#000' });
+        text.scrollFactorX = 0;
+        text.scrollFactorY = 0;
+        return text;
+    },
+
+    showPlayerDeath(scene: Phaser.Scene, deaths: number): Phaser.GameObjects.Text  {
+        return scene.add.text(16, 60, `Players deaths: ${deaths}`, { fontSize: '32px', fill: '#000' }).setScrollFactor(0 , 0);
+    },
+
+    updatePlayerCoords(text: Phaser.GameObjects.Text, player: Phaser.Physics.Arcade.Image & {
+        body: Phaser.Physics.Arcade.Body
+    }): void {
+        text.setText(`coords: x ${Math.floor(player.x)} / y ${Math.floor(player.y)}`);
+    },
+
+    updatePlayerDeath(text: Phaser.GameObjects.Text, deaths: number) {
+        text.setText(`Players deaths: ${deaths}`);
     },
 
     initPlayerAnimations(scene: Phaser.Scene) {
@@ -108,31 +132,26 @@ export const playerComposition = {
         });
     },
 
-    fire(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
+    fire(scene: Phaser.Scene, bullets: Phaser.Physics.Arcade.Group, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
     }): Phaser.Physics.Arcade.Group {
-        const bullets = scene.physics.add.group();
-        scene.physics.add.collider(bullets, layer, null, platformComposition.explosionOnPlatform);
         const spaceBar = scene.input.keyboard?.addKey('space');
         spaceBar.on('up', () => {
-            const bullet = bullets.get();
-
-            if (bullet) {
-                const bullet = bullets.create(player.x + 45, player.y, 'red-bullet');
-                if (player.flipX) {
-                    bullet.setVelocity(-BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                    bullet.flipX = true;
-                } else {
-                    bullet.setVelocity(BULLETS_VELOCITY.x, BULLETS_VELOCITY.y);
-                }
-                bullet.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
-                    bullet.disableBody(true, true);
-                    bullets.remove(bullets.getLast(true), true);
-                }, this);
-            }
+            weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
         });
+    },
 
-        return bullets;
+    explosionOnEnemy(enemy, bullet, event) {
+        bullet.setVelocity(0);
+        bullet.anims.play('explosion', true);
+        bullet.body.enable = false;
+
+        event.paused = true;
+        enemy.anims.play('death', true);
+        enemy.body.enable = false;
+        enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
+            enemy.destroy();
+        }, this);
     },
 
     movePlayer(player: Phaser.Physics.Arcade.Image & {
