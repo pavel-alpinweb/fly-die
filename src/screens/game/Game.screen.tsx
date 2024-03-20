@@ -9,7 +9,12 @@ const GameScreen = () => {
     }, []);
 
     return (
-        <div id="game" className={classes.gameScreen}></div>
+        <div className={classes.gameScreen}>
+            <div className={classes.gameScreenWidgets}>
+                Widgets
+            </div>
+            <div id="game" className={classes.gameWrapper}></div>
+        </div>
     );
 };
 

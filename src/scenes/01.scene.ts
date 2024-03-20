@@ -92,20 +92,20 @@ export class Level01Scene extends Phaser.Scene {
         });
 
         // Вывод координат игрока
-        this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
+        // this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
         // Выводим сколько раз попадали по игроку и по врагам
-        this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
-        this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
+        // this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
+        // this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
     }
 
     update(time) {
         // Передвижение игрока
         playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
         // Обновление координат игрока
-        playerComposition.updatePlayerCoords(this.playerCoords, this.player);
+        // playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Обновляем количество смертей игрока и врагов
-        playerComposition.updatePlayerDeath(this.deathTest, this.deaths);
-        enemiesComposition.updateEnemiesDeath(this.killedEnemiesText, this.killedEnemiesNumber, this.sets.length);
+        // playerComposition.updatePlayerDeath(this.deathTest, this.deaths);
+        // enemiesComposition.updateEnemiesDeath(this.killedEnemiesText, this.killedEnemiesNumber, this.sets.length);
         // Передвижение врага и реакция на игрока
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
