@@ -1,7 +1,8 @@
 import {action, makeObservable, observable} from "mobx";
 
 export class ResourcesStore {
-    fuel: number = 0;
+    maxFuel: number = 100;
+    fuel: number = 100;
     rockets: number = 0;
     coins: number = 0;
 
@@ -14,6 +15,10 @@ export class ResourcesStore {
             setRockets: action,
             setCoins: action,
         })
+    }
+
+    get fuelPercentage(): number {
+        return this.fuel / (this.maxFuel / 100);
     }
 
     setFuel(value: number) {
