@@ -4,7 +4,7 @@ export class ResourcesStore {
     maxFuel: number = 100;
     fuel: number = 100;
     rockets: number = 15;
-    coins: number = 0;
+    coins: number = 500;
 
     constructor() {
         makeObservable(this, {

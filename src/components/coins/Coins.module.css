@@ -1,0 +1,11 @@
+.coins {
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+.coinsNumber {
+    font-size: 32px;
+    font-weight: bold;
+    color: #d39b26;
+}
