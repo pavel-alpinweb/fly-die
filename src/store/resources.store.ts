@@ -1,4 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
+import {FUEL_CONSUMPTION} from "../configs/gameplay.config.ts";
 
 export class ResourcesStore {
     maxFuel: number = 100;
@@ -11,7 +12,7 @@ export class ResourcesStore {
             fuel: observable,
             rockets: observable,
             coins: observable,
-            setFuel: action,
+            decreaseFuel: action,
             setRockets: action,
             setCoins: action,
         })
@@ -21,8 +22,8 @@ export class ResourcesStore {
         return this.fuel / (this.maxFuel / 100);
     }
 
-    setFuel(value: number) {
-        this.fuel = value;
+    decreaseFuel() {
+        this.fuel -= FUEL_CONSUMPTION;
     }
 
     setRockets(value: number) {
