@@ -10,7 +10,7 @@ import CoinsComponent from "../../components/coins/Coins.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
 const GameScreen = observer(() => {
-    const resources = {
+    const resources: Resources = {
         fuel: resourcesStore.fuel,
         rockets: resourcesStore.rockets,
         coins: resourcesStore.rockets,
