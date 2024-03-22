@@ -12,6 +12,8 @@ import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
 import {enemiesComposition} from "../compositions/enemies.composition.ts";
 import {weaponComposition} from "../compositions/weapon.composition.ts";
+import TimerEvent = Phaser.Time.TimerEvent;
+import {ResourcesComposition} from "../compositions/resources.composition.ts";
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -27,6 +29,7 @@ export class Level01Scene extends Phaser.Scene {
     private deathTest!: Phaser.GameObjects.Text;
     private killedEnemiesText!: Phaser.GameObjects.Text;
     private killedEnemiesNumber = 0;
+    private fuelConsumption!: TimerEvent;
 
     constructor() {
         super();
@@ -96,6 +99,9 @@ export class Level01Scene extends Phaser.Scene {
         // Выводим сколько раз попадали по игроку и по врагам
         // this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
         // this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
+
+        //Создаем таймер для расхода топлива
+        this.fuelConsumption = ResourcesComposition.initFuelConsumption(this);
     }
 
     update(time) {
