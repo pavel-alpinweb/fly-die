@@ -6,7 +6,7 @@ export const ResourcesComposition = {
         return scene.time.addEvent({
             paused: true,
             delay: 100,
-            startAt: 100,
+            startAt: 1000,
             callback: () => {
                 EventBus.emit('decrease-fuel');
             },
