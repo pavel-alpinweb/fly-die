@@ -1,5 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import {FUEL_CONSUMPTION} from "../configs/gameplay.config.ts";
+import {EventBus} from "../utils/EventBus.ts";
 
 export class ResourcesStore {
     maxFuel: number = 100;
@@ -25,6 +26,7 @@ export class ResourcesStore {
     decreaseFuel() {
         if (this.fuel > 0) {
             this.fuel -= FUEL_CONSUMPTION;
+            EventBus.emit('set-fuel', this.fuel);
         }
     }
 

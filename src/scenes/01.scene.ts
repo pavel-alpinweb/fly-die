@@ -14,6 +14,15 @@ import {enemiesComposition} from "../compositions/enemies.composition.ts";
 import {weaponComposition} from "../compositions/weapon.composition.ts";
 import TimerEvent = Phaser.Time.TimerEvent;
 import {ResourcesComposition} from "../compositions/resources.composition.ts";
+import {EventBus} from "../utils/EventBus.ts";
+
+declare global {
+    interface Resources {
+        fuel: number,
+        rockets: number,
+        coins: number,
+    }
+}
 
 export class Level01Scene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
@@ -30,9 +39,11 @@ export class Level01Scene extends Phaser.Scene {
     private killedEnemiesText!: Phaser.GameObjects.Text;
     private killedEnemiesNumber = 0;
     private fuelConsumption!: TimerEvent;
+    private readonly resources!: Resources;
 
-    constructor() {
+    constructor(resources: Resources) {
         super();
+        this.resources = resources;
     }
 
     preload() {
@@ -102,11 +113,14 @@ export class Level01Scene extends Phaser.Scene {
 
         //Создаем таймер для расхода топлива
         this.fuelConsumption = ResourcesComposition.initFuelConsumption(this);
+        EventBus.on('set-fuel', (fuel: number) => {
+            this.resources.fuel = fuel;
+        })
     }
 
     update(time) {
         // Передвижение игрока
-        playerComposition.movePlayer(this.player, this.smoke, this.layer, this.fuelConsumption, this);
+        playerComposition.movePlayer(this.player, this.smoke, this.layer, this.fuelConsumption, this.resources.fuel, this);
         // Обновление координат игрока
         // playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Обновляем количество смертей игрока и врагов

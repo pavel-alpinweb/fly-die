@@ -10,8 +10,13 @@ import CoinsComponent from "../../components/coins/Coins.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
 const GameScreen = observer(() => {
+    const resources = {
+        fuel: resourcesStore.fuel,
+        rockets: resourcesStore.rockets,
+        coins: resourcesStore.rockets,
+    };
     useEffect(() => {
-        useLevelOneLevel();
+        useLevelOneLevel(resources);
         EventBus.on('decrease-fuel', () => {
             resourcesStore.decreaseFuel();
         })

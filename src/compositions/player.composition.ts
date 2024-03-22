@@ -161,6 +161,7 @@ export const playerComposition = {
         smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
         layer: Phaser.Tilemaps.TilemapLayer,
         fuelTimer: Phaser.Time.TimerEvent,
+        fuel: number,
         scene: Phaser.Scene
     ): void {
 
@@ -181,7 +182,7 @@ export const playerComposition = {
             smoke.x = player.x - SMOKE_POSITION_MARGIN.LEFT
         }
 
-        if (cursors.up.isDown || keys.w.isDown) {
+        if ((cursors.up.isDown || keys.w.isDown) && fuel > 0) {
             player.setVelocityY(PLAYER_FLY_VELOCITY);
             smoke.setVelocityY(PLAYER_FLY_VELOCITY);
             player.anims.play('fly', true);
