@@ -23,7 +23,9 @@ export class ResourcesStore {
     }
 
     decreaseFuel() {
-        this.fuel -= FUEL_CONSUMPTION;
+        if (this.fuel > 0) {
+            this.fuel -= FUEL_CONSUMPTION;
+        }
     }
 
     setRockets(value: number) {

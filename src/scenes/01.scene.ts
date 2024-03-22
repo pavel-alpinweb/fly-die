@@ -106,7 +106,7 @@ export class Level01Scene extends Phaser.Scene {
 
     update(time) {
         // Передвижение игрока
-        playerComposition.movePlayer(this.player, this.smoke, this.layer, this);
+        playerComposition.movePlayer(this.player, this.smoke, this.layer, this.fuelConsumption, this);
         // Обновление координат игрока
         // playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Обновляем количество смертей игрока и врагов

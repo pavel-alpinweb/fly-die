@@ -15,4 +15,5 @@
 
 .fuelBar {
     height: 50%;
+    transition: width 0.3s linear;
 }

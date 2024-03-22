@@ -154,9 +154,15 @@ export const playerComposition = {
         }, this);
     },
 
-    movePlayer(player: Phaser.Physics.Arcade.Image & {
+    movePlayer(
+        player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
-    }, smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, layer: Phaser.Tilemaps.TilemapLayer, scene: Phaser.Scene): void {
+    },
+        smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        layer: Phaser.Tilemaps.TilemapLayer,
+        fuelTimer: Phaser.Time.TimerEvent,
+        scene: Phaser.Scene
+    ): void {
 
 
         scene.physics.collide(player, layer);
@@ -181,6 +187,7 @@ export const playerComposition = {
             player.anims.play('fly', true);
             smoke.visible = true;
             smoke.anims.play('jetpack-smoke', true);
+            fuelTimer.paused = false;
         } else if ((cursors.right.isDown || keys.d.isDown) && !player.body.blocked.down) {
             player.setVelocityX(PLAYER_JUMP_VELOCITY);
             smoke.setVelocityX(PLAYER_JUMP_VELOCITY);
@@ -188,18 +195,21 @@ export const playerComposition = {
             player.anims.play('jump', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.right.isDown || keys.d.isDown) && player.body.blocked.down) {
             player.setVelocityX(PLAYER_WALK_VELOCITY);
             player.flipX = false;
             player.anims.play('walk', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.left.isDown || keys.a.isDown) && player.body.blocked.down) {
             player.setVelocityX(-PLAYER_WALK_VELOCITY);
             player.flipX = true;
             player.anims.play('walk', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.left.isDown || keys.a.isDown) && !player.body.blocked.down) {
             player.setVelocityX(-PLAYER_JUMP_VELOCITY);
             smoke.setVelocityX(-PLAYER_JUMP_VELOCITY);
@@ -207,16 +217,19 @@ export const playerComposition = {
             player.anims.play('jump', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if (!player.body.blocked.down) {
             player.setVelocityX(0);
             smoke.setVelocityX(0);
             player.anims.play('jump', true);
             smoke.visible = false;
+            fuelTimer.paused = true;
         } else {
             player.setVelocityX(0);
             smoke.setVelocityX(0);
             player.anims.play('idle', true);
             smoke.visible = false;
+            fuelTimer.paused = true;
         }
     }
 }

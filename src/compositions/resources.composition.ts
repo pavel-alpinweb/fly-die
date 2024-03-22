@@ -5,7 +5,8 @@ export const ResourcesComposition = {
     initFuelConsumption(scene: Phaser.Scene) {
         return scene.time.addEvent({
             paused: true,
-            delay: 500,
+            delay: 100,
+            startAt: 100,
             callback: () => {
                 EventBus.emit('decrease-fuel');
             },
