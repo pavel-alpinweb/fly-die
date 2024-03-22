@@ -91,7 +91,7 @@ export class Level01Scene extends Phaser.Scene {
         );
 
         // Стрельба по врагу и наоборот, стрельба по платформам
-        playerComposition.fire(this, this.bullets, this.layer, this.player);
+        playerComposition.fire(this, this.bullets, this.layer, this.player, this.resources);
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
@@ -115,7 +115,10 @@ export class Level01Scene extends Phaser.Scene {
         this.fuelConsumption = ResourcesComposition.initFuelConsumption(this);
         EventBus.on('set-fuel', (fuel: number) => {
             this.resources.fuel = fuel;
-        })
+        });
+        EventBus.on('set-rockets', (rockets) => {
+            this.resources.rockets = rockets;
+        });
     }
 
     update(time) {

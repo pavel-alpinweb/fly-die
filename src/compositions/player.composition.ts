@@ -8,6 +8,7 @@ import {
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
+import {EventBus} from "../utils/EventBus.ts";
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -132,12 +133,19 @@ export const playerComposition = {
         });
     },
 
-    fire(scene: Phaser.Scene, bullets: Phaser.Physics.Arcade.Group, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
-        body: Phaser.Physics.Arcade.Body
-    }): Phaser.Physics.Arcade.Group {
+    fire(
+        scene: Phaser.Scene,
+        bullets: Phaser.Physics.Arcade.Group,
+        layer: Phaser.Tilemaps.TilemapLayer,
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        resources: Resources,
+    ): Phaser.Physics.Arcade.Group {
         const spaceBar = scene.input.keyboard?.addKey('space');
         spaceBar.on('up', () => {
-            weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
+            if (resources.rockets > 0) {
+                EventBus.emit('remove-rocket');
+                weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
+            }
         });
     },
 

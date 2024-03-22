@@ -5,7 +5,7 @@ import {EventBus} from "../utils/EventBus.ts";
 export class ResourcesStore {
     maxFuel: number = 100;
     fuel: number = 100;
-    rockets: number = 15;
+    rockets: number = 10;
     coins: number = 500;
 
     constructor() {
@@ -14,7 +14,7 @@ export class ResourcesStore {
             rockets: observable,
             coins: observable,
             decreaseFuel: action,
-            setRockets: action,
+            removeRocket: action,
             setCoins: action,
         })
     }
@@ -30,8 +30,11 @@ export class ResourcesStore {
         }
     }
 
-    setRockets(value: number) {
-        this.rockets = value;
+    removeRocket() {
+        if (this.rockets > 0) {
+            this.rockets -= 1;
+            EventBus.emit('set-rockets', this.rockets);
+        }
     }
 
     setCoins(value: number) {

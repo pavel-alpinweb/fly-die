@@ -19,7 +19,10 @@ const GameScreen = observer(() => {
         useLevelOneLevel(resources);
         EventBus.on('decrease-fuel', () => {
             resourcesStore.decreaseFuel();
-        })
+        });
+        EventBus.on('remove-rocket', () => {
+            resourcesStore.removeRocket();
+        });
     }, []);
 
     return (
