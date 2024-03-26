@@ -14,6 +14,8 @@ export const resourcesComposition = {
                 zeroPad: 0,
                 suffix: '.png',
             }),
+            frameRate: 5,
+            repeat: -1,
         });
     },
     initFuelConsumption(scene: Phaser.Scene) {
