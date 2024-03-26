@@ -13,7 +13,7 @@ import {playerComposition} from "../compositions/player.composition.ts";
 import {enemiesComposition} from "../compositions/enemies.composition.ts";
 import {weaponComposition} from "../compositions/weapon.composition.ts";
 import TimerEvent = Phaser.Time.TimerEvent;
-import {ResourcesComposition} from "../compositions/resources.composition.ts";
+import {resourcesComposition} from "../compositions/resources.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
 
 declare global {
@@ -55,6 +55,7 @@ export class Level01Scene extends Phaser.Scene {
         // Загрузка ресурсов игрока и врагов
         playerComposition.uploadPlayerAssets(this);
         enemiesComposition.uploadEnemiesAssets(this);
+        resourcesComposition.uploadResourcesAssets(this);
     }
 
     create() {
@@ -74,6 +75,7 @@ export class Level01Scene extends Phaser.Scene {
         // Создание анимаций
         playerComposition.initPlayerAnimations(this);
         enemiesComposition.initEnemiesAnimations(this);
+        resourcesComposition.initResourcesAnimations(this);
 
         // Создание визоров, врагов и пуль
         this.enemies = this.physics.add.group();
@@ -112,7 +114,7 @@ export class Level01Scene extends Phaser.Scene {
         // this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
 
         //Создаем таймер для расхода топлива
-        this.fuelConsumption = ResourcesComposition.initFuelConsumption(this);
+        this.fuelConsumption = resourcesComposition.initFuelConsumption(this);
         EventBus.on('set-fuel', (resources: Resources) => {
             this.resources = resources;
         });
