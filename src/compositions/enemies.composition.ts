@@ -140,11 +140,10 @@ export const enemiesComposition = {
         }
     },
 
-    explosionOnPlayer(player, bullet) {
+    explosionOnPlayer(player, bullet, coins: Phaser.Physics.Arcade.Group) {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
-        EventBus.emit('remove-coin');
     },
 
     showEnemiesDeath(scene: Phaser.Scene, deaths: number, all :number): Phaser.GameObjects.Text  {

@@ -27,4 +27,9 @@ export const resourcesComposition = {
             loop: true,
         });
     },
+    lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group) {
+        const coin = coins.create(player.x, player.y, 'coin');
+        coin.anims.play('coin', true);
+        EventBus.emit('remove-coin');
+    },
 };

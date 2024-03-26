@@ -40,6 +40,7 @@ export class Level01Scene extends Phaser.Scene {
     private killedEnemiesNumber = 0;
     private fuelConsumption!: TimerEvent;
     private resources!: Resources;
+    private coins!: Phaser.Physics.Arcade.Group;
 
     constructor(resources: Resources) {
         super();
@@ -92,6 +93,10 @@ export class Level01Scene extends Phaser.Scene {
             this.bullets
         );
 
+        // Создание монет
+        this.coins = this.physics.add.group();
+        this.physics.add.collider(this.coins, this.layer);
+
         // Стрельба по врагу и наоборот, стрельба по платформам
         playerComposition.fire(this, this.bullets, this.layer, this.player, this.resources);
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
@@ -103,7 +108,7 @@ export class Level01Scene extends Phaser.Scene {
             });
         }
         this.physics.add.collider(this.bullets, this.player, null, (...args) => {
-            this.deaths += 1;
+            resourcesComposition.lostCoins(this.player, this.coins);
             enemiesComposition.explosionOnPlayer(...args);
         });
 
