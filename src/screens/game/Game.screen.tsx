@@ -23,6 +23,9 @@ const GameScreen = observer(() => {
         EventBus.on('remove-rocket', () => {
             resourcesStore.removeRocket();
         });
+        EventBus.on('remove-coin', () => {
+            resourcesStore.removeCoin();
+        })
     }, []);
 
     return (

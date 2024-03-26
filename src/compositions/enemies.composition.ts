@@ -7,6 +7,7 @@ import {
     PLAYER_SIZE
 } from "../configs/gameplay.config.ts";
 import {weaponComposition} from "./weapon.composition.ts";
+import {EventBus} from "../utils/EventBus.ts";
 
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
@@ -143,6 +144,7 @@ export const enemiesComposition = {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
+        EventBus.emit('remove-coin');
     },
 
     showEnemiesDeath(scene: Phaser.Scene, deaths: number, all :number): Phaser.GameObjects.Text  {
