@@ -6,7 +6,7 @@ export class ResourcesStore {
     maxFuel: number = 100;
     fuel: number = 100;
     rockets: number = 10;
-    coins: number = 500;
+    coins: number = 5;
 
     constructor() {
         makeObservable(this, {
@@ -15,7 +15,7 @@ export class ResourcesStore {
             coins: observable,
             decreaseFuel: action,
             removeRocket: action,
-            setCoins: action,
+            removeCoin: action,
         })
     }
 
@@ -26,19 +26,29 @@ export class ResourcesStore {
     decreaseFuel() {
         if (this.fuel > 0) {
             this.fuel -= FUEL_CONSUMPTION;
-            EventBus.emit('set-fuel', this.fuel);
+            EventBus.emit('set-resources', {
+                fuel: this.fuel,
+                rockets: this.rockets,
+                coins: this.coins,
+            });
         }
     }
 
     removeRocket() {
         if (this.rockets > 0) {
             this.rockets -= 1;
-            EventBus.emit('set-rockets', this.rockets);
+            EventBus.emit('set-resources', {
+                fuel: this.fuel,
+                rockets: this.rockets,
+                coins: this.coins,
+            });
         }
     }
 
-    setCoins(value: number) {
-        this.coins = value;
+    removeCoin() {
+        if (this.coins > 0) {
+            this.coins -= 1;
+        }
     }
 }
 

@@ -30,16 +30,16 @@ export class Level01Scene extends Phaser.Scene {
     private layer!: Phaser.Tilemaps.TilemapLayer
     private smoke!: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }
     private bullets!: Phaser.Physics.Arcade.Group;
-    private playerCoords!: Phaser.GameObjects.Text;
+    // private playerCoords!: Phaser.GameObjects.Text;
     private enemies!: Phaser.Physics.Arcade.Group;
     private visors!: Phaser.Physics.Arcade.StaticGroup;
     private sets!: [];
     private deaths = 0;
-    private deathTest!: Phaser.GameObjects.Text;
-    private killedEnemiesText!: Phaser.GameObjects.Text;
+    // private deathTest!: Phaser.GameObjects.Text;
+    // private killedEnemiesText!: Phaser.GameObjects.Text;
     private killedEnemiesNumber = 0;
     private fuelConsumption!: TimerEvent;
-    private readonly resources!: Resources;
+    private resources!: Resources;
 
     constructor(resources: Resources) {
         super();
@@ -113,11 +113,8 @@ export class Level01Scene extends Phaser.Scene {
 
         //Создаем таймер для расхода топлива
         this.fuelConsumption = ResourcesComposition.initFuelConsumption(this);
-        EventBus.on('set-fuel', (fuel: number) => {
-            this.resources.fuel = fuel;
-        });
-        EventBus.on('set-rockets', (rockets) => {
-            this.resources.rockets = rockets;
+        EventBus.on('set-fuel', (resources: Resources) => {
+            this.resources = resources;
         });
     }
 
