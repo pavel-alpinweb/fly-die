@@ -108,7 +108,7 @@ export class Level01Scene extends Phaser.Scene {
             });
         }
         this.physics.add.collider(this.bullets, this.player, null, (...args) => {
-            resourcesComposition.lostCoins(this.player, this.coins);
+            resourcesComposition.lostCoins(this.player, this.coins, this);
             enemiesComposition.explosionOnPlayer(...args);
         });
 

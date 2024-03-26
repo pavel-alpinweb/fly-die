@@ -29,10 +29,15 @@ export const resourcesComposition = {
             loop: true,
         });
     },
-    lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group) {
+    lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group, scene: Phaser.Scene) {
         const coin = coins.create(player.x, player.y, 'coin');
-        coin.setBounce(0.9);
+        coin.setBounce(0.5);
         coin.anims.play('coin', true);
+        if (player.flipX) {
+            coin.body.setVelocity(1000, 1000);
+        } else {
+            coin.body.setVelocity(-1000, -1000);
+        }
         EventBus.emit('remove-coin');
     },
 };
