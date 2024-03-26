@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import {EventBus} from "../utils/EventBus.ts";
+import {COIN_VELOCITY} from "../configs/gameplay.config.ts";
 
 export const resourcesComposition = {
     uploadResourcesAssets(scene: Phaser.Scene) {
@@ -34,9 +35,9 @@ export const resourcesComposition = {
         coin.setBounce(0.5);
         coin.anims.play('coin', true);
         if (player.flipX) {
-            coin.body.setVelocity(1000, 1000);
+            coin.body.setVelocity(COIN_VELOCITY, COIN_VELOCITY);
         } else {
-            coin.body.setVelocity(-1000, -1000);
+            coin.body.setVelocity(-COIN_VELOCITY, -COIN_VELOCITY);
         }
         EventBus.emit('remove-coin');
     },
