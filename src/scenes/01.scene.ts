@@ -108,7 +108,7 @@ export class Level01Scene extends Phaser.Scene {
             });
         }
         this.physics.add.collider(this.bullets, this.player, null, (...args) => {
-            resourcesComposition.lostCoins(this.player, this.coins, this);
+            resourcesComposition.lostCoins(this.player, this.coins, this.resources.coins);
             enemiesComposition.explosionOnPlayer(...args);
         });
 
@@ -120,8 +120,10 @@ export class Level01Scene extends Phaser.Scene {
 
         //Создаем таймер для расхода топлива
         this.fuelConsumption = resourcesComposition.initFuelConsumption(this);
-        EventBus.on('set-fuel', (resources: Resources) => {
-            this.resources = resources;
+        EventBus.on('set-resources', (resources: Resources) => {
+            this.resources.coins = resources.coins;
+            this.resources.fuel = resources.fuel;
+            this.resources.rockets = resources.rockets;
         });
     }
 

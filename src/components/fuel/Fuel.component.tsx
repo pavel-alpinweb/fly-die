@@ -22,12 +22,14 @@ const FuelComponent = observer(() => {
             <div className={classes.fuelIcon}>
                 <img width={50} height={50} src="/assets/ui/fuel.png" alt="fuel"/>
             </div>
-            <div className={classes.fuelBar} style={
-                {
-                    width: `${resourcesStore.fuelPercentage}%`,
-                    background: color,
-                }
-            }></div>
+            <div className={classes.fuelBarWrapper}>
+                <div className={classes.fuelBar} style={
+                    {
+                        width: `${resourcesStore.fuelPercentage}%`,
+                        background: color,
+                    }
+                }></div>
+            </div>
         </div>
     );
 });

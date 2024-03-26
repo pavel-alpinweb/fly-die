@@ -48,6 +48,11 @@ export class ResourcesStore {
     removeCoin() {
         if (this.coins > 0) {
             this.coins -= 1;
+            EventBus.emit('set-resources', {
+                fuel: this.fuel,
+                rockets: this.rockets,
+                coins: this.coins,
+            });
         }
     }
 }
