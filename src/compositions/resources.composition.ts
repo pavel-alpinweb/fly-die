@@ -31,6 +31,7 @@ export const resourcesComposition = {
     },
     lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group) {
         const coin = coins.create(player.x, player.y, 'coin');
+        coin.setBounce(0.9);
         coin.anims.play('coin', true);
         EventBus.emit('remove-coin');
     },
