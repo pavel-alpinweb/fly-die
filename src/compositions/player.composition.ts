@@ -17,6 +17,7 @@ export const playerComposition = {
         scene.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
         scene.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
         scene.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
+        scene.load.atlas('player-death', '/assets/player/player-death.png', '/assets/player/player-death.json');
         scene.load.atlas('jetpack-smoke', '/assets/player/jetpack-smoke.png', '/assets/player/jetpack-smoke.json');
         scene.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
     },
@@ -131,6 +132,17 @@ export const playerComposition = {
             frameRate: 10,
             repeat: -1
         });
+        scene.anims.create({
+            key: 'game-over',
+            frames: scene.anims.generateFrameNames('player-death', {
+                start: 1,
+                end: 3,
+                zeroPad: 0,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: 1
+        });
     },
 
     fire(
@@ -138,15 +150,9 @@ export const playerComposition = {
         bullets: Phaser.Physics.Arcade.Group,
         layer: Phaser.Tilemaps.TilemapLayer,
         player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
-        resources: Resources,
     ): Phaser.Physics.Arcade.Group {
-        const spaceBar = scene.input.keyboard?.addKey('space');
-        spaceBar.on('up', () => {
-            if (resources.rockets > 0) {
-                EventBus.emit('remove-rocket');
-                weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
-            }
-        });
+        EventBus.emit('remove-rocket');
+        weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
     },
 
     explosionOnEnemy(enemy, bullet, event) {
@@ -160,6 +166,18 @@ export const playerComposition = {
         enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
             enemy.destroy();
         }, this);
+    },
+
+    gameOver(
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        fuelTimer: Phaser.Time.TimerEvent,
+    ) {
+        player.setVelocity(0, 0);
+        player.anims.play('game-over', true);
+        fuelTimer.paused = true;
+        smoke.visible = false;
+        smoke.setVelocityY(0);
     },
 
     movePlayer(

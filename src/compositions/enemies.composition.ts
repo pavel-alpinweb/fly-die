@@ -7,7 +7,6 @@ import {
     PLAYER_SIZE
 } from "../configs/gameplay.config.ts";
 import {weaponComposition} from "./weapon.composition.ts";
-import {EventBus} from "../utils/EventBus.ts";
 
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {

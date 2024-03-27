@@ -41,6 +41,7 @@ export class Level01Scene extends Phaser.Scene {
     private fuelConsumption!: TimerEvent;
     private resources!: Resources;
     private coins!: Phaser.Physics.Arcade.Group;
+    private isGameOver = false;
 
     constructor(resources: Resources) {
         super();
@@ -98,7 +99,13 @@ export class Level01Scene extends Phaser.Scene {
         this.physics.add.collider(this.coins, this.layer);
 
         // Стрельба по врагу и наоборот, стрельба по платформам
-        playerComposition.fire(this, this.bullets, this.layer, this.player, this.resources);
+        const spaceBar = this.input.keyboard?.addKey('space');
+        spaceBar.on('up', () => {
+            if (this.resources.rockets > 0 && !this.isGameOver) {
+                playerComposition.fire(this, this.bullets, this.layer, this.player);
+            }
+        });
+
         this.physics.add.collider(this.bullets, this.layer, null, platformComposition.explosionOnPlatform);
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
@@ -107,7 +114,11 @@ export class Level01Scene extends Phaser.Scene {
             });
         }
         this.physics.add.collider(this.bullets, this.player, null, (...args) => {
-            resourcesComposition.lostCoins(this.player, this.coins, this.resources.coins);
+            if (this.resources.coins === 0) {
+                this.isGameOver = true;
+            } else {
+                resourcesComposition.lostCoins(this.player, this.coins, this.resources.coins);
+            }
             enemiesComposition.explosionOnPlayer(...args);
         });
 
@@ -127,8 +138,12 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     update(time) {
-        // Передвижение игрока
-        playerComposition.movePlayer(this.player, this.smoke, this.layer, this.fuelConsumption, this.resources.fuel, this);
+        // Передвижение игрока или смерть
+        if (!this.isGameOver) {
+            playerComposition.movePlayer(this.player, this.smoke, this.layer, this.fuelConsumption, this.resources.fuel, this);
+        } else {
+            playerComposition.gameOver(this.player, this.smoke, this.fuelConsumption);
+        }
         // Обновление координат игрока
         // playerComposition.updatePlayerCoords(this.playerCoords, this.player);
         // Обновляем количество смертей игрока и врагов
