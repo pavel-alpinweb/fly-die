@@ -31,7 +31,6 @@ export const resourcesComposition = {
         });
     },
     lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group, coinsNumber: number) {
-        console.log(coinsNumber );
         if (coinsNumber > 0) {
             const coin = coins.create(player.x, player.y, 'coin');
             coin.setBounce(0.5);

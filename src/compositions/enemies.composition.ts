@@ -140,7 +140,7 @@ export const enemiesComposition = {
         }
     },
 
-    explosionOnPlayer(player, bullet, coins: Phaser.Physics.Arcade.Group) {
+    explosionOnPlayer(player, bullet) {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
