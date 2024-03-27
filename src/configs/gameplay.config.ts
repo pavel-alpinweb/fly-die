@@ -1,5 +1,5 @@
 /* BASE ENGINE SETTINGS */
-export const LEVEL_GRAVITY = 1000;
+export const LEVEL_GRAVITY = 1500;
 export const LEVEL_HEIGHT = 1119;
 
 /* TILES SETTINGS */
@@ -35,7 +35,7 @@ export const BULLETS_VELOCITY = {
 export const ENEMY_FIRE_DELAY = 300;
 export const ENEMY_START_FIRE_DELAY = 300;
 export const ENEMY_WALK_VELOCITY = 300;
-export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 3;
+export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 export const FUEL_CONSUMPTION = 1;
 export const COIN_VELOCITY = 2000;
 
