@@ -29,7 +29,7 @@ export const PLAYER_JUMP_VELOCITY = 400;
 /* GAMEPLAY SETTINGS */
 export const PLATFORM_REBOUND_VELOCITY = -500;
 export const BULLETS_VELOCITY = {
-    x: 2000,
+    x: 2500,
     y: -150,
 };
 export const ENEMY_FIRE_DELAY = 300;
