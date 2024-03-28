@@ -36,7 +36,7 @@ export const enemiesComposition = {
                 zeroPad: 0,
                 suffix: '.png',
             }),
-            frameRate: 10,
+            frameRate: 15,
             repeat: 1
         });
     },

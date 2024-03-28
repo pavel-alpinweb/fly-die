@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY,
+    BULLETS_VELOCITY, COIN_BOUNCE,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -155,7 +155,7 @@ export const playerComposition = {
         weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
     },
 
-    explosionOnEnemy(enemy, bullet, event) {
+    explosionOnEnemy(enemy, bullet, event, coins: Phaser.Physics.Arcade.Group) {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
@@ -165,6 +165,9 @@ export const playerComposition = {
         enemy.body.enable = false;
         enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
             enemy.destroy();
+            const coin = coins.create(enemy.x, enemy.y - 200, 'coin');
+            coin.setBounce(COIN_BOUNCE);
+            coin.anims.play('coin', true);
         }, this);
     },
 

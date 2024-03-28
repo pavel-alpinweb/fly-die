@@ -111,7 +111,7 @@ export class Level01Scene extends Phaser.Scene {
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
             this.physics.add.collider(this.bullets, enemy, null, (...args) => {
-                playerComposition.explosionOnEnemy(...args, event);
+                playerComposition.explosionOnEnemy(...args, event, this.coins);
             });
         }
         this.physics.add.collider(this.bullets, this.player, null, (...args) => {
