@@ -37,5 +37,5 @@ export const ENEMY_START_FIRE_DELAY = 300;
 export const ENEMY_WALK_VELOCITY = 300;
 export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 export const FUEL_CONSUMPTION = 1;
-export const COIN_VELOCITY = 2000;
+export const COIN_VELOCITY = 1000;
 
