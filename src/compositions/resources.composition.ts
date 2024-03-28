@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {EventBus} from "../utils/EventBus.ts";
-import {COIN_VELOCITY} from "../configs/gameplay.config.ts";
+import {COIN_BOUNCE, COIN_VELOCITY} from "../configs/gameplay.config.ts";
 
 export const resourcesComposition = {
     uploadResourcesAssets(scene: Phaser.Scene) {
@@ -32,8 +32,8 @@ export const resourcesComposition = {
     },
     lostCoins(player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group, coinsNumber: number) {
         if (coinsNumber > 0) {
-            const coin = coins.create(player.x, player.y, 'coin');
-            coin.setBounce(0.5);
+            const coin = coins.create(player.x, player.y - 200, 'coin');
+            coin.setBounce(COIN_BOUNCE);
             coin.anims.play('coin', true);
             if (player.flipX) {
                 coin.body.setVelocity(COIN_VELOCITY, COIN_VELOCITY);
@@ -42,5 +42,11 @@ export const resourcesComposition = {
             }
             EventBus.emit('remove-coin');
         }
+    },
+    collectCoin(scene: Phaser.Scene, player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, coins: Phaser.Physics.Arcade.Group) {
+        scene.physics.add.overlap(player, coins, (player, coin) => {
+            coin.disableBody(true, true);
+            EventBus.emit('collect-coin');
+        }, null);
     },
 };

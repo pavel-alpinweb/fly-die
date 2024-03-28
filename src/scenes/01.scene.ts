@@ -94,9 +94,10 @@ export class Level01Scene extends Phaser.Scene {
             this.bullets
         );
 
-        // Создание монет
+        // Создание и поднятие монет
         this.coins = this.physics.add.group();
         this.physics.add.collider(this.coins, this.layer);
+        resourcesComposition.collectCoin(this, this.player, this.coins);
 
         // Стрельба по врагу и наоборот, стрельба по платформам
         const spaceBar = this.input.keyboard?.addKey('space');

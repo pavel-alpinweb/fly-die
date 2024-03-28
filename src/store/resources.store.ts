@@ -55,6 +55,15 @@ export class ResourcesStore {
             });
         }
     }
+
+    addCoin() {
+        this.coins += 1;
+        EventBus.emit('set-resources', {
+            fuel: this.fuel,
+            rockets: this.rockets,
+            coins: this.coins,
+        });
+    }
 }
 
 export const resourcesStore = new ResourcesStore();

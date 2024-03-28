@@ -25,6 +25,9 @@ const GameScreen = observer(() => {
         });
         EventBus.on('remove-coin', () => {
             resourcesStore.removeCoin();
+        });
+        EventBus.on('collect-coin', () => {
+            resourcesStore.addCoin();
         })
     }, []);
 
