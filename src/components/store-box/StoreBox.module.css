@@ -2,6 +2,9 @@
     padding: 10px;
     background-color: #fff5c2;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     :after {
         content: '';
@@ -33,7 +36,7 @@
 .buyBtn {
     position: relative;
     display: inline-block;
-    height: 40px;
+    height: 30px;
     cursor: pointer;
     border: none;
     background: #efe921;
@@ -41,7 +44,7 @@
     color: #603d11;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 16px;
     font-family: inherit;
     :after {
         content: '';

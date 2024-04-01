@@ -42,12 +42,12 @@ const StoreBoxComponent = ({type, keyButton}) => {
 
     return (
         <div className={classes.storeBox}>
-            { icon() ? <img width={80} height={80} src={`/assets/ui/${icon()}`} alt="bullet"/> : '' }
+            { icon() ? <img width={40} height={40} src={`/assets/ui/${icon()}`} alt="bullet"/> : '' }
             <div
                 className={classes.price}
             >
                 <div className={classes.priceValue}>1</div>
-                <img width={40} src="/assets/ui/coin.png" alt="coin"/>
+                <img width={30} src="/assets/ui/coin.png" alt="coin"/>
             </div>
             <button
                 className={classes.buyBtn}
