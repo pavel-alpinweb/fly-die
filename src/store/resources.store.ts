@@ -64,6 +64,18 @@ export class ResourcesStore {
             coins: this.coins,
         });
     }
+
+    buyFuel() {
+        if (this.coins >= 1) {
+            this.fuel = 100;
+        }
+    }
+
+    buyRockets() {
+        if (this.coins >= 1) {
+            this.rockets += 1;
+        }
+    }
 }
 
 export const resourcesStore = new ResourcesStore();
