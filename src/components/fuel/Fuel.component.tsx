@@ -7,11 +7,11 @@ const FuelComponent = observer(() => {
 
     const color = useMemo(() => {
         let color = '';
-        if (resourcesStore.fuelPercentage > 60) {
+        if (resourcesStore.fuelPercentage >= 60) {
             color = '#95c11f';
-        } else if (resourcesStore.fuelPercentage > 40 && resourcesStore.fuelPercentage < 60) {
+        } else if (resourcesStore.fuelPercentage >= 40 && resourcesStore.fuelPercentage <= 59) {
             color = '#ffff00';
-        } else if (resourcesStore.fuelPercentage < 40) {
+        } else if (resourcesStore.fuelPercentage <= 39) {
             color = '#8a0000';
         }
         return color;
