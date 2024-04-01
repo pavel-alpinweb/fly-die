@@ -36,7 +36,7 @@ export const enemiesComposition = {
                 zeroPad: 0,
                 suffix: '.png',
             }),
-            frameRate: 10,
+            frameRate: 15,
             repeat: 1
         });
     },
@@ -94,10 +94,6 @@ export const enemiesComposition = {
         return enemySets;
     },
 
-    initEnemyVisor(scene: Phaser.Scene, enemy: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }) {
-        return scene.physics.add.staticImage(950, enemy.y, 'visor').setDisplaySize(550, 5).setAlpha(0);
-    },
-
     moveEnemy(enemy: Phaser.GameObjects.GameObject, scene: Phaser.Scene) {
         enemy.anims.play('soldier-run', true);
 
@@ -143,14 +139,6 @@ export const enemiesComposition = {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
-    },
-
-    showEnemiesDeath(scene: Phaser.Scene, deaths: number, all :number): Phaser.GameObjects.Text  {
-        return scene.add.text(16, 100, `Enemies deaths: ${deaths} / ${all}`, { fontSize: '32px', fill: '#000' }).setScrollFactor(0 , 0);
-    },
-
-    updateEnemiesDeath(text: Phaser.GameObjects.Text, deaths: number, all: number) {
-        text.setText(`Enemies deaths: ${deaths} / ${all}`);
     },
 
     checkOverlap(spriteA, spriteB) {

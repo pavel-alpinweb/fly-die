@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY,
+    BULLETS_VELOCITY, COIN_BOUNCE,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -8,6 +8,7 @@ import {
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
+import {EventBus} from "../utils/EventBus.ts";
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -16,6 +17,7 @@ export const playerComposition = {
         scene.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
         scene.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
         scene.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
+        scene.load.atlas('player-death', '/assets/player/player-death.png', '/assets/player/player-death.json');
         scene.load.atlas('jetpack-smoke', '/assets/player/jetpack-smoke.png', '/assets/player/jetpack-smoke.json');
         scene.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
     },
@@ -41,18 +43,10 @@ export const playerComposition = {
         return text;
     },
 
-    showPlayerDeath(scene: Phaser.Scene, deaths: number): Phaser.GameObjects.Text  {
-        return scene.add.text(16, 60, `Players deaths: ${deaths}`, { fontSize: '32px', fill: '#000' }).setScrollFactor(0 , 0);
-    },
-
     updatePlayerCoords(text: Phaser.GameObjects.Text, player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
     }): void {
         text.setText(`coords: x ${Math.floor(player.x)} / y ${Math.floor(player.y)}`);
-    },
-
-    updatePlayerDeath(text: Phaser.GameObjects.Text, deaths: number) {
-        text.setText(`Players deaths: ${deaths}`);
     },
 
     initPlayerAnimations(scene: Phaser.Scene) {
@@ -130,18 +124,30 @@ export const playerComposition = {
             frameRate: 10,
             repeat: -1
         });
-    },
-
-    fire(scene: Phaser.Scene, bullets: Phaser.Physics.Arcade.Group, layer: Phaser.Tilemaps.TilemapLayer, player: Phaser.Physics.Arcade.Image & {
-        body: Phaser.Physics.Arcade.Body
-    }): Phaser.Physics.Arcade.Group {
-        const spaceBar = scene.input.keyboard?.addKey('space');
-        spaceBar.on('up', () => {
-            weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
+        scene.anims.create({
+            key: 'game-over',
+            frames: scene.anims.generateFrameNames('player-death', {
+                start: 1,
+                end: 3,
+                zeroPad: 0,
+                suffix: '.png'
+            }),
+            frameRate: 10,
+            repeat: 1
         });
     },
 
-    explosionOnEnemy(enemy, bullet, event) {
+    fire(
+        scene: Phaser.Scene,
+        bullets: Phaser.Physics.Arcade.Group,
+        layer: Phaser.Tilemaps.TilemapLayer,
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+    ): Phaser.Physics.Arcade.Group {
+        EventBus.emit('remove-rocket');
+        weaponComposition.fire(scene, bullets, player, true, 'red-bullet');
+    },
+
+    explosionOnEnemy(enemy, bullet, event, coins: Phaser.Physics.Arcade.Group) {
         bullet.setVelocity(0);
         bullet.anims.play('explosion', true);
         bullet.body.enable = false;
@@ -151,12 +157,34 @@ export const playerComposition = {
         enemy.body.enable = false;
         enemy.on(Phaser.Animations.Events.ANIMATION_COMPLETE, function () {
             enemy.destroy();
+            const coin = coins.create(enemy.x, enemy.y - 200, 'coin');
+            coin.setBounce(COIN_BOUNCE);
+            coin.anims.play('coin', true);
         }, this);
     },
 
-    movePlayer(player: Phaser.Physics.Arcade.Image & {
+    gameOver(
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        fuelTimer: Phaser.Time.TimerEvent,
+    ) {
+        player.setVelocity(0, 0);
+        player.anims.play('game-over', true);
+        fuelTimer.paused = true;
+        smoke.visible = false;
+        smoke.setVelocityY(0);
+    },
+
+    movePlayer(
+        player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body
-    }, smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body }, layer: Phaser.Tilemaps.TilemapLayer, scene: Phaser.Scene): void {
+    },
+        smoke: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        layer: Phaser.Tilemaps.TilemapLayer,
+        fuelTimer: Phaser.Time.TimerEvent,
+        fuel: number,
+        scene: Phaser.Scene
+    ): void {
 
 
         scene.physics.collide(player, layer);
@@ -175,12 +203,13 @@ export const playerComposition = {
             smoke.x = player.x - SMOKE_POSITION_MARGIN.LEFT
         }
 
-        if (cursors.up.isDown || keys.w.isDown) {
+        if ((cursors.up.isDown || keys.w.isDown) && fuel > 0) {
             player.setVelocityY(PLAYER_FLY_VELOCITY);
             smoke.setVelocityY(PLAYER_FLY_VELOCITY);
             player.anims.play('fly', true);
             smoke.visible = true;
             smoke.anims.play('jetpack-smoke', true);
+            fuelTimer.paused = false;
         } else if ((cursors.right.isDown || keys.d.isDown) && !player.body.blocked.down) {
             player.setVelocityX(PLAYER_JUMP_VELOCITY);
             smoke.setVelocityX(PLAYER_JUMP_VELOCITY);
@@ -188,18 +217,21 @@ export const playerComposition = {
             player.anims.play('jump', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.right.isDown || keys.d.isDown) && player.body.blocked.down) {
             player.setVelocityX(PLAYER_WALK_VELOCITY);
             player.flipX = false;
             player.anims.play('walk', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.left.isDown || keys.a.isDown) && player.body.blocked.down) {
             player.setVelocityX(-PLAYER_WALK_VELOCITY);
             player.flipX = true;
             player.anims.play('walk', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if ((cursors.left.isDown || keys.a.isDown) && !player.body.blocked.down) {
             player.setVelocityX(-PLAYER_JUMP_VELOCITY);
             smoke.setVelocityX(-PLAYER_JUMP_VELOCITY);
@@ -207,16 +239,19 @@ export const playerComposition = {
             player.anims.play('jump', true);
             smoke.visible = false;
             smoke.setVelocityY(0);
+            fuelTimer.paused = true;
         } else if (!player.body.blocked.down) {
             player.setVelocityX(0);
             smoke.setVelocityX(0);
             player.anims.play('jump', true);
             smoke.visible = false;
+            fuelTimer.paused = true;
         } else {
             player.setVelocityX(0);
             smoke.setVelocityX(0);
             player.anims.play('idle', true);
             smoke.visible = false;
+            fuelTimer.paused = true;
         }
     }
 }

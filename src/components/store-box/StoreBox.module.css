@@ -1,0 +1,60 @@
+.storeBox {
+    padding: 10px;
+    background-color: #fff5c2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    :after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 50%;
+        width: 90%;
+        height: 5px;
+        transform: translateX(-50%);
+        bottom: -5px;
+        background-color: #594903;
+    }
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.priceValue {
+    font-size: 24px;
+    color: #d39b26;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: inherit;
+}
+
+.buyBtn {
+    position: relative;
+    display: inline-block;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    background: #efe921;
+    background-size: 100%;
+    color: #603d11;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: inherit;
+    :after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 50%;
+        width: 85%;
+        height: 5px;
+        transform: translateX(-50%);
+        bottom: -5px;
+        background-color: #111516;
+    }
+}

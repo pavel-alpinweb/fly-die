@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "player-death.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 226,
+				"h": 226
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 22,
+						"w": 114,
+						"h": 108
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 114,
+						"h": 108
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 18,
+						"w": 108,
+						"h": 114
+					},
+					"frame": {
+						"x": 117,
+						"y": 1,
+						"w": 108,
+						"h": 114
+					}
+				},
+				{
+					"filename": "4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 18,
+						"w": 108,
+						"h": 114
+					},
+					"frame": {
+						"x": 1,
+						"y": 111,
+						"w": 108,
+						"h": 114
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 22,
+						"w": 114,
+						"h": 108
+					},
+					"frame": {
+						"x": 111,
+						"y": 117,
+						"w": 114,
+						"h": 108
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e8e859e9beac2aeed4cabfeaf09e9ad2:5cd32f0d0d70e5e11175523a3c0dbd2a:206b8e9780f195e77f0d81316e6ca5a1$"
+	}
+}
