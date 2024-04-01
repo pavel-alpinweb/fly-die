@@ -69,7 +69,7 @@ export class ResourcesStore {
     buyFuel() {
         if (this.coins >= 1 && this.fuel < MAX_FUEL) {
             this.coins -= 1;
-            this.fuel = 100;
+            this.fuel += 50;
             EventBus.emit('set-resources', {
                 fuel: this.fuel,
                 rockets: this.rockets,
