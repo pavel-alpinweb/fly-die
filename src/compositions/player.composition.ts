@@ -9,6 +9,7 @@ import {
 import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
+import GameObject = Phaser.GameObjects.GameObject;
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -185,7 +186,8 @@ export const playerComposition = {
         finishLine[0].setAlpha(0);
         scene.physics.add.existing(finishLine[0], true);
         scene.physics.add.overlap(player, finishLine, () => {
-            coins.createMultiple({ key: 'coin', frame: 7, repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+            coins.createMultiple({ key: 'coin', repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+            coins.playAnimation('coin');
         });
     },
 
