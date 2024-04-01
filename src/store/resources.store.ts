@@ -1,12 +1,11 @@
 import {action, makeObservable, observable} from "mobx";
-import {FUEL_CONSUMPTION} from "../configs/gameplay.config.ts";
+import {FUEL_CONSUMPTION, MAX_FUEL, START_COINS, START_FUEL, START_ROCKETS} from "../configs/gameplay.config.ts";
 import {EventBus} from "../utils/EventBus.ts";
 
 export class ResourcesStore {
-    maxFuel: number = 100;
-    fuel: number = 100;
-    rockets: number = 10;
-    coins: number = 5;
+    fuel: number = START_FUEL;
+    rockets: number = START_ROCKETS;
+    coins: number = START_COINS;
 
     constructor() {
         makeObservable(this, {
@@ -22,7 +21,7 @@ export class ResourcesStore {
     }
 
     get fuelPercentage(): number {
-        return this.fuel / (this.maxFuel / 100);
+        return this.fuel / (MAX_FUEL / 100);
     }
 
     decreaseFuel() {
@@ -68,7 +67,7 @@ export class ResourcesStore {
     }
 
     buyFuel() {
-        if (this.coins >= 1 && this.fuel < 100) {
+        if (this.coins >= 1 && this.fuel < MAX_FUEL) {
             this.coins -= 1;
             this.fuel = 100;
         }

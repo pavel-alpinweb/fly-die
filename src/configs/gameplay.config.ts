@@ -40,3 +40,8 @@ export const FUEL_CONSUMPTION = 1;
 export const COIN_VELOCITY = 1500;
 export const COIN_BOUNCE = 0.5;
 
+/* START RESOURCES */
+export const START_FUEL = 100;
+export const MAX_FUEL = 100;
+export const START_ROCKETS = 3;
+export const START_COINS = 2;
