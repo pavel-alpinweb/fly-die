@@ -36,7 +36,7 @@ export const ENEMY_FIRE_DELAY = 300;
 export const ENEMY_START_FIRE_DELAY = 300;
 export const ENEMY_WALK_VELOCITY = 300;
 export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
-export const FUEL_CONSUMPTION = 2;
+export const FUEL_CONSUMPTION = 3;
 export const COIN_VELOCITY = 1500;
 export const COIN_BOUNCE = 0.5;
 
@@ -45,3 +45,4 @@ export const START_FUEL = 100;
 export const MAX_FUEL = 100;
 export const START_ROCKETS = 2;
 export const START_COINS = 3;
+export const ADD_FUEL = 25;
