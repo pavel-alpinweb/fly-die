@@ -43,7 +43,7 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         // Загрузка ресурсов карты
-        this.load.image('sky', '/assets/backgrounds/01.png');
+        this.load.image('sky', '/assets/backgrounds/bg.png');
         this.load.image('block', '/assets/tiles/block.png');
         this.load.image('ground', '/assets/tiles/ground.png');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
