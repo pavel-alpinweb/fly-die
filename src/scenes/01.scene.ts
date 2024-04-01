@@ -1,17 +1,14 @@
 import * as Phaser from "phaser";
 import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
-import Tilemap = Phaser.Tilemaps.Tilemap;
 import {
-    BACKGROUND_LAYER_HEIGHT, BACKGROUND_LAYER_ONE_SCROLL,
-    BACKGROUND_LAYER_WIDTH, BULLETS_VELOCITY, PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
-    PLAYER_SIZE,
-    PLAYER_START_POSITION, PLAYER_WALK_VELOCITY, SMOKE_POSITION_MARGIN
+    BACKGROUND_LAYER_HEIGHT,
+    BACKGROUND_LAYER_ONE_SCROLL,
+    BACKGROUND_LAYER_WIDTH,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
 import {enemiesComposition} from "../compositions/enemies.composition.ts";
-import {weaponComposition} from "../compositions/weapon.composition.ts";
 import TimerEvent = Phaser.Time.TimerEvent;
 import {resourcesComposition} from "../compositions/resources.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
@@ -34,10 +31,6 @@ export class Level01Scene extends Phaser.Scene {
     private enemies!: Phaser.Physics.Arcade.Group;
     private visors!: Phaser.Physics.Arcade.StaticGroup;
     private sets!: [];
-    private deaths = 0;
-    // private deathTest!: Phaser.GameObjects.Text;
-    // private killedEnemiesText!: Phaser.GameObjects.Text;
-    private killedEnemiesNumber = 0;
     private fuelConsumption!: TimerEvent;
     private resources!: Resources;
     private coins!: Phaser.Physics.Arcade.Group;
@@ -125,9 +118,6 @@ export class Level01Scene extends Phaser.Scene {
 
         // Вывод координат игрока
         // this.playerCoords = playerComposition.showPlayerCoords(this, this.player);
-        // Выводим сколько раз попадали по игроку и по врагам
-        // this.deathTest = playerComposition.showPlayerDeath(this, this.deaths);
-        // this.killedEnemiesText = enemiesComposition.showEnemiesDeath(this, this.killedEnemiesNumber, this.sets.length);
 
         //Создаем таймер для расхода топлива
         this.fuelConsumption = resourcesComposition.initFuelConsumption(this);
@@ -147,9 +137,6 @@ export class Level01Scene extends Phaser.Scene {
         }
         // Обновление координат игрока
         // playerComposition.updatePlayerCoords(this.playerCoords, this.player);
-        // Обновляем количество смертей игрока и врагов
-        // playerComposition.updatePlayerDeath(this.deathTest, this.deaths);
-        // enemiesComposition.updateEnemiesDeath(this.killedEnemiesText, this.killedEnemiesNumber, this.sets.length);
         // Передвижение врага и реакция на игрока
         for (const set of this.sets) {
             const [enemy, visor, event] = set;
