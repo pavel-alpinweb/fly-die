@@ -175,6 +175,20 @@ export const playerComposition = {
         smoke.setVelocityY(0);
     },
 
+    finishGame(
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        map: Phaser.Tilemaps.Tilemap,
+        coins: Phaser.Physics.Arcade.Group,
+        scene: Phaser.Scene,
+    ) {
+        const finishLine = map.createFromObjects('FinishLine', { gid: 6, key: 'visor' });
+        finishLine[0].setAlpha(0);
+        scene.physics.add.existing(finishLine[0], true);
+        scene.physics.add.overlap(player, finishLine, () => {
+            coins.createMultiple({ key: 'coin', frame: 7, repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+        });
+    },
+
     movePlayer(
         player: Phaser.Physics.Arcade.Image & {
         body: Phaser.Physics.Arcade.Body

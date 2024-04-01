@@ -127,6 +127,9 @@ export class Level01Scene extends Phaser.Scene {
             this.resources.fuel = resources.fuel;
             this.resources.rockets = resources.rockets;
         });
+
+        //Заверешение игры
+        playerComposition.finishGame(this.player, this.map, this.coins, this);
     }
 
     update(time) {
