@@ -16,6 +16,8 @@ export class ResourcesStore {
             decreaseFuel: action,
             removeRocket: action,
             removeCoin: action,
+            buyFuel: action,
+            buyRockets: action,
         })
     }
 
@@ -66,13 +68,15 @@ export class ResourcesStore {
     }
 
     buyFuel() {
-        if (this.coins >= 1) {
+        if (this.coins >= 1 && this.fuel < 100) {
+            this.coins -= 1;
             this.fuel = 100;
         }
     }
 
     buyRockets() {
         if (this.coins >= 1) {
+            this.coins -= 1;
             this.rockets += 1;
         }
     }

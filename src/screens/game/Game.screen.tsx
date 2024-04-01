@@ -30,6 +30,12 @@ const GameScreen = observer(() => {
         EventBus.on('collect-coin', () => {
             resourcesStore.addCoin();
         })
+        EventBus.on('buy-rocket', () => {
+            resourcesStore.buyRockets();
+        });
+        EventBus.on('buy-fuel', () => {
+            resourcesStore.buyFuel();
+        });
     }, []);
 
     return (
