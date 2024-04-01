@@ -40,8 +40,8 @@ const GameScreen = observer(() => {
                 <RocketsComponent />
             </div>
             <div className={classes.gameStore}>
-                <StoreBoxComponent type={'rockets'} />
-                <StoreBoxComponent type={'fuel'} />
+                <StoreBoxComponent type={'rockets'} keyButton={'1'} />
+                <StoreBoxComponent type={'fuel'} keyButton={'2'} />
             </div>
             <div id="game" className={classes.gameWrapper}></div>
         </div>
