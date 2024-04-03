@@ -9,6 +9,7 @@ import {
 import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
+import GameObject = Phaser.GameObjects.GameObject;
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -173,6 +174,21 @@ export const playerComposition = {
         fuelTimer.paused = true;
         smoke.visible = false;
         smoke.setVelocityY(0);
+    },
+
+    finishGame(
+        player: Phaser.Physics.Arcade.Image & { body: Phaser.Physics.Arcade.Body },
+        map: Phaser.Tilemaps.Tilemap,
+        coins: Phaser.Physics.Arcade.Group,
+        scene: Phaser.Scene,
+    ) {
+        const finishLine = map.createFromObjects('FinishLine', { gid: 6, key: 'visor' });
+        finishLine[0].setAlpha(0);
+        scene.physics.add.existing(finishLine[0], true);
+        scene.physics.add.overlap(player, finishLine, () => {
+            coins.createMultiple({ key: 'coin', repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+            coins.playAnimation('coin');
+        });
     },
 
     movePlayer(

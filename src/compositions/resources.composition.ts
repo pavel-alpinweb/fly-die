@@ -49,4 +49,12 @@ export const resourcesComposition = {
             EventBus.emit('collect-coin');
         }, null);
     },
+    spawnCoin(coins: Phaser.Physics.Arcade.Group, map: Phaser.Tilemaps.Tilemap) {
+        const coinsSpawns = map.createFromObjects('Coins', { gid: 5, key: 'coin' });
+        for (const coin of coinsSpawns) {
+            const createdCoin = coins.create(coin.x, coin.y, 'coin');
+            createdCoin.anims.play('coin', true);
+            coin.destroy();
+        }
+    },
 };

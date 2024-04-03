@@ -1,5 +1,12 @@
 import {action, makeObservable, observable} from "mobx";
-import {FUEL_CONSUMPTION, MAX_FUEL, START_COINS, START_FUEL, START_ROCKETS} from "../configs/gameplay.config.ts";
+import {
+    ADD_FUEL,
+    FUEL_CONSUMPTION,
+    MAX_FUEL,
+    START_COINS,
+    START_FUEL,
+    START_ROCKETS
+} from "../configs/gameplay.config.ts";
 import {EventBus} from "../utils/EventBus.ts";
 
 export class ResourcesStore {
@@ -69,7 +76,7 @@ export class ResourcesStore {
     buyFuel() {
         if (this.coins >= 1 && this.fuel < MAX_FUEL) {
             this.coins -= 1;
-            this.fuel = 100;
+            this.fuel = this.fuel + ADD_FUEL > MAX_FUEL ? MAX_FUEL : this.fuel + ADD_FUEL;
             EventBus.emit('set-resources', {
                 fuel: this.fuel,
                 rockets: this.rockets,
