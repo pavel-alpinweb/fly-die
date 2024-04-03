@@ -4,7 +4,7 @@ import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import {
     BACKGROUND_LAYER_HEIGHT,
     BACKGROUND_LAYER_ONE_SCROLL,
-    BACKGROUND_LAYER_WIDTH,
+    BACKGROUND_LAYER_WIDTH, PLAYER_START_POSITION,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
@@ -102,12 +102,12 @@ export class Level01Scene extends Phaser.Scene {
             .setScrollFactor(0.5, 0);
         this.add.tileSprite(
             BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
+            PLAYER_START_POSITION.y + 100,
             BACKGROUND_LAYER_WIDTH * 4,
             BACKGROUND_LAYER_HEIGHT,
             'Layer1'
         )
-            .setScrollFactor(0.6, 0);
+            .setScrollFactor(0.6, 1);
 
         // Создание уровня
         this.map = this.make.tilemap({key: 'tilemap'});
