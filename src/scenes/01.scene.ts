@@ -55,7 +55,14 @@ export class Level01Scene extends Phaser.Scene {
 
     create() {
         // Создание уровня
-        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'sky'
+        )
+            .setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
         this.map.setCollision([2, 1]);
         const block = this.map.addTilesetImage('block', 'block') as Tileset;
