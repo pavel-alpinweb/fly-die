@@ -4,7 +4,7 @@ import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import {
     BACKGROUND_LAYER_HEIGHT,
     BACKGROUND_LAYER_ONE_SCROLL,
-    BACKGROUND_LAYER_WIDTH,
+    BACKGROUND_LAYER_WIDTH, PLAYER_START_POSITION,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
@@ -43,7 +43,12 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         // Загрузка ресурсов карты
-        this.load.image('sky', '/assets/backgrounds/bg.png');
+        this.load.image('Layer1', '/assets/backgrounds/demo-level/Layer1.png');
+        this.load.image('Layer2', '/assets/backgrounds/demo-level/Layer2.png');
+        this.load.image('Layer3', '/assets/backgrounds/demo-level/Layer3.png');
+        this.load.image('Layer4', '/assets/backgrounds/demo-level/Layer4.png');
+        this.load.image('Layer5', '/assets/backgrounds/demo-level/Layer5.png');
+        this.load.image('Layer6', '/assets/backgrounds/demo-level/Layer6.png');
         this.load.image('block', '/assets/tiles/block.png');
         this.load.image('ground', '/assets/tiles/ground.png');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
@@ -54,8 +59,57 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     create() {
+        // Создание фона
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer6'
+        )
+            .setScrollFactor(0, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer5'
+        )
+            .setScrollFactor(0.1, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer4'
+        )
+            .setScrollFactor(0.3, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer3'
+        )
+            .setScrollFactor(0.4, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            BACKGROUND_LAYER_HEIGHT / 2.5,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer2'
+        )
+            .setScrollFactor(0.5, 0);
+        this.add.tileSprite(
+            BACKGROUND_LAYER_WIDTH / 2,
+            PLAYER_START_POSITION.y + 100,
+            BACKGROUND_LAYER_WIDTH * 4,
+            BACKGROUND_LAYER_HEIGHT,
+            'Layer1'
+        )
+            .setScrollFactor(0.6, 1);
+
         // Создание уровня
-        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
         this.map.setCollision([2, 1]);
         const block = this.map.addTilesetImage('block', 'block') as Tileset;

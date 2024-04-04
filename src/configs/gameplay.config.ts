@@ -1,10 +1,11 @@
 /* BASE ENGINE SETTINGS */
 export const LEVEL_GRAVITY = 1500;
-export const LEVEL_HEIGHT = 1119;
+export const LEVEL_WIDTH = 1365;
+export const LEVEL_HEIGHT = 768;
 
 /* TILES SETTINGS */
-export const BACKGROUND_LAYER_WIDTH = 2346;
-export const BACKGROUND_LAYER_HEIGHT = 1119;
+export const BACKGROUND_LAYER_WIDTH = 2019;
+export const BACKGROUND_LAYER_HEIGHT = 1020;
 export const BACKGROUND_LAYER_ONE_SCROLL = 0.5;
 export const TILE_SIZE = 138;
 

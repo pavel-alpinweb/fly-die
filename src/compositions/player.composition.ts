@@ -29,7 +29,7 @@ export const playerComposition = {
         const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
-        scene.cameras.main.startFollow(player);
+        scene.cameras.main.startFollow(player).setZoom(0.9);
         scene.physics.add.collider(player, layer, null, platformComposition.collidePlatforms);
 
         return [player, smoke];
