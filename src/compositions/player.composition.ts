@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY, COIN_BOUNCE,
+    BULLETS_VELOCITY, COIN_BOUNCE, LEVEL_WIDTH,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -10,6 +10,8 @@ import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
 import GameObject = Phaser.GameObjects.GameObject;
+import Tilemap = Phaser.Tilemaps.Tilemap;
+import TileSprite = Phaser.GameObjects.TileSprite;
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -23,13 +25,23 @@ export const playerComposition = {
         scene.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
     },
 
-    initPlayer(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer): (Phaser.Physics.Arcade.Sprite & {
+    initPlayer(
+        scene: Phaser.Scene,
+        layer: Phaser.Tilemaps.TilemapLayer,
+        backgrounds: TileSprite[]
+    ): (Phaser.Physics.Arcade.Sprite & {
         body: Phaser.Physics.Arcade.Body
     })[] {
         const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
         scene.cameras.main.startFollow(player).setZoom(0.9);
+        scene.cameras.add(LEVEL_WIDTH - 300, 0, 300, 200)
+            .setZoom(0.09)
+            .setBackgroundColor(0x002244)
+            .startFollow(player)
+            .ignore(backgrounds);
+
         scene.physics.add.collider(player, layer, null, platformComposition.collidePlatforms);
 
         return [player, smoke];
