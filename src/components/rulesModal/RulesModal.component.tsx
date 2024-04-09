@@ -12,11 +12,17 @@ const RulesModalComponent = ({isOpen, switchOpenHandler}: RulesModalComponentPro
         rootClasses.push(classes.visible);
     }
     return (
-        <div className={rootClasses.join(' ')} onClick={switchOpenHandler}>
-            Modal
-            <button className={classes.closeBtn}>
+        <div className={rootClasses.join(' ')}>
+            <button className={classes.closeBtn} onClick={switchOpenHandler}>
                 <img width={50} src="/assets/ui/CloseBtn.png" alt="MenuBtn"/>
             </button>
+            <h1>Rules:</h1>
+            <ol>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </li>
+            </ol>
         </div>
     );
 };
