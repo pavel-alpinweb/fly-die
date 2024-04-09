@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {observer} from "mobx-react-lite";
 import {resourcesStore} from "../../store/resources.store.ts";
 import classes from "./Game.module.css";
@@ -7,6 +7,7 @@ import {useLevelOneLevel} from "../../levels/01.level.ts";
 import FuelComponent from "../../components/fuel/Fuel.component.tsx";
 import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
+import RulesModalComponent from "../../components/rulesModal/RulesModal.component.tsx";
 import StoreBoxComponent from "../../components/store-box/StoreBox.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
@@ -38,6 +39,8 @@ const GameScreen = observer(() => {
         });
     }, []);
 
+    const [isOpen, switchOpen] = useState(false);
+
     return (
         <div className={classes.gameScreen}>
             <div className={classes.gameScreenWidgets}>
@@ -49,6 +52,10 @@ const GameScreen = observer(() => {
                 <StoreBoxComponent type={'rockets'} keyButton={'1'} />
                 <StoreBoxComponent type={'fuel'} keyButton={'2'} />
             </div>
+            <button className={classes.infoBtn} onClick={() => switchOpen(true)}>
+                <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
+            </button>
+            <RulesModalComponent isOpen={isOpen} switchOpenHandler={() => switchOpen(false)} />
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );

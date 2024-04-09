@@ -35,3 +35,12 @@
     gap: 15px;
     transform: translateX(-50%);
 }
+
+.infoBtn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}

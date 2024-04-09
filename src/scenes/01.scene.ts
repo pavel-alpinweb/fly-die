@@ -3,8 +3,7 @@ import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import {
     BACKGROUND_LAYER_HEIGHT,
-    BACKGROUND_LAYER_ONE_SCROLL,
-    BACKGROUND_LAYER_WIDTH, PLAYER_START_POSITION,
+    BACKGROUND_LAYER_WIDTH, BACKGROUND_SCROLLS, PLAYER_START_POSITION,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
@@ -12,6 +11,7 @@ import {enemiesComposition} from "../compositions/enemies.composition.ts";
 import TimerEvent = Phaser.Time.TimerEvent;
 import {resourcesComposition} from "../compositions/resources.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
+import TileSprite = Phaser.GameObjects.TileSprite;
 
 declare global {
     interface Resources {
@@ -35,6 +35,7 @@ export class Level01Scene extends Phaser.Scene {
     private resources!: Resources;
     private coins!: Phaser.Physics.Arcade.Group;
     private isGameOver = false;
+    private backgrounds: TileSprite[] = [];
 
     constructor(resources: Resources) {
         super();
@@ -60,54 +61,19 @@ export class Level01Scene extends Phaser.Scene {
 
     create() {
         // Создание фона
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer6'
-        )
-            .setScrollFactor(0, 0);
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer5'
-        )
-            .setScrollFactor(0.1, 0);
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer4'
-        )
-            .setScrollFactor(0.3, 0);
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer3'
-        )
-            .setScrollFactor(0.4, 0);
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            BACKGROUND_LAYER_HEIGHT / 2.5,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer2'
-        )
-            .setScrollFactor(0.5, 0);
-        this.add.tileSprite(
-            BACKGROUND_LAYER_WIDTH / 2,
-            PLAYER_START_POSITION.y + 100,
-            BACKGROUND_LAYER_WIDTH * 4,
-            BACKGROUND_LAYER_HEIGHT,
-            'Layer1'
-        )
-            .setScrollFactor(0.6, 1);
+
+        for (let i = BACKGROUND_SCROLLS.length; i >= 0 ; i-= 1) {
+            console.log(i);
+            const background = this.add.tileSprite(
+                BACKGROUND_LAYER_WIDTH / 2,
+                BACKGROUND_LAYER_HEIGHT / 2.5,
+                BACKGROUND_LAYER_WIDTH * 4,
+                BACKGROUND_LAYER_HEIGHT,
+                `Layer${i + 1}`
+            ).setScrollFactor(BACKGROUND_SCROLLS[i], 0);
+
+            this.backgrounds.push(background);
+        }
 
         // Создание уровня
         this.map = this.make.tilemap({key: 'tilemap'});
@@ -117,7 +83,7 @@ export class Level01Scene extends Phaser.Scene {
         this.layer = this.map.createLayer('Platforms', [block, ground]) as TilemapLayer;
 
         // Создание игрока и дыма от джетпака
-        const [player, smoke] = playerComposition.initPlayer(this, this.layer);
+        const [player, smoke] = playerComposition.initPlayer(this, this.layer, this.backgrounds);
         this.player = player;
         this.smoke = smoke;
 
