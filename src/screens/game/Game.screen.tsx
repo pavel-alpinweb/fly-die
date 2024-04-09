@@ -49,6 +49,9 @@ const GameScreen = observer(() => {
                 <StoreBoxComponent type={'rockets'} keyButton={'1'} />
                 <StoreBoxComponent type={'fuel'} keyButton={'2'} />
             </div>
+            <button className={classes.infoBtn}>
+                <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
+            </button>
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );
