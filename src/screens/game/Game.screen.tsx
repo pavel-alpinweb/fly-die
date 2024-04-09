@@ -7,6 +7,7 @@ import {useLevelOneLevel} from "../../levels/01.level.ts";
 import FuelComponent from "../../components/fuel/Fuel.component.tsx";
 import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
+import RulesModalComponent from "../../components/rulesModal/RulesModal.component.tsx";
 import StoreBoxComponent from "../../components/store-box/StoreBox.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
@@ -52,6 +53,7 @@ const GameScreen = observer(() => {
             <button className={classes.infoBtn}>
                 <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
             </button>
+            <RulesModalComponent />
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );
