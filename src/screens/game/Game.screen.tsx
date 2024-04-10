@@ -18,6 +18,8 @@ const GameScreen = observer(() => {
         rockets: resourcesStore.rockets,
         coins: resourcesStore.rockets,
     };
+    const [isEndGame, setIsEndGame] = useState(false);
+    const [isWin, setIsWin] = useState(false);
     useEffect(() => {
         useLevelOneLevel(resources);
         EventBus.on('decrease-fuel', () => {
@@ -57,7 +59,7 @@ const GameScreen = observer(() => {
                 <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
             </button>
             <RulesModalComponent isOpen={isOpen} switchOpenHandler={() => switchOpen(false)} />
-            <FinishGameComponent />
+            <FinishGameComponent isWin={isWin} isEnd={isEndGame} />
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );

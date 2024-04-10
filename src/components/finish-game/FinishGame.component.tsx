@@ -1,7 +1,12 @@
 import React from 'react';
 import classes from "./FinishGame.module.css";
 
-const FinishGameComponent = () => {
+interface FinishGameComponentProps {
+    isEnd?: boolean,
+    isWin?: boolean
+}
+
+const FinishGameComponent = ({isEnd, isWin}: FinishGameComponentProps) => {
     return (
         <div className={classes.FinishGame}>
             <h1 className={classes.FinishGameTitle}>You lose!</h1>
