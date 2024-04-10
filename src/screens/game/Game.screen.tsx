@@ -40,6 +40,14 @@ const GameScreen = observer(() => {
         EventBus.on('buy-fuel', () => {
             resourcesStore.buyFuel();
         });
+        EventBus.on('game-over', () => {
+            setIsEndGame(true);
+            setIsWin(false);
+        });
+        EventBus.on('game-win', () => {
+            setIsEndGame(true);
+            setIsWin(true);
+        });
     }, []);
 
     const [isOpen, switchOpen] = useState(false);

@@ -186,6 +186,7 @@ export const playerComposition = {
         fuelTimer.paused = true;
         smoke.visible = false;
         smoke.setVelocityY(0);
+        EventBus.emit('game-over');
     },
 
     finishGame(
@@ -200,6 +201,7 @@ export const playerComposition = {
         scene.physics.add.overlap(player, finishLine, () => {
             coins.createMultiple({ key: 'coin', repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
             coins.playAnimation('coin');
+            EventBus.emit('game-win');
         });
     },
 
