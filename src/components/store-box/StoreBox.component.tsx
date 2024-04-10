@@ -53,7 +53,7 @@ const StoreBoxComponent = ({type, keyButton}) => {
                 className={classes.buyBtn}
                 onClick={buyResource}
             >
-                Buy ({keyButton})
+                Buy (Key {keyButton})
             </button>
         </div>
     );
