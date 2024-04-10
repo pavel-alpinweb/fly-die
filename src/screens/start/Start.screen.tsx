@@ -13,7 +13,6 @@ const StartScreen = () => {
     return (
         <div className={classes.startScreen}>
             <form className={classes.startForm} onSubmit={(event) => goToGame(event)}>
-                <input className={classes.startInput} type="text" placeholder="Enter your name"/>
                 <button className={classes.startBtn}>
                     Play
                 </button>
