@@ -9,6 +9,7 @@ import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
 import RulesModalComponent from "../../components/rulesModal/RulesModal.component.tsx";
 import StoreBoxComponent from "../../components/store-box/StoreBox.component.tsx";
+import FinishGameComponent from "../../components/finish-game/FinishGame.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
 const GameScreen = observer(() => {
@@ -56,6 +57,7 @@ const GameScreen = observer(() => {
                 <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
             </button>
             <RulesModalComponent isOpen={isOpen} switchOpenHandler={() => switchOpen(false)} />
+            <FinishGameComponent />
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );
