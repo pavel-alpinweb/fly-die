@@ -199,7 +199,15 @@ export const playerComposition = {
         finishLine[0].setAlpha(0);
         scene.physics.add.existing(finishLine[0], true);
         scene.physics.add.overlap(player, finishLine, () => {
-            coins.createMultiple({ key: 'coin', repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+            coins.createMultiple({
+                key: 'coin',
+                repeat: 5,
+                setXY: {
+                    x: player.x - Phaser.Math.RND.between(-1000, 1000),
+                    y: player.y - Phaser.Math.RND.between(100, 500),
+                    stepX: 200
+                }
+            });
             coins.playAnimation('coin');
             EventBus.emit('game-win');
         });
