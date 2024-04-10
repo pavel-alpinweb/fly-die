@@ -60,10 +60,8 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     create() {
-        // Создание фона
-
+        // Создание параллакс фона
         for (let i = BACKGROUND_SCROLLS.length; i >= 0 ; i-= 1) {
-            console.log(i);
             const background = this.add.tileSprite(
                 BACKGROUND_LAYER_WIDTH / 2,
                 BACKGROUND_LAYER_HEIGHT / 2.5,

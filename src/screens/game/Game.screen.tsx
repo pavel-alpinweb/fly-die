@@ -7,8 +7,9 @@ import {useLevelOneLevel} from "../../levels/01.level.ts";
 import FuelComponent from "../../components/fuel/Fuel.component.tsx";
 import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
-import RulesModalComponent from "../../components/rulesModal/RulesModal.component.tsx";
+import RulesModalComponent from "../../components/rules-modal/RulesModal.component.tsx";
 import StoreBoxComponent from "../../components/store-box/StoreBox.component.tsx";
+import FinishGameComponent from "../../components/finish-game/FinishGame.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
 
 const GameScreen = observer(() => {
@@ -17,6 +18,8 @@ const GameScreen = observer(() => {
         rockets: resourcesStore.rockets,
         coins: resourcesStore.rockets,
     };
+    const [isEndGame, setIsEndGame] = useState(false);
+    const [isWin, setIsWin] = useState(false);
     useEffect(() => {
         useLevelOneLevel(resources);
         EventBus.on('decrease-fuel', () => {
@@ -37,6 +40,14 @@ const GameScreen = observer(() => {
         EventBus.on('buy-fuel', () => {
             resourcesStore.buyFuel();
         });
+        EventBus.on('game-over', () => {
+            setIsEndGame(true);
+            setIsWin(false);
+        });
+        EventBus.on('game-win', () => {
+            setIsEndGame(true);
+            setIsWin(true);
+        });
     }, []);
 
     const [isOpen, switchOpen] = useState(false);
@@ -56,6 +67,7 @@ const GameScreen = observer(() => {
                 <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
             </button>
             <RulesModalComponent isOpen={isOpen} switchOpenHandler={() => switchOpen(false)} />
+            <FinishGameComponent isWin={isWin} isEnd={isEndGame} />
             <div id="game" className={classes.gameWrapper}></div>
         </div>
     );
