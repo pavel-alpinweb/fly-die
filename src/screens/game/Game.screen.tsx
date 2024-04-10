@@ -7,7 +7,7 @@ import {useLevelOneLevel} from "../../levels/01.level.ts";
 import FuelComponent from "../../components/fuel/Fuel.component.tsx";
 import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
-import RulesModalComponent from "../../components/rulesModal/RulesModal.component.tsx";
+import RulesModalComponent from "../../components/rules-modal/RulesModal.component.tsx";
 import StoreBoxComponent from "../../components/store-box/StoreBox.component.tsx";
 import FinishGameComponent from "../../components/finish-game/FinishGame.component.tsx";
 import {EventBus} from "../../utils/EventBus.ts";
