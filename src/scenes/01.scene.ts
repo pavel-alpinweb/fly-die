@@ -3,8 +3,7 @@ import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import {
     BACKGROUND_LAYER_HEIGHT,
-    BACKGROUND_LAYER_ONE_SCROLL,
-    BACKGROUND_LAYER_WIDTH,
+    BACKGROUND_LAYER_WIDTH, BACKGROUND_SCROLLS, PLAYER_START_POSITION,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
@@ -12,6 +11,7 @@ import {enemiesComposition} from "../compositions/enemies.composition.ts";
 import TimerEvent = Phaser.Time.TimerEvent;
 import {resourcesComposition} from "../compositions/resources.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
+import TileSprite = Phaser.GameObjects.TileSprite;
 
 declare global {
     interface Resources {
@@ -35,6 +35,7 @@ export class Level01Scene extends Phaser.Scene {
     private resources!: Resources;
     private coins!: Phaser.Physics.Arcade.Group;
     private isGameOver = false;
+    private backgrounds: TileSprite[] = [];
 
     constructor(resources: Resources) {
         super();
@@ -43,7 +44,12 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         // Загрузка ресурсов карты
-        this.load.image('sky', '/assets/backgrounds/bg.png');
+        this.load.image('Layer1', '/assets/backgrounds/demo-level/Layer1.png');
+        this.load.image('Layer2', '/assets/backgrounds/demo-level/Layer2.png');
+        this.load.image('Layer3', '/assets/backgrounds/demo-level/Layer3.png');
+        this.load.image('Layer4', '/assets/backgrounds/demo-level/Layer4.png');
+        this.load.image('Layer5', '/assets/backgrounds/demo-level/Layer5.png');
+        this.load.image('Layer6', '/assets/backgrounds/demo-level/Layer6.png');
         this.load.image('block', '/assets/tiles/block.png');
         this.load.image('ground', '/assets/tiles/ground.png');
         this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
@@ -54,8 +60,20 @@ export class Level01Scene extends Phaser.Scene {
     }
 
     create() {
+        // Создание параллакс фона
+        for (let i = BACKGROUND_SCROLLS.length; i >= 0 ; i-= 1) {
+            const background = this.add.tileSprite(
+                BACKGROUND_LAYER_WIDTH / 2,
+                BACKGROUND_LAYER_HEIGHT / 2.5,
+                BACKGROUND_LAYER_WIDTH * 4,
+                BACKGROUND_LAYER_HEIGHT,
+                `Layer${i + 1}`
+            ).setScrollFactor(BACKGROUND_SCROLLS[i], 0);
+
+            this.backgrounds.push(background);
+        }
+
         // Создание уровня
-        this.add.tileSprite(BACKGROUND_LAYER_WIDTH / 2, BACKGROUND_LAYER_HEIGHT / 2, BACKGROUND_LAYER_WIDTH * 3, BACKGROUND_LAYER_HEIGHT, 'sky').setScrollFactor(BACKGROUND_LAYER_ONE_SCROLL, 0);
         this.map = this.make.tilemap({key: 'tilemap'});
         this.map.setCollision([2, 1]);
         const block = this.map.addTilesetImage('block', 'block') as Tileset;
@@ -63,7 +81,7 @@ export class Level01Scene extends Phaser.Scene {
         this.layer = this.map.createLayer('Platforms', [block, ground]) as TilemapLayer;
 
         // Создание игрока и дыма от джетпака
-        const [player, smoke] = playerComposition.initPlayer(this, this.layer);
+        const [player, smoke] = playerComposition.initPlayer(this, this.layer, this.backgrounds);
         this.player = player;
         this.smoke = smoke;
 

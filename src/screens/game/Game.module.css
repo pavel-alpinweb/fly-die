@@ -1,9 +1,10 @@
 .gameScreen {
-    width: 100vw;
-    height: 1119px;
+    width: 1365px;
+    height: 768px;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .gameWrapper {
@@ -33,4 +34,13 @@
     display: flex;
     gap: 15px;
     transform: translateX(-50%);
+}
+
+.infoBtn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
 }

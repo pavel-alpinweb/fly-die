@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY, COIN_BOUNCE,
+    BULLETS_VELOCITY, COIN_BOUNCE, LEVEL_WIDTH,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -10,6 +10,8 @@ import {platformComposition} from "./platform.composition.ts";
 import {weaponComposition} from "./weapon.composition.ts";
 import {EventBus} from "../utils/EventBus.ts";
 import GameObject = Phaser.GameObjects.GameObject;
+import Tilemap = Phaser.Tilemaps.Tilemap;
+import TileSprite = Phaser.GameObjects.TileSprite;
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
@@ -23,13 +25,23 @@ export const playerComposition = {
         scene.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
     },
 
-    initPlayer(scene: Phaser.Scene, layer: Phaser.Tilemaps.TilemapLayer): (Phaser.Physics.Arcade.Sprite & {
+    initPlayer(
+        scene: Phaser.Scene,
+        layer: Phaser.Tilemaps.TilemapLayer,
+        backgrounds: TileSprite[]
+    ): (Phaser.Physics.Arcade.Sprite & {
         body: Phaser.Physics.Arcade.Body
     })[] {
         const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
-        scene.cameras.main.startFollow(player);
+        scene.cameras.main.startFollow(player).setZoom(0.9);
+        scene.cameras.add(LEVEL_WIDTH - 300, 0, 300, 200)
+            .setZoom(0.09)
+            .setBackgroundColor(0x002244)
+            .startFollow(player)
+            .ignore(backgrounds);
+
         scene.physics.add.collider(player, layer, null, platformComposition.collidePlatforms);
 
         return [player, smoke];
@@ -174,6 +186,7 @@ export const playerComposition = {
         fuelTimer.paused = true;
         smoke.visible = false;
         smoke.setVelocityY(0);
+        EventBus.emit('game-over');
     },
 
     finishGame(
@@ -186,8 +199,17 @@ export const playerComposition = {
         finishLine[0].setAlpha(0);
         scene.physics.add.existing(finishLine[0], true);
         scene.physics.add.overlap(player, finishLine, () => {
-            coins.createMultiple({ key: 'coin', repeat: 20, setXY: { x: player.x - 1000, y: player.y - 200, stepX: 200 } });
+            coins.createMultiple({
+                key: 'coin',
+                repeat: 5,
+                setXY: {
+                    x: player.x - Phaser.Math.RND.between(-1000, 1000),
+                    y: player.y - Phaser.Math.RND.between(100, 500),
+                    stepX: 200
+                }
+            });
             coins.playAnimation('coin');
+            EventBus.emit('game-win');
         });
     },
 
