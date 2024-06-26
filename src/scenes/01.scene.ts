@@ -140,13 +140,15 @@ export class Level01Scene extends Phaser.Scene {
 
         //Создаем таймер для расхода топлива
         this.fuelConsumption = resourcesComposition.initFuelConsumption(this);
+
+        //Обновляем ресурсы в сцене
         EventBus.on('set-resources', (resources: Resources) => {
             this.resources.coins = resources.coins;
             this.resources.fuel = resources.fuel;
             this.resources.rockets = resources.rockets;
         });
 
-        //Заверешение игры
+        //Завершение игры
         playerComposition.finishGame(this.player, this.map, this.coins, this);
     }
 
