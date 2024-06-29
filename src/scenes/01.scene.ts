@@ -3,7 +3,7 @@ import Tileset = Phaser.Tilemaps.Tileset;
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import {
     BACKGROUND_LAYER_HEIGHT,
-    BACKGROUND_LAYER_WIDTH, BACKGROUND_SCROLLS, PLAYER_START_POSITION,
+    BACKGROUND_LAYER_WIDTH, BACKGROUND_SCROLLS, FIRE_BUTTON, PLAYER_START_POSITION,
 } from "../configs/gameplay.config.ts";
 import {platformComposition} from "../compositions/platform.composition.ts";
 import {playerComposition} from "../compositions/player.composition.ts";
@@ -112,8 +112,8 @@ export class Level01Scene extends Phaser.Scene {
         resourcesComposition.collectCoin(this, this.player, this.coins);
 
         // Стрельба по врагу и наоборот, стрельба по платформам
-        const spaceBar = this.input.keyboard?.addKey('space');
-        spaceBar.on('up', () => {
+        const fireButton = this.input.keyboard?.addKey(FIRE_BUTTON);
+        fireButton.on('up', () => {
             if (this.resources.rockets > 0 && !this.isGameOver) {
                 playerComposition.fire(this, this.bullets, this.layer, this.player);
             }

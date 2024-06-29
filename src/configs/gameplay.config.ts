@@ -40,6 +40,7 @@ export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 export const FUEL_CONSUMPTION = 2;
 export const COIN_VELOCITY = 800;
 export const COIN_BOUNCE = 0.5;
+export const FIRE_BUTTON = 'enter';
 
 /* START RESOURCES */
 export const START_FUEL = 100;
