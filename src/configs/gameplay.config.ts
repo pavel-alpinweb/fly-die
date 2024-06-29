@@ -37,10 +37,11 @@ export const ENEMY_FIRE_DELAY = 300;
 export const ENEMY_START_FIRE_DELAY = 300;
 export const ENEMY_WALK_VELOCITY = 300;
 export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
-export const FUEL_CONSUMPTION = 2;
+export const FUEL_CONSUMPTION = 1;
 export const COIN_VELOCITY = 800;
 export const COIN_BOUNCE = 0.5;
-export const FIRE_BUTTON = 'enter';
+export const FIRE_BUTTON = 'space';
+export const FLY_BUTTON_DURATION = 200;
 
 /* START RESOURCES */
 export const START_FUEL = 100;

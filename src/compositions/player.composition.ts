@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY, COIN_BOUNCE, LEVEL_WIDTH,
+    BULLETS_VELOCITY, COIN_BOUNCE, FLY_BUTTON_DURATION, LEVEL_WIDTH,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -231,7 +231,8 @@ export const playerComposition = {
         const keys = scene.input.keyboard?.addKeys({
             a:  Phaser.Input.Keyboard.KeyCodes.A,
             d:  Phaser.Input.Keyboard.KeyCodes.D,
-            w:  Phaser.Input.Keyboard.KeyCodes.W
+            w:  Phaser.Input.Keyboard.KeyCodes.W,
+            space:  Phaser.Input.Keyboard.KeyCodes.SPACE
         });
         smoke.y = player.y + SMOKE_POSITION_MARGIN.VERTICAL;
 
@@ -241,7 +242,15 @@ export const playerComposition = {
             smoke.x = player.x - SMOKE_POSITION_MARGIN.LEFT
         }
 
-        if ((cursors.up.isDown || keys.w.isDown) && fuel > 0) {
+        if ((cursors.up.isDown || keys.w.isDown) && player.body.blocked.down) {
+            player.setVelocityY(PLAYER_FLY_VELOCITY);
+            smoke.setVelocityY(PLAYER_FLY_VELOCITY);
+            player.anims.play('jump', true);
+            smoke.visible = false;
+            smoke.setVelocityX(0);
+            fuelTimer.paused = true;
+        } else if ((cursors.up.isDown || keys.w.isDown) && fuel > 0 && (cursors.up.getDuration() > FLY_BUTTON_DURATION || keys.w.getDuration() > FLY_BUTTON_DURATION)) {
+            console.log('duration', keys.w.getDuration());
             player.setVelocityY(PLAYER_FLY_VELOCITY);
             smoke.setVelocityY(PLAYER_FLY_VELOCITY);
             player.anims.play('fly', true);
