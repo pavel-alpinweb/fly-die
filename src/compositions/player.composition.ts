@@ -35,7 +35,7 @@ export const playerComposition = {
         const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
-        scene.cameras.main.startFollow(player).setZoom(0.9);
+        scene.cameras.main.startFollow(player).setZoom(0.7);
         scene.cameras.add(LEVEL_WIDTH - 300, 0, 300, 200)
             .setZoom(0.09)
             .setBackgroundColor(0x002244)
@@ -250,7 +250,6 @@ export const playerComposition = {
             smoke.setVelocityX(0);
             fuelTimer.paused = true;
         } else if ((cursors.up.isDown || keys.w.isDown) && fuel > 0 && (cursors.up.getDuration() > FLY_BUTTON_DURATION || keys.w.getDuration() > FLY_BUTTON_DURATION)) {
-            console.log('duration', keys.w.getDuration());
             player.setVelocityY(PLAYER_FLY_VELOCITY);
             smoke.setVelocityY(PLAYER_FLY_VELOCITY);
             player.anims.play('fly', true);

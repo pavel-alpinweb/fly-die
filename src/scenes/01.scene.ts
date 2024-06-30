@@ -64,7 +64,7 @@ export class Level01Scene extends Phaser.Scene {
         for (let i = BACKGROUND_SCROLLS.length; i >= 0 ; i-= 1) {
             const background = this.add.tileSprite(
                 BACKGROUND_LAYER_WIDTH / 2,
-                BACKGROUND_LAYER_HEIGHT / 2.5,
+                BACKGROUND_LAYER_HEIGHT / 3,
                 BACKGROUND_LAYER_WIDTH * 4,
                 BACKGROUND_LAYER_HEIGHT,
                 `Layer${i + 1}`

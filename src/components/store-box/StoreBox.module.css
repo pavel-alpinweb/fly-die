@@ -36,7 +36,7 @@
 .buyBtn {
     position: relative;
     display: inline-block;
-    height: 30px;
+    height: 20px;
     cursor: pointer;
     border: none;
     background: #efe921;
@@ -44,7 +44,7 @@
     color: #603d11;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 12px;
     font-family: inherit;
     :after {
         content: '';
