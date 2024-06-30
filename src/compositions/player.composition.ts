@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import {
-    BULLETS_VELOCITY, COIN_BOUNCE, LEVEL_WIDTH,
+    BULLETS_VELOCITY, COIN_BOUNCE, FLY_BUTTON_DURATION, LEVEL_WIDTH,
     PLAYER_FLY_VELOCITY, PLAYER_JUMP_VELOCITY,
     PLAYER_SIZE,
     PLAYER_START_POSITION, PLAYER_WALK_VELOCITY,
@@ -35,7 +35,7 @@ export const playerComposition = {
         const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
-        scene.cameras.main.startFollow(player).setZoom(0.9);
+        scene.cameras.main.startFollow(player).setZoom(0.7);
         scene.cameras.add(LEVEL_WIDTH - 300, 0, 300, 200)
             .setZoom(0.09)
             .setBackgroundColor(0x002244)
@@ -231,7 +231,8 @@ export const playerComposition = {
         const keys = scene.input.keyboard?.addKeys({
             a:  Phaser.Input.Keyboard.KeyCodes.A,
             d:  Phaser.Input.Keyboard.KeyCodes.D,
-            w:  Phaser.Input.Keyboard.KeyCodes.W
+            w:  Phaser.Input.Keyboard.KeyCodes.W,
+            space:  Phaser.Input.Keyboard.KeyCodes.SPACE
         });
         smoke.y = player.y + SMOKE_POSITION_MARGIN.VERTICAL;
 
@@ -241,7 +242,14 @@ export const playerComposition = {
             smoke.x = player.x - SMOKE_POSITION_MARGIN.LEFT
         }
 
-        if ((cursors.up.isDown || keys.w.isDown) && fuel > 0) {
+        if ((cursors.up.isDown || keys.w.isDown) && player.body.blocked.down) {
+            player.setVelocityY(PLAYER_FLY_VELOCITY);
+            smoke.setVelocityY(PLAYER_FLY_VELOCITY);
+            player.anims.play('jump', true);
+            smoke.visible = false;
+            smoke.setVelocityX(0);
+            fuelTimer.paused = true;
+        } else if ((cursors.up.isDown || keys.w.isDown) && fuel > 0 && (cursors.up.getDuration() > FLY_BUTTON_DURATION || keys.w.getDuration() > FLY_BUTTON_DURATION)) {
             player.setVelocityY(PLAYER_FLY_VELOCITY);
             smoke.setVelocityY(PLAYER_FLY_VELOCITY);
             player.anims.play('fly', true);

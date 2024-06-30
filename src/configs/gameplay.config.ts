@@ -1,7 +1,7 @@
 /* BASE ENGINE SETTINGS */
 export const LEVEL_GRAVITY = 1500;
-export const LEVEL_WIDTH = 1365;
-export const LEVEL_HEIGHT = 768;
+export const LEVEL_WIDTH = 1200;
+export const LEVEL_HEIGHT = 700;
 
 /* TILES SETTINGS */
 export const BACKGROUND_LAYER_WIDTH = 2019;
@@ -40,6 +40,8 @@ export const ENEMY_DISTANCE_START_FIRE = TILE_SIZE * 4;
 export const FUEL_CONSUMPTION = 2;
 export const COIN_VELOCITY = 800;
 export const COIN_BOUNCE = 0.5;
+export const FIRE_BUTTON = 'space';
+export const FLY_BUTTON_DURATION = 200;
 
 /* START RESOURCES */
 export const START_FUEL = 100;
