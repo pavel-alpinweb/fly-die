@@ -32,7 +32,7 @@ export const playerComposition = {
     ): (Phaser.Physics.Arcade.Sprite & {
         body: Phaser.Physics.Arcade.Body
     })[] {
-        const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height);
+        const player = scene.physics.add.sprite(PLAYER_START_POSITION.x, PLAYER_START_POSITION.y, 'player-idle').setSize(PLAYER_SIZE.width, PLAYER_SIZE.height).setBodySize(90, PLAYER_SIZE.height);
         const smoke = scene.physics.add.sprite(player.x, player.y, 'jetpack-smoke');
 
         scene.cameras.main.startFollow(player).setZoom(0.7);
