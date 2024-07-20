@@ -38,7 +38,7 @@ export const playerComposition = {
         scene.cameras.main.startFollow(player).setZoom(0.7);
         scene.cameras.add(LEVEL_WIDTH - 300, 0, 300, 200)
             .setZoom(0.09)
-            .setBackgroundColor(0x002244)
+            .setBackgroundColor(0x1b1b3e)
             .startFollow(player)
             .ignore(backgrounds);
 
