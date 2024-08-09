@@ -3,7 +3,7 @@ import {observer} from "mobx-react-lite";
 import {resourcesStore} from "../../store/resources.store.ts";
 import classes from "./Game.module.css";
 import {useEffect} from "react";
-import {useLevelOneLevel} from "../../levels/01.level.ts";
+import {useLevelOneLevel} from "../../setups/01.setup.ts";
 import FuelComponent from "../../components/fuel/Fuel.component.tsx";
 import RocketsComponent from "../../components/rockets/Rockets.component.tsx";
 import CoinsComponent from "../../components/coins/Coins.component.tsx";
