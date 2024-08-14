@@ -44,15 +44,15 @@ export class Level01Scene extends Phaser.Scene {
 
     preload() {
         // Загрузка ресурсов карты
-        this.load.image('Layer1', '/assets/backgrounds/demo-level/Layer1.png');
-        this.load.image('Layer2', '/assets/backgrounds/demo-level/Layer2.png');
-        this.load.image('Layer3', '/assets/backgrounds/demo-level/Layer3.png');
-        this.load.image('Layer4', '/assets/backgrounds/demo-level/Layer4.png');
-        this.load.image('Layer5', '/assets/backgrounds/demo-level/Layer5.png');
-        this.load.image('Layer6', '/assets/backgrounds/demo-level/Layer6.png');
-        this.load.image('block', '/assets/tiles/block.png');
-        this.load.image('ground', '/assets/tiles/ground.png');
-        this.load.tilemapTiledJSON('tilemap', '/assets/tiles/DemoLevel.json');
+        this.load.image('Layer1', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer1.png`);
+        this.load.image('Layer2', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer2.png`);
+        this.load.image('Layer3', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer3.png`);
+        this.load.image('Layer4', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer4.png`);
+        this.load.image('Layer5', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer5.png`);
+        this.load.image('Layer6', `${import.meta.env.BASE_URL}/assets/backgrounds/demo-level/Layer6.png`);
+        this.load.image('block', `${import.meta.env.BASE_URL}/assets/tiles/block.png`);
+        this.load.image('ground', `${import.meta.env.BASE_URL}/assets/tiles/ground.png`);
+        this.load.tilemapTiledJSON('tilemap', `${import.meta.env.BASE_URL}/assets/tiles/DemoLevel.json`);
         // Загрузка ресурсов игрока и врагов
         playerComposition.uploadPlayerAssets(this);
         enemiesComposition.uploadEnemiesAssets(this);

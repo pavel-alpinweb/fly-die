@@ -4,11 +4,11 @@ import GameScreen from "../screens/game/Game.screen.tsx";
 
 export const router = createBrowserRouter([
     {
-        path: '/',
+        path: import.meta.env.BASE_URL,
         element: <StartScreen />,
     },
     {
-        path: '/game',
+        path: `${import.meta.env.BASE_URL}game`,
         element: <GameScreen />,
     }
 ]);

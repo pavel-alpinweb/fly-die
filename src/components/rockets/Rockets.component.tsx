@@ -6,7 +6,7 @@ import classes from "./Rockets.module.css";
 const RocketsComponent = observer(() => {
     return (
         <div className={classes.rockets}>
-            <img width={50} src="/assets/ui/bullet.png" alt="bullet"/>
+            <img width={50} src={`${import.meta.env.BASE_URL}assets/ui/bullet.png`} alt="bullet"/>
             <div className={classes.rocketsNumber}>{resourcesStore.rockets}</div>
         </div>
     );

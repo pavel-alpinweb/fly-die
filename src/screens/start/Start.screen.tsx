@@ -7,7 +7,7 @@ const StartScreen = () => {
 
     const goToGame = (event: FormEvent) => {
         event.preventDefault();
-        navigate('/game');
+        navigate(`${import.meta.env.BASE_URL}game`);
     }
 
     return (

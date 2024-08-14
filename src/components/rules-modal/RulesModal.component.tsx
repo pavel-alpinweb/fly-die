@@ -14,7 +14,7 @@ const RulesModalComponent = ({isOpen, switchOpenHandler}: RulesModalComponentPro
     return (
         <div className={rootClasses.join(' ')}>
             <button className={classes.closeBtn} onClick={switchOpenHandler}>
-                <img width={50} src="/assets/ui/CloseBtn.png" alt="MenuBtn"/>
+                <img width={50} src={`${import.meta.env.BASE_URL}assets/ui/CloseBtn.png`} alt="CloseBtn"/>
             </button>
             <h1>Правила:</h1>
             <ol>

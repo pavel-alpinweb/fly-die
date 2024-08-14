@@ -64,7 +64,7 @@ const GameScreen = observer(() => {
                 <StoreBoxComponent type={'fuel'} keyButton={'2'} />
             </div>
             <button className={classes.infoBtn} onClick={() => switchOpen(true)}>
-                <img width={50} src="/assets/ui/MenuBtn.png" alt="MenuBtn"/>
+                <img width={50} src={`${import.meta.env.BASE_URL}assets/ui/MenuBtn.png`} alt="MenuBtn"/>
             </button>
             <RulesModalComponent isOpen={isOpen} switchOpenHandler={() => switchOpen(false)} />
             <FinishGameComponent isWin={isWin} isEnd={isEndGame} />

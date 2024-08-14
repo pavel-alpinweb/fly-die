@@ -10,10 +10,10 @@ import {weaponComposition} from "./weapon.composition.ts";
 
 export const enemiesComposition = {
     uploadEnemiesAssets(scene: Phaser.Scene) {
-        scene.load.atlas('soldier', '/assets/enemies/soldier.png', '/assets/enemies/soldier.json');
-        scene.load.atlas('death', '/assets/fx/death.png', '/assets/fx/death.json');
-        scene.load.image('black-bullet', '/assets/projectiles/black-bullet.png');
-        scene.load.image('visor', '/assets/tiles/visor.png');
+        scene.load.atlas('soldier', `${import.meta.env.BASE_URL}/assets/enemies/soldier.png`, `${import.meta.env.BASE_URL}/assets/enemies/soldier.json`);
+        scene.load.atlas('death', `${import.meta.env.BASE_URL}/assets/fx/death.png`, `${import.meta.env.BASE_URL}/assets/fx/death.json`);
+        scene.load.image('black-bullet', `${import.meta.env.BASE_URL}/assets/projectiles/black-bullet.png`);
+        scene.load.image('visor', `${import.meta.env.BASE_URL}/assets/tiles/visor.png`);
     },
 
     initEnemiesAnimations(scene: Phaser.Scene) {

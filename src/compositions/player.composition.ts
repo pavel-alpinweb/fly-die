@@ -15,14 +15,14 @@ import TileSprite = Phaser.GameObjects.TileSprite;
 
 export const playerComposition = {
     uploadPlayerAssets(scene: Phaser.Scene) {
-        scene.load.image('red-bullet', '/assets/projectiles/red-bullet.png');
-        scene.load.atlas('player-idle', '/assets/player/player-idle.png', '/assets/player/player-idle.json');
-        scene.load.atlas('player-fly', '/assets/player/player-fly.png', '/assets/player/player-fly.json');
-        scene.load.atlas('player-walk', '/assets/player/player-walk.png', '/assets/player/player-walk.json');
-        scene.load.atlas('player-jump', '/assets/player/player-jump.png', '/assets/player/player-jump.json');
-        scene.load.atlas('player-death', '/assets/player/player-death.png', '/assets/player/player-death.json');
-        scene.load.atlas('jetpack-smoke', '/assets/player/jetpack-smoke.png', '/assets/player/jetpack-smoke.json');
-        scene.load.atlas('explosion', '/assets/fx/explosion.png', '/assets/fx/explosion.json');
+        scene.load.image('red-bullet', `${import.meta.env.BASE_URL}/assets/projectiles/red-bullet.png`);
+        scene.load.atlas('player-idle', `${import.meta.env.BASE_URL}/assets/player/player-idle.png`, `${import.meta.env.BASE_URL}/assets/player/player-idle.json`);
+        scene.load.atlas('player-fly', `${import.meta.env.BASE_URL}/assets/player/player-fly.png`, `${import.meta.env.BASE_URL}/assets/player/player-fly.json`);
+        scene.load.atlas('player-walk', `${import.meta.env.BASE_URL}/assets/player/player-walk.png`, `${import.meta.env.BASE_URL}/assets/player/player-walk.json`);
+        scene.load.atlas('player-jump', `${import.meta.env.BASE_URL}/assets/player/player-jump.png`, `${import.meta.env.BASE_URL}/assets/player/player-jump.json`);
+        scene.load.atlas('player-death', `${import.meta.env.BASE_URL}/assets/player/player-death.png`, `${import.meta.env.BASE_URL}/assets/player/player-death.json`);
+        scene.load.atlas('jetpack-smoke', `${import.meta.env.BASE_URL}/assets/player/jetpack-smoke.png`, `${import.meta.env.BASE_URL}/assets/player/jetpack-smoke.json`);
+        scene.load.atlas('explosion', `${import.meta.env.BASE_URL}/assets/fx/explosion.png`, `${import.meta.env.BASE_URL}/assets/fx/explosion.json`);
     },
 
     initPlayer(

@@ -4,7 +4,7 @@ import {COIN_BOUNCE, COIN_VELOCITY} from "../configs/gameplay.config.ts";
 
 export const resourcesComposition = {
     uploadResourcesAssets(scene: Phaser.Scene) {
-        scene.load.atlas('coin', '/assets/objects/coin.png', '/assets/objects/coin.json');
+        scene.load.atlas('coin', `${import.meta.env.BASE_URL}/assets/objects/coin.png`, `${import.meta.env.BASE_URL}/assets/objects/coin.json`);
     },
     initResourcesAnimations(scene: Phaser.Scene) {
         scene.anims.create({

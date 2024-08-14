@@ -20,7 +20,7 @@ const FuelComponent = observer(() => {
     return (
         <div className={classes.fuel}>
             <div className={classes.fuelIcon}>
-                <img width={50} height={50} src="/assets/ui/fuel.png" alt="fuel"/>
+                <img width={50} height={50} src={`${import.meta.env.BASE_URL}assets/ui/fuel.png`} alt="fuel"/>
             </div>
             <div className={classes.fuelBarWrapper}>
                 <div className={classes.fuelBar} style={

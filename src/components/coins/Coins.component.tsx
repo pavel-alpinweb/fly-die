@@ -6,7 +6,7 @@ import {resourcesStore} from "../../store/resources.store.ts";
 const CoinsComponent = observer(() => {
     return (
         <div className={classes.coins}>
-            <img width={60} src="/assets/ui/coin.png" alt="coin"/>
+            <img width={60} src={`${import.meta.env.BASE_URL}assets/ui/coin.png`} alt="coin"/>
             <div className={classes.coinsNumber}>{resourcesStore.coins}</div>
         </div>
     );
