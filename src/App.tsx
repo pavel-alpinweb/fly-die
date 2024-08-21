@@ -1,10 +1,9 @@
-import {RouterProvider} from "react-router-dom";
-import {router} from "./router/router.tsx";
+import GameScreen from "./screens/game/Game.screen.tsx";
 
 function App() {
   return (
     <div className="app">
-        <RouterProvider router={router}/>
+        <GameScreen />
     </div>
   )
 }
